@@ -122,6 +122,33 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""CameraMovement"",
+            ""id"": ""aabbcee2-68ba-4562-8040-454f66159bf1"",
+            ""actions"": [
+                {
+                    ""name"": ""Rotation"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a43d8bda-216d-4313-9098-80a868d05828"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""866930cd-83bb-4558-9dfb-3ef89b7289bf"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -148,6 +175,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
         m_PlayerMovement_Sprint = m_PlayerMovement.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerMovement_Walk = m_PlayerMovement.FindAction("Walk", throwIfNotFound: true);
+        // CameraMovement
+        m_CameraMovement = asset.FindActionMap("CameraMovement", throwIfNotFound: true);
+        m_CameraMovement_Rotation = m_CameraMovement.FindAction("Rotation", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -242,6 +272,39 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         }
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
+
+    // CameraMovement
+    private readonly InputActionMap m_CameraMovement;
+    private ICameraMovementActions m_CameraMovementActionsCallbackInterface;
+    private readonly InputAction m_CameraMovement_Rotation;
+    public struct CameraMovementActions
+    {
+        private @PlayerControls m_Wrapper;
+        public CameraMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Rotation => m_Wrapper.m_CameraMovement_Rotation;
+        public InputActionMap Get() { return m_Wrapper.m_CameraMovement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CameraMovementActions set) { return set.Get(); }
+        public void SetCallbacks(ICameraMovementActions instance)
+        {
+            if (m_Wrapper.m_CameraMovementActionsCallbackInterface != null)
+            {
+                @Rotation.started -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnRotation;
+                @Rotation.performed -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnRotation;
+                @Rotation.canceled -= m_Wrapper.m_CameraMovementActionsCallbackInterface.OnRotation;
+            }
+            m_Wrapper.m_CameraMovementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Rotation.started += instance.OnRotation;
+                @Rotation.performed += instance.OnRotation;
+                @Rotation.canceled += instance.OnRotation;
+            }
+        }
+    }
+    public CameraMovementActions @CameraMovement => new CameraMovementActions(this);
     private int m_KeybroadAndMouseSchemeIndex = -1;
     public InputControlScheme KeybroadAndMouseScheme
     {
@@ -256,5 +319,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnWalk(InputAction.CallbackContext context);
+    }
+    public interface ICameraMovementActions
+    {
+        void OnRotation(InputAction.CallbackContext context);
     }
 }
