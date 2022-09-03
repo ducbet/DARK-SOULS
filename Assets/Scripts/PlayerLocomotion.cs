@@ -135,6 +135,7 @@ namespace TMD
             {
                 if (inputManager.isSprinting)
                 {
+                    // Nothing to do. Make some changes to commit
                     return MOVEMENT_STATE.Sprinting;
                 }
                 if (inputManager.isWalking)
