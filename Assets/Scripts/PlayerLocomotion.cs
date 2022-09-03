@@ -23,6 +23,12 @@ namespace TMD
         [Header("Rotation Attributes")]
         public float rotationSpeed = 6f;
 
+        [Header("Roll Attributes")]
+        public float rollingVelocityScale = 1f;
+
+        private bool isAnimatorInteracting = false;
+        private bool isUsingRootMotion = false;
+
         private void Awake()
         {
             inputManager = GetComponent<InputManager>();
@@ -33,16 +39,36 @@ namespace TMD
 
         public void HandleAllMovements()
         {
-            HandleMovements();
+            isAnimatorInteracting = IsAnimatorInteracting();
+            isUsingRootMotion = IsUsingRootMotion();
+            if (isUsingRootMotion)
+            {
+                HandleRootMotionMovements();
+            }
+            else
+            {
+                HandleRollingOrDodgeBack();
+                HandleMovements();
+            }
         }
 
         public void HandleMovementAnimations()
         {
-            animatorManager.SetFloat(animatorManager.movementYParam, (float)GetMovementState());
+            animatorManager.SetFloat(animatorManager.movementYParam, (float) GetMovementState());
         }
 
         private void HandleMovements()
         {
+            if (isAnimatorInteracting)
+            {
+                return;
+            }
+
+            if (playerRigidbody.velocity.magnitude == 0 && inputManager.playerMovement.magnitude == 0)
+            {
+                // do not need to handle movement if player velocity and input is zero (completely indle)
+                return;
+            }
             Vector3 direction = cameraTransform.forward * inputManager.playerMovementY + cameraTransform.right * inputManager.playerMovementX;
             direction.y = 0;
             direction.Normalize();
@@ -60,7 +86,43 @@ namespace TMD
             transform.rotation = lookDirection;
         }
 
+        private void HandleRootMotionMovements()
+        {
+            playerRigidbody.drag = 0;  // drag default is 0 already
+            Vector3 velocity = animatorManager.deltaPosition * rollingVelocityScale;
+            velocity.y = 0;
+            playerRigidbody.velocity = velocity;
+        }
 
+        private void HandleRollingOrDodgeBack()
+        {
+            if (isAnimatorInteracting)
+            {
+                return;
+            }
+            if (!inputManager.isRolling)
+            {
+                return;
+            }
+            if (GetMovementState() == MOVEMENT_STATE.Idle)
+            {
+                animatorManager.PlayTargetAnimation(animatorManager.dodgeBackAnimation, true, true);
+            }
+            else
+            {
+                animatorManager.PlayTargetAnimation(animatorManager.rollAnimation, true, true);
+            }
+        }
+
+
+        private bool IsAnimatorInteracting()
+        {
+            return animatorManager.GetBool(animatorManager.isInteractingParam);
+        }
+        private bool IsUsingRootMotion()
+        {
+            return animatorManager.GetBool(animatorManager.usingRootMotionParam);
+        }
         private MOVEMENT_STATE GetMovementState()
         {
             float inputManitude = inputManager.playerMovement.magnitude;
