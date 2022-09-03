@@ -8,11 +8,6 @@ namespace TMD
     [RequireComponent(typeof(AnimatorManager))]
     public class PlayerLocomotion : MonoBehaviour
     {
-        [HideInInspector] public InputManager inputManager;
-        [HideInInspector] public AnimatorManager animatorManager;
-        private Transform cameraTransform;
-        private Rigidbody playerRigidbody;
-
         enum MOVEMENT_STATE { Idle, Walking, Running, Sprinting };
         [Header("Tralation Attributes")]
         public float runThreshold = 0.55f;
@@ -28,6 +23,11 @@ namespace TMD
 
         private bool isAnimatorInteracting = false;
         private bool isUsingRootMotion = false;
+
+        [HideInInspector] public InputManager inputManager;
+        [HideInInspector] public AnimatorManager animatorManager;
+        private Transform cameraTransform;
+        private Rigidbody playerRigidbody;
 
         private void Awake()
         {
@@ -63,7 +63,6 @@ namespace TMD
             {
                 return;
             }
-
             if (playerRigidbody.velocity.magnitude == 0 && inputManager.playerMovement.magnitude == 0)
             {
                 // do not need to handle movement if player velocity and input is zero (completely indle)

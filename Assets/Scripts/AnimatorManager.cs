@@ -14,12 +14,12 @@ namespace TMD
         [HideInInspector] public string rollAnimation = "Roll";
         [HideInInspector] public string dodgeBackAnimation = "Dodge Back";
 
+        private float fadeLength = 0.2f;
+
         [HideInInspector] public Vector3 deltaPosition = Vector3.zero;
 
         private Animator animator;
         private Dictionary<string, int> animationHash = new Dictionary<string, int>();
-
-        private float fadeLength = 0.2f;
 
         private void Awake()
         {
