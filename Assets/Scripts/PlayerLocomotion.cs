@@ -43,7 +43,7 @@ namespace TMD
 
         private void HandleMovements()
         {
-            Vector3 direction = cameraTransform.forward * inputManager.movementY + cameraTransform.right * inputManager.movementX;
+            Vector3 direction = cameraTransform.forward * inputManager.playerMovementY + cameraTransform.right * inputManager.playerMovementX;
             direction.y = 0;
             direction.Normalize();
 
@@ -63,7 +63,7 @@ namespace TMD
 
         private MOVEMENT_STATE GetMovementState()
         {
-            float inputManitude = inputManager.movement.magnitude;
+            float inputManitude = inputManager.playerMovement.magnitude;
             if (inputManitude == 0)
             {
                 // Put Idle first because player is idle in most of the time -> better performance
