@@ -15,6 +15,7 @@ namespace TMD
 
         [HideInInspector] public bool isWalking;
         [HideInInspector] public bool isSprinting;
+        [HideInInspector] public bool isRolling;
 
         private PlayerControls playerControls;
 
@@ -34,6 +35,8 @@ namespace TMD
             playerControls.PlayerMovement.Sprint.canceled += context => isSprinting = false;
             playerControls.PlayerMovement.Walk.performed += context => isWalking = true;
             playerControls.PlayerMovement.Walk.canceled += context => isWalking = false;
+            playerControls.PlayerMovement.Roll.performed += context => isRolling = true;
+            playerControls.PlayerMovement.Roll.canceled += context => isRolling = false;
 
             playerControls.CameraMovement.Rotation.performed += context =>
             {

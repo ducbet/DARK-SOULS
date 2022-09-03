@@ -10,7 +10,6 @@ namespace TMD
         private PlayerLocomotion playerLocomotion;
         private CameraManager cameraManager;
 
-
         private void Awake()
         {
             playerLocomotion = GetComponent<PlayerLocomotion>();
