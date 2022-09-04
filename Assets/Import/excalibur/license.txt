@@ -1,0 +1,11 @@
+Model Information:
+* title:	Excalibur
+* source:	https://sketchfab.com/3d-models/excalibur-683f07903c5a4ce28ee059f310cb9183
+* author:	phantom-fox (https://sketchfab.com/phantom-fox)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Excalibur" (https://sketchfab.com/3d-models/excalibur-683f07903c5a4ce28ee059f310cb9183) by phantom-fox (https://sketchfab.com/phantom-fox) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
