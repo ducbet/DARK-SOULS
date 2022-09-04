@@ -62,6 +62,7 @@ MonoBehaviour:
   defaultTrueBoolNames: []
   defaultFalseBoolNames:
   - IsUsingRootMotion
+  - IsIgnoreYAxisRootMotion
 --- !u!1102 &-5629423081843068014
 AnimatorState:
   serializedVersion: 6
@@ -139,6 +140,22 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-3180431491984410151
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd9731a0fcc739429cfb415e4bdff30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultTrueBoolNames:
+  - IsUsingRootMotion
+  - IsIgnoreYAxisRootMotion
+  defaultFalseBoolNames: []
 --- !u!1102 &-2117898150750218101
 AnimatorState:
   serializedVersion: 6
@@ -153,6 +170,7 @@ AnimatorState:
   - {fileID: 6179894485551882705}
   - {fileID: 5732298940853662505}
   m_StateMachineBehaviours:
+  - {fileID: -3180431491984410151}
   - {fileID: -7436348386329237603}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -237,31 +255,31 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsInteracting
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsGround
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsUsingRootMotion
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsIgnoreYAxisRootMotion
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -442,10 +460,10 @@ AnimatorStateMachine:
     m_Position: {x: 270, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2117898150750218101}
-    m_Position: {x: 560, y: -90, z: 0}
+    m_Position: {x: 580, y: -60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3831154217621340998}
-    m_Position: {x: 590, y: 370, z: 0}
+    m_Position: {x: 580, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3359717474540862678}
     m_Position: {x: 900, y: 110, z: 0}
