@@ -21,8 +21,19 @@ namespace TMD
         [Header("Roll Attributes")]
         public float rollingVelocityScale = 1f;
 
+        [Header("Falling Attributes")]
+        private Vector3 groundCheckOriginOffset = new Vector3(0f, 1f, 0f);
+        public float startLandingHeight = 1.5f;
+        public float fallingVelocity = 33f;
+        private Vector3 leapingVelocity;
+        public LayerMask groundCheckLayers;
+        public float leapingVelocitySmoothTime = 2f;
+
         private bool isAnimatorInteracting = false;
         private bool isUsingRootMotion = false;
+        private bool isGround = true;
+
+        private float inAirTime = 0;
 
         [HideInInspector] public InputManager inputManager;
         [HideInInspector] public AnimatorManager animatorManager;
@@ -35,12 +46,22 @@ namespace TMD
             animatorManager = GetComponent<AnimatorManager>();
             cameraTransform = Camera.main.transform;
             playerRigidbody = GetComponent<Rigidbody>();
+
+            if (groundCheckLayers == 0)
+            {
+                groundCheckLayers = (int) CameraManager.LayerMasks.Ground;
+            }
         }
 
         public void HandleAllMovements()
         {
+            if (transform.position.y < 1)
+            {
+                transform.position = new Vector3(0, 16, 0);
+            }
             isAnimatorInteracting = IsAnimatorInteracting();
             isUsingRootMotion = IsUsingRootMotion();
+            HandleFallingAndLanding();
             if (isUsingRootMotion)
             {
                 HandleRootMotionMovements();
@@ -89,7 +110,14 @@ namespace TMD
         {
             playerRigidbody.drag = 0;  // drag default is 0 already
             Vector3 velocity = animatorManager.deltaPosition * rollingVelocityScale;
-            velocity.y = 0;
+            if (animatorManager.GetBool(animatorManager.isIgnoreYAxisRootMotionParam))
+            {
+                velocity.y = playerRigidbody.velocity.y;
+            }
+            else
+            {
+                //velocity.y = 0;
+            }
             playerRigidbody.velocity = velocity;
         }
 
@@ -113,6 +141,73 @@ namespace TMD
             }
         }
 
+        private void HandleFallingAndLanding()
+        {
+            if (!isGround)
+            {
+                HandleFallingForces();
+            }
+            if (IsFalling())
+            {
+                HandleFalling();
+            }
+            else
+            {
+                HandleLanding();
+            }
+        }
+        private void HandleFallingForces()
+        {
+            if (isUsingRootMotion)
+            {
+                // ignore all forces while isUsingRootMotion
+                return;
+            }
+            inAirTime += Time.deltaTime;
+            // Have to set velocity because we don't set velocity in HandleTranslation while falling
+            playerRigidbody.velocity = SmoothFallingVelocityXZ();
+            playerRigidbody.AddForce(Vector3.down * fallingVelocity * inAirTime);
+        }
+
+        private Vector3 SmoothFallingVelocityXZ()
+        {
+            float velocityY = playerRigidbody.velocity.y;
+            Vector3 velocityXZ = Vector3.SmoothDamp(playerRigidbody.velocity, Vector3.zero, ref leapingVelocity, leapingVelocitySmoothTime);
+            velocityXZ.y = velocityY;
+            return velocityXZ;
+        }
+        private bool IsFalling()
+        {
+            RaycastHit hit;
+            if (Physics.SphereCast(transform.position + groundCheckOriginOffset, 0.2f, Vector3.down, out hit, startLandingHeight, groundCheckLayers))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private void HandleFalling()
+        {
+            isGround = false;
+            animatorManager.SetBool(animatorManager.isGroundParam, false);
+            if (isAnimatorInteracting)
+            {
+                // Do not start falling animation again if still falling
+                return;
+            }
+            animatorManager.PlayTargetAnimation(animatorManager.fallingAnimation, true);
+        }
+
+        private void HandleLanding()
+        {
+            if (isGround)
+            {
+                return;
+            }
+            isGround = true;
+            animatorManager.SetBool(animatorManager.isGroundParam, true);
+            inAirTime = 0;
+        }
 
         private bool IsAnimatorInteracting()
         {
@@ -120,7 +215,7 @@ namespace TMD
         }
         private bool IsUsingRootMotion()
         {
-            return animatorManager.GetBool(animatorManager.usingRootMotionParam);
+            return animatorManager.GetBool(animatorManager.isUsingRootMotionParam);
         }
         private MOVEMENT_STATE GetMovementState()
         {

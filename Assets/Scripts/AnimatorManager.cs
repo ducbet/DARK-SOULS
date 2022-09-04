@@ -9,8 +9,12 @@ namespace TMD
     {
         [HideInInspector] public string movementYParam = "MovementY";
         [HideInInspector] public string isInteractingParam = "IsInteracting";
-        [HideInInspector] public string usingRootMotionParam = "UsingRootMotion";
+        [HideInInspector] public string isUsingRootMotionParam = "IsUsingRootMotion";
+        [HideInInspector] public string isIgnoreYAxisRootMotionParam = "IsIgnoreYAxisRootMotion";
+        [HideInInspector] public string isGroundParam = "IsGround";
 
+        [HideInInspector] public string fallingAnimation = "Falling";
+        [HideInInspector] public string landingAnimation = "Landing";
         [HideInInspector] public string rollAnimation = "Roll";
         [HideInInspector] public string dodgeBackAnimation = "Dodge Back";
 
@@ -30,12 +34,13 @@ namespace TMD
         {
             animator.SetFloat(HashString(animationName), value, 0.1f, Time.deltaTime);
         }
+
         public void PlayTargetAnimation(string animationName, bool isInteracting, bool useRootMotion = false)
         {
             Debug.Log("PlayTargetAnimation animationName: " + animationName + ", isInteracting: " + isInteracting + ", useRootMotion: " + useRootMotion);
             deltaPosition = Vector3.zero;
             animator.SetBool(HashString(isInteractingParam), isInteracting);
-            animator.SetBool(HashString(usingRootMotionParam), useRootMotion);
+            animator.SetBool(HashString(isUsingRootMotionParam), useRootMotion);
             animator.CrossFade(HashString(animationName), fadeLength);
         }
 
@@ -48,6 +53,12 @@ namespace TMD
             animationHash[animationName] = Animator.StringToHash(animationName);
             return animationHash[animationName];
         }
+
+        public void SetBool(string animationName, bool value)
+        {
+            animator.SetBool(animationName, value);
+        }
+
         public bool GetBool(string boolName)
         {
             return animator.GetBool(HashString(boolName));
@@ -55,7 +66,7 @@ namespace TMD
 
         private void OnAnimatorMove()
         {
-            if (GetBool(usingRootMotionParam))
+            if (GetBool(isUsingRootMotionParam))
             {
                 deltaPosition = animator.deltaPosition / Time.deltaTime;
             }

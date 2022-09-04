@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResetBools : StateMachineBehaviour
+public class ResetBoolsOnStateEnter : StateMachineBehaviour
 {
     public string[] defaultTrueBoolNames;
     public string[] defaultFalseBoolNames;

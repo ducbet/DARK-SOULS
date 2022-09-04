@@ -923,13 +923,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eab4ad12a88fd744952fa7f683719d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputManager: {fileID: 0}
-  animatorManager: {fileID: 0}
   runThreshold: 0.55
   walkingSpeed: 1
   runningSpeed: 4
   sprintingSpeed: 7
   rotationSpeed: 6
+  rollingVelocityScale: 1
+  startLandingHeight: 1.5
+  fallingVelocity: 33
+  groundCheckLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  leapingVelocitySmoothTime: 2
+  inputManager: {fileID: 0}
+  animatorManager: {fileID: 0}
 --- !u!114 &3389422401111712525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -950,6 +957,7 @@ MonoBehaviour:
   cameraRotationY: 0
   isWalking: 0
   isSprinting: 0
+  isRolling: 0
 --- !u!114 &4386741327950740776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -963,6 +971,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementYParam: MovementY
+  isInteractingParam: IsInteracting
+  isUsingRootMotionParam: IsUsingRootMotion
+  isIgnoreYAxisRootMotionParam: IsIgnoreYAxisRootMotion
+  isGroundParam: IsGround
+  fallingAnimation: Falling
+  landingAnimation: Landing
+  rollAnimation: Roll
+  dodgeBackAnimation: Dodge Back
+  deltaPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3077814609596926773
 GameObject:
   m_ObjectHideFlags: 0
