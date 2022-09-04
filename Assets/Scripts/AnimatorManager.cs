@@ -35,12 +35,11 @@ namespace TMD
             animator.SetFloat(HashString(animationName), value, 0.1f, Time.deltaTime);
         }
 
-        public void PlayTargetAnimation(string animationName, bool isInteracting, bool useRootMotion = false)
+        public void PlayTargetAnimation(string animationName, bool isInteracting = true)
         {
-            Debug.Log("PlayTargetAnimation animationName: " + animationName + ", isInteracting: " + isInteracting + ", useRootMotion: " + useRootMotion);
+            Debug.Log("PlayTargetAnimation animationName: " + animationName + ", isInteracting: " + isInteracting);
             deltaPosition = Vector3.zero;
             animator.SetBool(HashString(isInteractingParam), isInteracting);
-            animator.SetBool(HashString(isUsingRootMotionParam), useRootMotion);
             animator.CrossFade(HashString(animationName), fadeLength);
         }
 

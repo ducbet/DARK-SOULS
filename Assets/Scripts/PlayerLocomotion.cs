@@ -133,11 +133,11 @@ namespace TMD
             }
             if (GetMovementState() == MOVEMENT_STATE.Idle)
             {
-                animatorManager.PlayTargetAnimation(animatorManager.dodgeBackAnimation, true, true);
+                animatorManager.PlayTargetAnimation(animatorManager.dodgeBackAnimation);
             }
             else
             {
-                animatorManager.PlayTargetAnimation(animatorManager.rollAnimation, true, true);
+                animatorManager.PlayTargetAnimation(animatorManager.rollAnimation);
             }
         }
 
@@ -200,7 +200,7 @@ namespace TMD
                 // Do not start falling animation again if still falling
                 return;
             }
-            animatorManager.PlayTargetAnimation(animatorManager.fallingAnimation, true);
+            animatorManager.PlayTargetAnimation(animatorManager.fallingAnimation);
         }
 
         private void HandleLanding()

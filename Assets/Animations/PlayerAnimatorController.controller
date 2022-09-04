@@ -211,6 +211,22 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-1542132867462246947
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd9731a0fcc739429cfb415e4bdff30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultTrueBoolNames:
+  - IsUsingRootMotion
+  - IsIgnoreYAxisRootMotion
+  defaultFalseBoolNames: []
 --- !u!114 &-1049675362323429540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -343,6 +359,7 @@ AnimatorState:
   m_Transitions: []
   m_StateMachineBehaviours:
   - {fileID: 2319689683120233963}
+  - {fileID: 6899247157889338221}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -369,7 +386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd9731a0fcc739429cfb415e4bdff30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultTrueBoolNames: []
+  defaultTrueBoolNames:
+  - IsGround
   defaultFalseBoolNames:
   - IsInteracting
   - IsUsingRootMotion
@@ -446,6 +464,7 @@ MonoBehaviour:
   defaultTrueBoolNames: []
   defaultFalseBoolNames:
   - IsUsingRootMotion
+  - IsIgnoreYAxisRootMotion
 --- !u!1107 &3738826944866329025
 AnimatorStateMachine:
   serializedVersion: 6
@@ -497,6 +516,7 @@ AnimatorState:
   - {fileID: -1658701392580764951}
   - {fileID: 989766923932692914}
   m_StateMachineBehaviours:
+  - {fileID: -1542132867462246947}
   - {fileID: 3525615930758361468}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -665,6 +685,21 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &6899247157889338221
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc879c09b39cfdc468bae7a4ab392a37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultTrueBoolNames:
+  - IsInteracting
+  defaultFalseBoolNames: []
 --- !u!1102 &7476439152680898860
 AnimatorState:
   serializedVersion: 6
