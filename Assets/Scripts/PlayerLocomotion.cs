@@ -160,7 +160,12 @@ namespace TMD
         {
             if (isUsingRootMotion)
             {
-                // ignore all forces while isUsingRootMotion
+                // ignore all forces (except Y if isIgnoreYAxisRootMotionParam == true) while isUsingRootMotion
+                if (animatorManager.GetBool(animatorManager.isIgnoreYAxisRootMotionParam))
+                {
+                    inAirTime += Time.deltaTime;
+                    playerRigidbody.AddForce(Vector3.down * fallingVelocity * inAirTime);
+                }
                 return;
             }
             inAirTime += Time.deltaTime;
