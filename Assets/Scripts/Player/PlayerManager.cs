@@ -1,30 +1,33 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerLocomotion))]
-public class PlayerManager : MonoBehaviour
+namespace TMD
 {
-    private PlayerLocomotion playerLocomotion;
-    private CameraManager cameraManager;
-
-    private void Awake()
+    [RequireComponent(typeof(PlayerLocomotion))]
+    public class PlayerManager : MonoBehaviour
     {
-        playerLocomotion = GetComponent<PlayerLocomotion>();
-        cameraManager = FindObjectOfType<CameraManager>();
-    }
+        private PlayerLocomotion playerLocomotion;
+        private CameraManager cameraManager;
 
-    // Update is called once per frame
-    void Update()
-    {
-        playerLocomotion.HandleMovementAnimations();
-    }
+        private void Awake()
+        {
+            playerLocomotion = GetComponent<PlayerLocomotion>();
+            cameraManager = FindObjectOfType<CameraManager>();
+        }
 
-    private void FixedUpdate()
-    {
-        playerLocomotion.HandleAllMovements();
-    }
+        // Update is called once per frame
+        void Update()
+        {
+            playerLocomotion.HandleMovementAnimations();
+        }
 
-    private void LateUpdate()
-    {
-        cameraManager.HandleCameraMovement();
+        private void FixedUpdate()
+        {
+            playerLocomotion.HandleAllMovements();
+        }
+
+        private void LateUpdate()
+        {
+            cameraManager.HandleCameraMovement();
+        }
     }
 }

@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResetBoolsOnStateExit : StateMachineBehaviour
+namespace TMD
 {
-    public string[] defaultTrueBoolNames;
-    public string[] defaultFalseBoolNames;
-
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public class ResetBoolsOnStateExit : StateMachineBehaviour
     {
-        foreach (var boolName in defaultTrueBoolNames)
-        {
-            animator.SetBool(boolName, true);
-        }
+        public string[] defaultTrueBoolNames;
+        public string[] defaultFalseBoolNames;
 
-        foreach (var boolName in defaultFalseBoolNames)
+        // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
+        override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            animator.SetBool(boolName, false);
+            foreach (var boolName in defaultTrueBoolNames)
+            {
+                animator.SetBool(boolName, true);
+            }
+
+            foreach (var boolName in defaultFalseBoolNames)
+            {
+                animator.SetBool(boolName, false);
+            }
         }
     }
 }
