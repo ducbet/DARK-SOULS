@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class WeaponSlotManager : MonoBehaviour
+    public class SlotManager : MonoBehaviour
     {
-        WeaponHolderSlot leftHandSlot;
-        WeaponHolderSlot rightHandSlot;
+        ItemHolderSlot leftHandSlot;
+        ItemHolderSlot rightHandSlot;
 
         private void Awake()
         {
-            foreach (WeaponHolderSlot weaponHolderSlot in GetComponentsInChildren<WeaponHolderSlot>())
+            foreach (ItemHolderSlot weaponHolderSlot in GetComponentsInChildren<ItemHolderSlot>())
             {
                 if (weaponHolderSlot.isLeftHand)
                 {
@@ -24,15 +24,15 @@ namespace TMD
             }
         }
 
-        public void LoadItemOnSlot(WeaponItem weaponItem, bool isRightHand = true)
+        public void LoadItemOnSlot(Item item, bool isRightHand = true)
         {
             if (isRightHand)
             {
-                rightHandSlot.LoadWeaponModel(weaponItem);
+                rightHandSlot.LoadItemModel(item);
             }
             else
             {
-                leftHandSlot.LoadWeaponModel(weaponItem);
+                leftHandSlot.LoadItemModel(item);
             }
         }
     }

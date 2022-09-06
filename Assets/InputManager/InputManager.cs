@@ -14,6 +14,8 @@ public class InputManager : MonoBehaviour
     [HideInInspector] public bool isSprinting;
     [HideInInspector] public bool isRolling;
 
+    [HideInInspector] public bool isLeftClick;
+
     private PlayerControls playerControls;
 
     private void OnEnable()
@@ -34,6 +36,10 @@ public class InputManager : MonoBehaviour
         playerControls.PlayerMovement.Walk.canceled += context => isWalking = false;
         playerControls.PlayerMovement.Roll.performed += context => isRolling = true;
         playerControls.PlayerMovement.Roll.canceled += context => isRolling = false;
+
+
+        playerControls.PlayerAction.LeftClick.performed += context => isLeftClick = true;
+        playerControls.PlayerAction.LeftClick.canceled += context => isLeftClick = false;
 
         playerControls.CameraMovement.Rotation.performed += context =>
         {

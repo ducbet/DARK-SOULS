@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8479210bbca0f940872f9b195b9bea6, type: 3}
-  m_Name: Sword1
+  m_Script: {fileID: 11500000, guid: 6a5021d2404106741abd822e5b8dcabc, type: 3}
+  m_Name: Sword
   m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 7954882599007014714, guid: 87e577166ff33494d99b196aebbe18c5, type: 3}
   itemName: chevalier_sword
   itemIcon: {fileID: 0}
-  weaponPrefab: {fileID: 7954882599007014714, guid: 87e577166ff33494d99b196aebbe18c5, type: 3}

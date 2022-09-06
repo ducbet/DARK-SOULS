@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace TMD
 {
+    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(InputManager))]
     [RequireComponent(typeof(AnimatorManager))]
     public class PlayerLocomotion : MonoBehaviour
