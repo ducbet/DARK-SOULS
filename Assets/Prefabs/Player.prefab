@@ -977,15 +977,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fcbae1724a2a54282f55f42f752369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementYParam: MovementY
-  isInteractingParam: IsInteracting
-  isUsingRootMotionParam: IsUsingRootMotion
-  isIgnoreYAxisRootMotionParam: IsIgnoreYAxisRootMotion
-  isGroundParam: IsGround
-  fallingAnimation: Falling
-  landingAnimation: Landing
-  rollAnimation: Roll
-  dodgeBackAnimation: Dodge Back
+  movementYParam: 0
+  isInteractingParam: 0
+  isUsingRootMotionParam: 0
+  isIgnoreYAxisRootMotionParam: 0
+  isGroundParam: 0
+  fallingAnimation: 0
+  landingAnimation: 0
+  rollAnimation: 0
+  dodgeBackAnimation: 0
   deltaPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &2578535529363219477
 MonoBehaviour:
