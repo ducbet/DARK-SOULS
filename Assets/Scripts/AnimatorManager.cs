@@ -42,6 +42,13 @@ namespace TMD
             animator.CrossFade(HashString(animationName), fadeLength);
         }
 
+        public void PlayTargetAttackAnimation(string animationName, bool isInteracting = true)
+        {
+            animator.SetBool(HashString(isUsingRootMotionParam), true);
+            animator.SetBool(HashString(isIgnoreYAxisRootMotionParam), true);
+            PlayTargetAnimation(animationName, isInteracting);
+        }
+
         private int HashString(string animationName)
         {
             if (animationHash.ContainsKey(animationName))

@@ -1413,6 +1413,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2578535529363219477, guid: 1c992f8f527ec644bb4ad228ee53a5f1, type: 3}
+      propertyPath: leftHandWeapon
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2919208638360749310, guid: 1c992f8f527ec644bb4ad228ee53a5f1, type: 3}
       propertyPath: m_RootOrder
       value: 1
