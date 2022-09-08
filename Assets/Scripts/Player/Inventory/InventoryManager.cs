@@ -23,7 +23,7 @@ namespace TMD
         {
             if (rightHandWeapon)
             {
-                
+                slotManager.LoadItemOnSlot(rightHandWeapon);
             }
             if (leftHandWeapon)
             {

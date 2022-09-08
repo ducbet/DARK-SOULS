@@ -6,67 +6,74 @@ namespace TMD
     [RequireComponent(typeof(Animator))]
     public class AnimatorManager : MonoBehaviour
     {
-        [HideInInspector] public string movementYParam = "MovementY";
-        [HideInInspector] public string isInteractingParam = "IsInteracting";
-        [HideInInspector] public string isUsingRootMotionParam = "IsUsingRootMotion";
-        [HideInInspector] public string isIgnoreYAxisRootMotionParam = "IsIgnoreYAxisRootMotion";
-        [HideInInspector] public string isGroundParam = "IsGround";
+        [HideInInspector] private string movementYParamName = "MovementY";
+        [HideInInspector] public int movementYParam;
+        [HideInInspector] private string isInteractingParamName = "IsInteracting";
+        [HideInInspector] public int isInteractingParam;
+        [HideInInspector] private string isUsingRootMotionParamName = "IsUsingRootMotion";
+        [HideInInspector] public int isUsingRootMotionParam;
+        [HideInInspector] private string isIgnoreYAxisRootMotionParamName = "IsIgnoreYAxisRootMotion";
+        [HideInInspector] public int isIgnoreYAxisRootMotionParam;
+        [HideInInspector] private string isGroundParamName = "IsGround";
+        [HideInInspector] public int isGroundParam;
 
-        [HideInInspector] public string fallingAnimation = "Falling";
-        [HideInInspector] public string landingAnimation = "Landing";
-        [HideInInspector] public string rollAnimation = "Roll";
-        [HideInInspector] public string dodgeBackAnimation = "Dodge Back";
+        [HideInInspector] private string fallingAnimationName = "Falling";
+        [HideInInspector] public int fallingAnimation;
+        [HideInInspector] private string landingAnimationName = "Landing";
+        [HideInInspector] public int landingAnimation;
+        [HideInInspector] private string rollAnimationName = "Roll";
+        [HideInInspector] public int rollAnimation;
+        [HideInInspector] private string dodgeBackAnimationName = "Dodge Back";
+        [HideInInspector] public int dodgeBackAnimation;
 
         private float fadeLength = 0.2f;
 
         [HideInInspector] public Vector3 deltaPosition = Vector3.zero;
 
         private Animator animator;
-        private Dictionary<string, int> animationHash = new Dictionary<string, int>();
 
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            HashStrings();
         }
 
-        public void SetFloat(string animationName, float value)
+        public void SetFloat(int animationId, float value)
         {
-            animator.SetFloat(HashString(animationName), value, 0.1f, Time.deltaTime);
+            animator.SetFloat(animationId, value, 0.1f, Time.deltaTime);
         }
 
         public void PlayTargetAnimation(string animationName, bool isInteracting = true)
         {
             Debug.Log("PlayTargetAnimation animationName: " + animationName + ", isInteracting: " + isInteracting);
             deltaPosition = Vector3.zero;
-            animator.SetBool(HashString(isInteractingParam), isInteracting);
-            animator.CrossFade(HashString(animationName), fadeLength);
+            animator.SetBool(isInteractingParam, isInteracting);
+            animator.CrossFade(animationName, fadeLength);
+        }
+
+        public void PlayTargetAnimation(int animationId, bool isInteracting = true)
+        {
+            Debug.Log("PlayTargetAnimation animationId: " + animationId + ", isInteracting: " + isInteracting);
+            deltaPosition = Vector3.zero;
+            animator.SetBool(isInteractingParam, isInteracting);
+            animator.CrossFade(animationId, fadeLength);
         }
 
         public void PlayTargetAttackAnimation(string animationName, bool isInteracting = true)
         {
-            animator.SetBool(HashString(isUsingRootMotionParam), true);
-            animator.SetBool(HashString(isIgnoreYAxisRootMotionParam), true);
+            animator.SetBool(isUsingRootMotionParam, true);
+            animator.SetBool(isIgnoreYAxisRootMotionParam, true);
             PlayTargetAnimation(animationName, isInteracting);
         }
 
-        private int HashString(string animationName)
+        public void SetBool(int boolId, bool value)
         {
-            if (animationHash.ContainsKey(animationName))
-            {
-                return animationHash[animationName];
-            }
-            animationHash[animationName] = Animator.StringToHash(animationName);
-            return animationHash[animationName];
+            animator.SetBool(boolId, value);
         }
 
-        public void SetBool(string animationName, bool value)
+        public bool GetBool(int boolId)
         {
-            animator.SetBool(animationName, value);
-        }
-
-        public bool GetBool(string boolName)
-        {
-            return animator.GetBool(HashString(boolName));
+            return animator.GetBool(boolId);
         }
 
         private void OnAnimatorMove()
@@ -75,6 +82,19 @@ namespace TMD
             {
                 deltaPosition = animator.deltaPosition / Time.deltaTime;
             }
+        }
+        private void HashStrings()
+        {
+            movementYParam = Animator.StringToHash(movementYParamName);
+            isInteractingParam = Animator.StringToHash(isInteractingParamName);
+            isUsingRootMotionParam = Animator.StringToHash(isUsingRootMotionParamName);
+            isIgnoreYAxisRootMotionParam = Animator.StringToHash(isIgnoreYAxisRootMotionParamName);
+            isGroundParam = Animator.StringToHash(isGroundParamName);
+
+            fallingAnimation = Animator.StringToHash(fallingAnimationName);
+            landingAnimation = Animator.StringToHash(landingAnimationName);
+            rollAnimation = Animator.StringToHash(rollAnimationName);
+            dodgeBackAnimation = Animator.StringToHash(dodgeBackAnimationName);
         }
     }
 }
