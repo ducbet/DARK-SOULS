@@ -29,6 +29,9 @@ namespace TMD
         [HideInInspector] public int rollAnimation;
         [HideInInspector] private string dodgeBackAnimationName = "Dodge Back";
         [HideInInspector] public int dodgeBackAnimation;
+        [HideInInspector] private string dieAnimationName = "Die";
+        [HideInInspector] public int dieAnimation;
+        
 
         private float fadeLength = 0.2f;
 
@@ -47,19 +50,21 @@ namespace TMD
             animator.SetFloat(animationId, value, 0.1f, Time.deltaTime);
         }
 
-        public void PlayTargetAnimation(string animationName, bool isInteracting = true)
+        public void PlayTargetAnimation(string animationName, bool _isInteracting = true)
         {
             Debug.Log("PlayTargetAnimation animationName: " + animationName + ", isInteracting: " + isInteracting);
             deltaPosition = Vector3.zero;
-            animator.SetBool(isInteractingParam, isInteracting);
+            isInteracting = _isInteracting;
+            animator.SetBool(isInteractingParam, _isInteracting);
             animator.CrossFade(animationName, fadeLength);
         }
 
-        public void PlayTargetAnimation(int animationId, bool isInteracting = true)
+        public void PlayTargetAnimation(int animationId, bool _isInteracting = true)
         {
             Debug.Log("PlayTargetAnimation animationId: " + animationId + ", isInteracting: " + isInteracting);
             deltaPosition = Vector3.zero;
-            animator.SetBool(isInteractingParam, isInteracting);
+            isInteracting = _isInteracting;
+            animator.SetBool(isInteractingParam, _isInteracting);
             animator.CrossFade(animationId, fadeLength);
         }
 
@@ -106,6 +111,7 @@ namespace TMD
             landingAnimation = Animator.StringToHash(landingAnimationName);
             rollAnimation = Animator.StringToHash(rollAnimationName);
             dodgeBackAnimation = Animator.StringToHash(dodgeBackAnimationName);
+            dieAnimation = Animator.StringToHash(dieAnimationName);
         }
     }
 }
