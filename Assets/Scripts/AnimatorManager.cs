@@ -6,6 +6,10 @@ namespace TMD
     [RequireComponent(typeof(Animator))]
     public class AnimatorManager : MonoBehaviour
     {
+        public bool isInteracting = false;
+        public bool isUsingRootMotion = false;
+        public bool isIgnoreYAxisRootMotion = false;
+
         [HideInInspector] private string movementYParamName = "MovementY";
         [HideInInspector] public int movementYParam;
         [HideInInspector] private string isInteractingParamName = "IsInteracting";
@@ -76,9 +80,16 @@ namespace TMD
             return animator.GetBool(boolId);
         }
 
+        public void UpdateAnimatorUsingState()
+        {
+            isInteracting = GetBool(isInteractingParam);
+            isUsingRootMotion = GetBool(isUsingRootMotionParam);
+            isIgnoreYAxisRootMotion = GetBool(isIgnoreYAxisRootMotionParam);
+        }
+
         private void OnAnimatorMove()
         {
-            if (GetBool(isUsingRootMotionParam))
+            if (isUsingRootMotion)
             {
                 deltaPosition = animator.deltaPosition / Time.deltaTime;
             }

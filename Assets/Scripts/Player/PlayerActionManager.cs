@@ -5,6 +5,9 @@ using UnityEngine;
 namespace TMD
 {
     [RequireComponent(typeof(InputManager))]
+    [RequireComponent(typeof(PlayerLocomotion))]
+    [RequireComponent(typeof(AnimatorManager))]
+    [RequireComponent(typeof(PlayerAttacker))]
     public class PlayerActionManager : MonoBehaviour
     {
         /*
@@ -12,6 +15,7 @@ namespace TMD
         */
 
         [HideInInspector] public InputManager inputManager;
+        [HideInInspector] public PlayerLocomotion playerLocomotion;
         [HideInInspector] public AnimatorManager animatorManager;
         [HideInInspector] public PlayerAttacker playerAttacker;
 
@@ -20,22 +24,23 @@ namespace TMD
         private void Awake()
         {
             inputManager = GetComponent<InputManager>();
+            playerLocomotion = GetComponent<PlayerLocomotion>();
             animatorManager = GetComponent<AnimatorManager>();
             playerAttacker = GetComponent<PlayerAttacker>();
         }
 
         public void HandleAllActions()
         {
-            isAnimatorInteracting = IsAnimatorInteracting();
-            if (isAnimatorInteracting)
-            {
-                return;
-            }
             HandleAttack();
+            HandleRollingOrDodgeBack();
         }
 
         private void HandleAttack()
         {
+            if (animatorManager.isInteracting)
+            {
+                return;
+            }
             if (inputManager.isLeftClick)
             {
                 StartCoroutine(Attack());
@@ -56,9 +61,24 @@ namespace TMD
             }
         }
 
-        private bool IsAnimatorInteracting()
+        private void HandleRollingOrDodgeBack()
         {
-            return animatorManager.GetBool(animatorManager.isInteractingParam);
+            if (animatorManager.isInteracting)
+            {
+                return;
+            }
+            if (!inputManager.isRolling)
+            {
+                return;
+            }
+            if (playerLocomotion.GetMovementState() == PlayerLocomotion.MOVEMENT_STATE.Idle)
+            {
+                animatorManager.PlayTargetAnimation(animatorManager.dodgeBackAnimation);
+            }
+            else
+            {
+                animatorManager.PlayTargetAnimation(animatorManager.rollAnimation);
+            }
         }
     }
 }
