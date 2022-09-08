@@ -9,7 +9,7 @@ namespace TMD
     [RequireComponent(typeof(AnimatorManager))]
     public class PlayerLocomotion : MonoBehaviour
     {
-        enum MOVEMENT_STATE { Idle, Walking, Running, Sprinting };
+        public enum MOVEMENT_STATE { Idle, Walking, Running, Sprinting };
         [Header("Tralation Attributes")]
         public float runThreshold = 0.55f;
         public float walkingSpeed = 1f;
@@ -30,10 +30,7 @@ namespace TMD
         public LayerMask groundCheckLayers;
         public float leapingVelocitySmoothTime = 2f;
 
-        private bool isAnimatorInteracting = false;
-        private bool isUsingRootMotion = false;
         private bool isGround = true;
-
         private float inAirTime = 0;
 
         [HideInInspector] public InputManager inputManager;
@@ -60,16 +57,13 @@ namespace TMD
             {
                 transform.position = new Vector3(0, 16, 0);
             }
-            isAnimatorInteracting = IsAnimatorInteracting();
-            isUsingRootMotion = IsUsingRootMotion();
             HandleFallingAndLanding();
-            if (isUsingRootMotion)
+            if (animatorManager.isUsingRootMotion)
             {
                 HandleRootMotionMovements();
             }
             else
             {
-                HandleRollingOrDodgeBack();
                 HandleMovements();
             }
         }
@@ -81,7 +75,7 @@ namespace TMD
 
         private void HandleMovements()
         {
-            if (isAnimatorInteracting)
+            if (animatorManager.isInteracting)
             {
                 return;
             }
@@ -111,7 +105,7 @@ namespace TMD
         {
             playerRigidbody.drag = 0;  // drag default is 0 already
             Vector3 velocity = animatorManager.deltaPosition * rollingVelocityScale;
-            if (animatorManager.GetBool(animatorManager.isIgnoreYAxisRootMotionParam))
+            if (animatorManager.isIgnoreYAxisRootMotion)
             {
                 velocity.y = playerRigidbody.velocity.y;
             }
@@ -122,25 +116,6 @@ namespace TMD
             playerRigidbody.velocity = velocity;
         }
 
-        private void HandleRollingOrDodgeBack()
-        {
-            if (isAnimatorInteracting)
-            {
-                return;
-            }
-            if (!inputManager.isRolling)
-            {
-                return;
-            }
-            if (GetMovementState() == MOVEMENT_STATE.Idle)
-            {
-                animatorManager.PlayTargetAnimation(animatorManager.dodgeBackAnimation);
-            }
-            else
-            {
-                animatorManager.PlayTargetAnimation(animatorManager.rollAnimation);
-            }
-        }
 
         private void HandleFallingAndLanding()
         {
@@ -159,10 +134,10 @@ namespace TMD
         }
         private void HandleFallingForces()
         {
-            if (isUsingRootMotion)
+            if (animatorManager.isUsingRootMotion)
             {
                 // ignore all forces (except Y if isIgnoreYAxisRootMotionParam == true) while isUsingRootMotion
-                if (animatorManager.GetBool(animatorManager.isIgnoreYAxisRootMotionParam))
+                if (animatorManager.isIgnoreYAxisRootMotion)
                 {
                     inAirTime += Time.deltaTime;
                     playerRigidbody.AddForce(Vector3.down * fallingVelocity * inAirTime);
@@ -196,7 +171,7 @@ namespace TMD
         {
             isGround = false;
             animatorManager.SetBool(animatorManager.isGroundParam, false);
-            if (isAnimatorInteracting)
+            if (animatorManager.isInteracting)
             {
                 // Do not start falling animation again if still falling
                 return;
@@ -215,15 +190,7 @@ namespace TMD
             inAirTime = 0;
         }
 
-        private bool IsAnimatorInteracting()
-        {
-            return animatorManager.GetBool(animatorManager.isInteractingParam);
-        }
-        private bool IsUsingRootMotion()
-        {
-            return animatorManager.GetBool(animatorManager.isUsingRootMotionParam);
-        }
-        private MOVEMENT_STATE GetMovementState()
+        public MOVEMENT_STATE GetMovementState()
         {
             float inputManitude = inputManager.playerMovement.magnitude;
             if (inputManitude == 0)
