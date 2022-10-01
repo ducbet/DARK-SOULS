@@ -24,7 +24,7 @@ namespace TMD
             }
         }
 
-        public void LoadItemOnSlot(Item item, bool isRightHand = true)
+        public void LoadItemOnSlot(ItemObject item, bool isRightHand = true)
         {
             if (isRightHand)
             {
@@ -35,5 +35,27 @@ namespace TMD
                 leftHandSlot.LoadItemModel(item);
             }
         }
+
+        #region Handle Weapon Damage Factor
+        public void EnableRightHandDamageFactor()
+        {
+            rightHandSlot.damageFactor.EnableDamageCollider();
+        }
+
+        public void DisableRightHandDamageFactor()
+        {
+            rightHandSlot.damageFactor.DisableDamageCollider();
+        }
+
+        public void EnableLeftHandDamageFactor()
+        {
+            leftHandSlot.damageFactor.EnableDamageCollider();
+        }
+
+        public void DisableLeftHandDamageFactor()
+        {
+            leftHandSlot.damageFactor.DisableDamageCollider();
+        }
+        #endregion
     }
 }

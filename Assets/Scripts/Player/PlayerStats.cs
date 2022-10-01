@@ -41,6 +41,7 @@ namespace TMD
                 if (!animatorManager.isInteracting)
                 {
                     animatorManager.PlayTargetAnimation(animatorManager.dieAnimation);
+                    return;
                 }
             }
             healthBar.SetCurrentHealth(currentHealth);

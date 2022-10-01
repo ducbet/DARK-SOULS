@@ -11,6 +11,8 @@ namespace TMD
         public bool isRightHand;
 
         public GameObject currentItem;
+        public DamageFactor damageFactor;
+
         private void Awake()
         {
             if (holderTransform == null)
@@ -23,11 +25,12 @@ namespace TMD
         {
             if (currentItem)
             {
+                damageFactor = null;
                 Destroy(currentItem);
             }
         }
 
-        public void LoadItemModel(Item item)
+        public void LoadItemModel(ItemObject item)
         {
             if (currentItem != null)
             {
@@ -42,6 +45,8 @@ namespace TMD
             currentItem.transform.localPosition = Vector3.zero;
             currentItem.transform.localRotation = Quaternion.identity;
             currentItem.transform.localScale = Vector3.one;
+
+            damageFactor = currentItem.GetComponentInChildren<DamageFactor>();
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class Item : ScriptableObject
+    public class ItemObject : ScriptableObject
     {
         public GameObject itemPrefab;
         [Header("Item Attributes")]
