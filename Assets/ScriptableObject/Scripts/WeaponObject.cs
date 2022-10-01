@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class WeaponItem : Item
+    public class WeaponObject : ItemObject
     {
     }
 }

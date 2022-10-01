@@ -19,8 +19,6 @@ namespace TMD
         [HideInInspector] public AnimatorManager animatorManager;
         [HideInInspector] public PlayerAttacker playerAttacker;
 
-        private bool isAnimatorInteracting = false;
-
         private void Awake()
         {
             inputManager = GetComponent<InputManager>();
@@ -49,8 +47,11 @@ namespace TMD
 
         private IEnumerator Attack()
         {
+            // lock animation to wait heavy attack
             animatorManager.SetBool(animatorManager.isInteractingParam, true);
             yield return new WaitForSeconds(playerAttacker.heavyAttackDetectTime);
+            // un-lock animation
+            animatorManager.SetBool(animatorManager.isInteractingParam, false);
             if (inputManager.isLeftClick)
             {
                 playerAttacker.Attack(isHeavyAttack: true);

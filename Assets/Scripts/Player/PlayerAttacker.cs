@@ -37,7 +37,7 @@ namespace TMD
         private string GetAttackAnimation(bool isHeavyAttack)
         {
             InventoryManager.HOLDING_ITEM_STATE holdingState = inventoryManager.GetHoldingItemState();
-            InventoryManager.ITEM_TYPE rightHandItemType = inventoryManager.GetItemType(inventoryManager.rightHandWeapon);
+            InventoryManager.ITEM_TYPE rightHandItemType = inventoryManager.GetItemType(inventoryManager.rightHandItem);
             if (isHeavyAttack)
             {
                 return attackAnimationSelector.GetAttackAnimation(holdingState, rightHandItemType, "_heavy_attack");

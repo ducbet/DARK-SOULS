@@ -7,8 +7,8 @@ namespace TMD
     [RequireComponent(typeof(SlotManager))]
     public class InventoryManager : MonoBehaviour
     {
-        public Item leftHandWeapon;
-        public Item rightHandWeapon;
+        public ItemObject leftHandItem;
+        public ItemObject rightHandItem;
 
         private SlotManager slotManager;
         public enum HOLDING_ITEM_STATE { EMPTY, LEFT_HAND, RIGHT_HAND, BOTH_HAND };
@@ -21,36 +21,36 @@ namespace TMD
         // Start is called before the first frame update
         void Start()
         {
-            if (rightHandWeapon)
+            if (rightHandItem)
             {
-                slotManager.LoadItemOnSlot(rightHandWeapon);
+                slotManager.LoadItemOnSlot(rightHandItem);
             }
-            if (leftHandWeapon)
+            if (leftHandItem)
             {
-                slotManager.LoadItemOnSlot(leftHandWeapon, isRightHand: false);
+                slotManager.LoadItemOnSlot(leftHandItem, isRightHand: false);
             }
         }
 
         public HOLDING_ITEM_STATE GetHoldingItemState()
         {
-            if (leftHandWeapon && rightHandWeapon)
+            if (leftHandItem && rightHandItem)
             {
                 return HOLDING_ITEM_STATE.BOTH_HAND;
             }
-            else if (leftHandWeapon)
+            else if (leftHandItem)
             {
                 return HOLDING_ITEM_STATE.LEFT_HAND;
             }
-            else
+            else if (rightHandItem)
             {
                 return HOLDING_ITEM_STATE.RIGHT_HAND;
             }
             return HOLDING_ITEM_STATE.EMPTY;
         }
 
-        public ITEM_TYPE GetItemType(Item item)
+        public ITEM_TYPE GetItemType(ItemObject item)
         {
-            if (item is Sword)
+            if (item is SwordObject)
             {
                 return ITEM_TYPE.SWORD;
             }
