@@ -52,11 +52,19 @@ namespace TMD
             yield return new WaitForSeconds(playerAttacker.heavyAttackDetectTime);
             // un-lock animation
             animatorManager.SetBool(animatorManager.isInteractingParam, false);
+            playerAttacker.ClearComboAttack();
             if (inputManager.isLeftClick)
             {
                 playerAttacker.Attack(isHeavyAttack: true);
             }
             else
+            {
+                playerAttacker.Attack();
+            }
+        }
+        public void HandleComboAttack()
+        {
+            if (inputManager.isLeftClick)
             {
                 playerAttacker.Attack();
             }
