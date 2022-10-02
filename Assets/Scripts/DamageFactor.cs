@@ -7,7 +7,7 @@ namespace TMD
     [RequireComponent(typeof(Collider))]
     public class DamageFactor : MonoBehaviour
     {
-        public int damage = 10;
+        public int damage = 0;
         private Collider damageCollider;
 
         private void Awake()
@@ -32,7 +32,6 @@ namespace TMD
         {
             damage = _damage;
         }
-
 
         private void OnTriggerEnter(Collider other)
         {
