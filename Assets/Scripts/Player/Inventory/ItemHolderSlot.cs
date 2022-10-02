@@ -47,6 +47,10 @@ namespace TMD
             currentItem.transform.localScale = Vector3.one;
 
             damageFactor = currentItem.GetComponentInChildren<DamageFactor>();
+            if (damageFactor)
+            {
+                damageFactor.SetDamage(((WeaponObject) item).GetDamage());
+            }
         }
     }
 }

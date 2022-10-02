@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class WeaponObject : ItemObject
+    public abstract class WeaponObject : ItemObject
     {
+        public abstract int GetDamage();
     }
 }
