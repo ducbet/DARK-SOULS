@@ -30,16 +30,16 @@ namespace TMD
             }
         }
 
-        public void LoadItemModel(ItemObject item)
+        public GameObject LoadItemModel(ItemObject item)
         {
             if (currentItem != null)
             {
                 DestroyCurrentWeapon();
-                return;
+                //return null;
             }
             if (item == null)
             {
-                return;
+                return null;
             }
             currentItem = (GameObject) GameObject.Instantiate(item.itemPrefab, holderTransform);
             currentItem.transform.localPosition = Vector3.zero;
@@ -51,6 +51,7 @@ namespace TMD
             {
                 damageFactor.SetDamage(((WeaponObject) item).GetDamage());
             }
+            return currentItem;
         }
     }
 }

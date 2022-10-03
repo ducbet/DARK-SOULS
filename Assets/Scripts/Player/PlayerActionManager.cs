@@ -18,6 +18,7 @@ namespace TMD
         [HideInInspector] public PlayerLocomotion playerLocomotion;
         [HideInInspector] public AnimatorManager animatorManager;
         [HideInInspector] public PlayerAttacker playerAttacker;
+        [HideInInspector] public InventoryManager inventoryManager;
 
         private void Awake()
         {
@@ -25,6 +26,12 @@ namespace TMD
             playerLocomotion = GetComponent<PlayerLocomotion>();
             animatorManager = GetComponent<AnimatorManager>();
             playerAttacker = GetComponent<PlayerAttacker>();
+            inventoryManager = GetComponent<InventoryManager>();
+        }
+
+        private void Start()
+        {
+            inventoryManager.EquipItems();
         }
 
         public void HandleAllActions()

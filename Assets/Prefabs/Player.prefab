@@ -1003,8 +1003,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e49258a8c40ab46a1df47633619f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHandWeapon: {fileID: 0}
-  rightHandWeapon: {fileID: 11400000, guid: f03ec37fe2c63f24f9cc950663e24ce1, type: 2}
+  leftHandItemObject: {fileID: 11400000, guid: f03ec37fe2c63f24f9cc950663e24ce1, type: 2}
+  rightHandItemObject: {fileID: 11400000, guid: f03ec37fe2c63f24f9cc950663e24ce1, type: 2}
+  leftHandItem: {fileID: 0}
+  rightHandItem: {fileID: 0}
+  animatorManager: {fileID: 0}
 --- !u!114 &5084470340357255030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1857,6 +1860,7 @@ MonoBehaviour:
   isLeftHand: 0
   isRightHand: 1
   currentItem: {fileID: 0}
+  damageFactor: {fileID: 0}
 --- !u!1 &5827935253797391627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1882,7 +1886,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5827935253797391627}
   m_LocalRotation: {x: -0.51983094, y: -0.58812433, z: 0.33654374, w: 0.5202153}
-  m_LocalPosition: {x: 0.3432, y: 0.0111, z: 0.1213}
+  m_LocalPosition: {x: 0.341, y: 0.02, z: 0.128}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8445869298292979414}
@@ -1904,6 +1908,7 @@ MonoBehaviour:
   isLeftHand: 1
   isRightHand: 0
   currentItem: {fileID: 0}
+  damageFactor: {fileID: 0}
 --- !u!1 &5906938496565338281
 GameObject:
   m_ObjectHideFlags: 0

@@ -2080,14 +2080,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 2578535529363219477, guid: 1c992f8f527ec644bb4ad228ee53a5f1, type: 3}
-      propertyPath: leftHandItem
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2578535529363219477, guid: 1c992f8f527ec644bb4ad228ee53a5f1, type: 3}
-      propertyPath: rightHandItem
-      value: 
-      objectReference: {fileID: 11400000, guid: f03ec37fe2c63f24f9cc950663e24ce1, type: 2}
     - target: {fileID: 2919208638360749310, guid: 1c992f8f527ec644bb4ad228ee53a5f1, type: 3}
       propertyPath: m_RootOrder
       value: 2
