@@ -50,6 +50,11 @@ namespace TMD
             animator.SetFloat(animationId, value, 0.1f, Time.deltaTime);
         }
 
+        public void CrossFade(string animationName)
+        {
+            animator.CrossFade(animationName, fadeLength);
+        }
+
         public void PlayTargetAnimation(string animationName, bool _isInteracting = true)
         {
             Debug.Log("PlayTargetAnimation animationName: " + animationName + ", isInteracting: " + isInteracting);

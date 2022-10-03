@@ -7,8 +7,13 @@ namespace TMD
     [RequireComponent(typeof(SlotManager))]
     public class InventoryManager : MonoBehaviour
     {
-        public ItemObject leftHandItem;
-        public ItemObject rightHandItem;
+        public ItemObject leftHandItemObject;
+        public ItemObject rightHandItemObject;
+
+        [HideInInspector] public GameObject leftHandItem;
+        [HideInInspector] public GameObject rightHandItem;
+
+        [HideInInspector] public AnimatorManager animatorManager;
 
         private SlotManager slotManager;
         public enum HOLDING_ITEM_STATE { EMPTY, LEFT_HAND, RIGHT_HAND, BOTH_HAND };
@@ -16,32 +21,49 @@ namespace TMD
         private void Awake()
         {
             slotManager = GetComponent<SlotManager>();
+            animatorManager = GetComponent<AnimatorManager>();
         }
 
         // Start is called before the first frame update
-        void Start()
+        public void EquipItems()
         {
-            if (rightHandItem)
+            if (rightHandItemObject)
             {
-                slotManager.LoadItemOnSlot(rightHandItem);
+                rightHandItem = slotManager.LoadItemOnSlot(rightHandItemObject);
+                if (rightHandItem)
+                {
+                    animatorManager.CrossFade(rightHandItemObject.GetRightArmIdleAnimation());
+                }
+                else
+                {
+                    animatorManager.CrossFade(rightHandItemObject.GetRightArmIdleAnimation());
+                }
             }
-            if (leftHandItem)
+            if (leftHandItemObject)
             {
-                slotManager.LoadItemOnSlot(leftHandItem, isRightHand: false);
+                leftHandItem = slotManager.LoadItemOnSlot(leftHandItemObject, isRightHand: false);
+                if (leftHandItem)
+                {
+                    animatorManager.CrossFade(leftHandItemObject.GetLeftArmIdleAnimation());
+                }
+                else
+                {
+                    animatorManager.CrossFade(leftHandItemObject.GetLeftArmEmptyAnimation());
+                }
             }
         }
 
         public HOLDING_ITEM_STATE GetHoldingItemState()
         {
-            if (leftHandItem && rightHandItem)
+            if (leftHandItemObject && rightHandItemObject)
             {
                 return HOLDING_ITEM_STATE.BOTH_HAND;
             }
-            else if (leftHandItem)
+            else if (leftHandItemObject)
             {
                 return HOLDING_ITEM_STATE.LEFT_HAND;
             }
-            else if (rightHandItem)
+            else if (rightHandItemObject)
             {
                 return HOLDING_ITEM_STATE.RIGHT_HAND;
             }

@@ -15,3 +15,6 @@ MonoBehaviour:
   itemPrefab: {fileID: 7954882599007014714, guid: 87e577166ff33494d99b196aebbe18c5, type: 3}
   itemName: chevalier_sword
   itemIcon: {fileID: 0}
+  damage: 10
+  leftArmIdleAnimation: Left Arm Idle
+  rightArmIdleAnimation: Right Arm Idle

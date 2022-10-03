@@ -24,15 +24,15 @@ namespace TMD
             }
         }
 
-        public void LoadItemOnSlot(ItemObject item, bool isRightHand = true)
+        public GameObject LoadItemOnSlot(ItemObject item, bool isRightHand = true)
         {
             if (isRightHand)
             {
-                rightHandSlot.LoadItemModel(item);
+                return rightHandSlot.LoadItemModel(item);
             }
             else
             {
-                leftHandSlot.LoadItemModel(item);
+                return leftHandSlot.LoadItemModel(item);
             }
         }
 
