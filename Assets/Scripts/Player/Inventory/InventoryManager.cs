@@ -16,8 +16,6 @@ namespace TMD
         [HideInInspector] public AnimatorManager animatorManager;
 
         private SlotManager slotManager;
-        public enum HOLDING_ITEM_STATE { EMPTY, LEFT_HAND, RIGHT_HAND, BOTH_HAND };
-        public enum ITEM_TYPE { PUNCH, SWORD, UNKNOWN }
         private void Awake()
         {
             slotManager = GetComponent<SlotManager>();
@@ -51,32 +49,6 @@ namespace TMD
                     animatorManager.CrossFade(leftHandItemObject.GetLeftArmEmptyAnimation());
                 }
             }
-        }
-
-        public HOLDING_ITEM_STATE GetHoldingItemState()
-        {
-            if (leftHandItemObject && rightHandItemObject)
-            {
-                return HOLDING_ITEM_STATE.BOTH_HAND;
-            }
-            else if (leftHandItemObject)
-            {
-                return HOLDING_ITEM_STATE.LEFT_HAND;
-            }
-            else if (rightHandItemObject)
-            {
-                return HOLDING_ITEM_STATE.RIGHT_HAND;
-            }
-            return HOLDING_ITEM_STATE.EMPTY;
-        }
-
-        public ITEM_TYPE GetItemType(ItemObject item)
-        {
-            if (item is SwordObject)
-            {
-                return ITEM_TYPE.SWORD;
-            }
-            return ITEM_TYPE.UNKNOWN;
         }
     }
 }

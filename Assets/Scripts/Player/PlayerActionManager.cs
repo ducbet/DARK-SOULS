@@ -48,26 +48,14 @@ namespace TMD
             }
             if (inputManager.isLeftClick)
             {
-                StartCoroutine(Attack());
+                Attack();
             }
         }
 
-        private IEnumerator Attack()
+        private void Attack()
         {
-            // lock animation to wait heavy attack
-            animatorManager.SetBool(animatorManager.isInteractingParam, true);
-            yield return new WaitForSeconds(playerAttacker.heavyAttackDetectTime);
-            // un-lock animation
-            animatorManager.SetBool(animatorManager.isInteractingParam, false);
             playerAttacker.ClearComboAttack();
-            if (inputManager.isLeftClick)
-            {
-                playerAttacker.Attack(isHeavyAttack: true);
-            }
-            else
-            {
-                playerAttacker.Attack();
-            }
+            playerAttacker.Attack();
         }
         public void HandleComboAttack()
         {
