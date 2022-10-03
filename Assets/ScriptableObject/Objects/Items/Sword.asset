@@ -16,5 +16,9 @@ MonoBehaviour:
   itemName: chevalier_sword
   itemIcon: {fileID: 0}
   damage: 10
+  straight_sword_oh_light_attack_01: straight_sword_oh_light_attack_01
+  straight_sword_oh_light_attack_02: straight_sword_oh_light_attack_02
+  straight_sword_oh_heavy_attack_01: straight_sword_oh_heavy_attack_01
+  straight_sword_oh_heavy_attack_02: straight_sword_oh_heavy_attack_02
   leftArmIdleAnimation: Left Arm Idle
   rightArmIdleAnimation: Right Arm Idle

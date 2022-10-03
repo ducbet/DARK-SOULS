@@ -6,7 +6,6 @@ namespace TMD
 {
     [RequireComponent(typeof(InventoryManager))]
     [RequireComponent(typeof(AnimatorManager))]
-    [RequireComponent(typeof(ActionAnimationSelector))]
     public class PlayerAttacker : MonoBehaviour
     {
         [Header("Attack Attributes")]
@@ -15,26 +14,19 @@ namespace TMD
         // Can merge PlayerAttacker to PlayerActionManager or not???
         [HideInInspector] public InventoryManager inventoryManager;
         [HideInInspector] public AnimatorManager animatorManager;
-        [HideInInspector] public ActionAnimationSelector attackAnimationSelector;
 
         private string lastAttackName = "";
-        private Dictionary<string, string> comboAttacks = new Dictionary<string, string>{
-            {"straight_sword_oh_light_attack_01", "straight_sword_oh_light_attack_02"},
-            {"straight_sword_oh_light_attack_02", "straight_sword_oh_heavy_attack_01"},
-            {"straight_sword_oh_heavy_attack_01", "straight_sword_oh_heavy_attack_02"},
-            {"straight_sword_oh_heavy_attack_02", "straight_sword_oh_light_attack_01"},
-        };
+        
 
         private void Awake()
         {
             inventoryManager = GetComponent<InventoryManager>();
             animatorManager = GetComponent<AnimatorManager>();
-            attackAnimationSelector = GetComponent<ActionAnimationSelector>();
         }
 
-        public void Attack(bool isHeavyAttack = false)
+        public void Attack()
         {
-            string attackAnimationName = GetAttackAnimation(isHeavyAttack);
+            string attackAnimationName = GetAttackAnimation();
             lastAttackName = attackAnimationName;
             if (attackAnimationName != "")
             {
@@ -46,26 +38,21 @@ namespace TMD
         {
             lastAttackName = "";
         }
-
-        private string GetAttackAnimation(bool isHeavyAttack)
+        public string GetAttackAnimation()
         {
-            if (lastAttackName != "")
+            ItemObject leftHandItemObject = inventoryManager.leftHandItemObject;
+            ItemObject rightHandItemObject = inventoryManager.rightHandItemObject;
+            if (leftHandItemObject && rightHandItemObject)
             {
-                return GetComboAttackAnimation();
+                return ((WeaponObject)rightHandItemObject).GetAttackAnimation(lastAttackName);
             }
-            InventoryManager.HOLDING_ITEM_STATE holdingState = inventoryManager.GetHoldingItemState();
-            InventoryManager.ITEM_TYPE rightHandItemType = inventoryManager.GetItemType(inventoryManager.rightHandItemObject);
-            if (isHeavyAttack)
+            else if (leftHandItemObject)
             {
-                return attackAnimationSelector.GetAttackAnimation(holdingState, rightHandItemType, "_heavy_attack");
+                return "";
             }
-            return attackAnimationSelector.GetAttackAnimation(holdingState, rightHandItemType);
-        }
-        private string GetComboAttackAnimation()
-        {
-            if (comboAttacks.ContainsKey(lastAttackName))
+            else if (rightHandItemObject)
             {
-                return comboAttacks[lastAttackName];
+                return ((WeaponObject)rightHandItemObject).GetAttackAnimation(lastAttackName);
             }
             return "";
         }
