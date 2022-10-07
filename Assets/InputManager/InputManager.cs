@@ -15,8 +15,12 @@ public class InputManager : MonoBehaviour
     [HideInInspector] public bool isRolling;
 
     [HideInInspector] public bool isLeftClick;
+    [HideInInspector] public bool isUpArrow;
+    [HideInInspector] public bool isDownArrow;
+    [HideInInspector] public bool isLeftArrow;
+    [HideInInspector] public bool isRightArrow;
 
-    private PlayerControls playerControls;
+    public PlayerControls playerControls;
 
     private void OnEnable()
     {
@@ -41,6 +45,15 @@ public class InputManager : MonoBehaviour
         playerControls.PlayerAction.LeftClick.performed += context => isLeftClick = true;
         playerControls.PlayerAction.LeftClick.canceled += context => isLeftClick = false;
 
+        playerControls.PlayerAction.UpArrow.performed += context => isUpArrow = true;
+        playerControls.PlayerAction.UpArrow.canceled += context => isUpArrow = false;
+        playerControls.PlayerAction.DownArrow.performed += context => isDownArrow = true;
+        playerControls.PlayerAction.DownArrow.canceled += context => isDownArrow = false;
+        playerControls.PlayerAction.LeftArrow.performed += context => isLeftArrow = true;
+        playerControls.PlayerAction.LeftArrow.canceled += context => isLeftArrow = false;
+        playerControls.PlayerAction.RightArrow.performed += context => isRightArrow = true;
+        playerControls.PlayerAction.RightArrow.canceled += context => isRightArrow = false;
+
         playerControls.CameraMovement.Rotation.performed += context =>
         {
             cameraRotation = context.ReadValue<Vector2>();
@@ -51,10 +64,8 @@ public class InputManager : MonoBehaviour
         playerControls.Enable();
     }
 
-
     private void OnDisable()
     {
         playerControls.Disable();
     }
 }
-
