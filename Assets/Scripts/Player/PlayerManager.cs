@@ -4,7 +4,7 @@ namespace TMD
 {
     [RequireComponent(typeof(PlayerLocomotion))]
     [RequireComponent(typeof(PlayerActionManager))]
-    [RequireComponent(typeof(PlayerStats))]
+    [RequireComponent(typeof(AnimatorManager))]
     public class PlayerManager : MonoBehaviour
     {
         public static string PLAYER_TAG = "Player";

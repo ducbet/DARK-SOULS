@@ -831,7 +831,7 @@ GameObject:
   - component: {fileID: 2578535529363219477}
   - component: {fileID: 5084470340357255030}
   - component: {fileID: 30295218}
-  - component: {fileID: 4265971712684432013}
+  - component: {fileID: 1471450998823266550}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -965,6 +965,10 @@ MonoBehaviour:
   isSprinting: 0
   isRolling: 0
   isLeftClick: 0
+  isUpArrow: 0
+  isDownArrow: 0
+  isLeftArrow: 0
+  isRightArrow: 0
 --- !u!114 &4386741327950740776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1003,8 +1007,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e49258a8c40ab46a1df47633619f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHandItemObject: {fileID: 11400000, guid: f03ec37fe2c63f24f9cc950663e24ce1, type: 2}
-  rightHandItemObject: {fileID: 11400000, guid: f03ec37fe2c63f24f9cc950663e24ce1, type: 2}
+  leftHandQuickSlotItemObjects:
+  - {fileID: 11400000, guid: 0b334e19b02338c4e8fe4b723ff7d1a2, type: 2}
+  - {fileID: 11400000, guid: f03ec37fe2c63f24f9cc950663e24ce1, type: 2}
+  - {fileID: 11400000, guid: 810d81fbf1d654c4a89bea110bd7b684, type: 2}
+  rightHandQuickSlotItemObjects:
+  - {fileID: 11400000, guid: f03ec37fe2c63f24f9cc950663e24ce1, type: 2}
+  - {fileID: 11400000, guid: 0b334e19b02338c4e8fe4b723ff7d1a2, type: 2}
+  - {fileID: 11400000, guid: 810d81fbf1d654c4a89bea110bd7b684, type: 2}
+  leftHandItemObject: {fileID: 0}
+  rightHandItemObject: {fileID: 0}
   leftHandItem: {fileID: 0}
   rightHandItem: {fileID: 0}
   animatorManager: {fileID: 0}
@@ -1035,8 +1047,7 @@ MonoBehaviour:
   heavyAttackDetectTime: 0.2
   inventoryManager: {fileID: 0}
   animatorManager: {fileID: 0}
-  attackAnimationSelector: {fileID: 0}
---- !u!114 &4265971712684432013
+--- !u!114 &1471450998823266550
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1045,9 +1056,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2578535527813668420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59b4f935ba47cbd4c89d6cf833c11f87, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c7ee30a248cbd844b8896f2550d52d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputManager: {fileID: 0}
+  playerLocomotion: {fileID: 0}
+  animatorManager: {fileID: 0}
+  playerAttacker: {fileID: 0}
+  inventoryManager: {fileID: 0}
 --- !u!1 &3077814609596926773
 GameObject:
   m_ObjectHideFlags: 0

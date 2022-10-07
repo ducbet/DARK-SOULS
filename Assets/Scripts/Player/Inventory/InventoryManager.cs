@@ -7,8 +7,15 @@ namespace TMD
     [RequireComponent(typeof(SlotManager))]
     public class InventoryManager : MonoBehaviour
     {
-        public ItemObject leftHandItemObject;
-        public ItemObject rightHandItemObject;
+        private static int QUICK_SLOT_CAPACITY = 3;
+
+        private int currentLeftItemIndex = 0;
+        private int currentRightItemIndex = 0;
+        public ItemObject[] leftHandQuickSlotItemObjects = new ItemObject[QUICK_SLOT_CAPACITY];
+        public ItemObject[] rightHandQuickSlotItemObjects = new ItemObject[QUICK_SLOT_CAPACITY];
+
+        [HideInInspector] public ItemObject leftHandItemObject;
+        [HideInInspector] public ItemObject rightHandItemObject;
 
         [HideInInspector] public GameObject leftHandItem;
         [HideInInspector] public GameObject rightHandItem;
@@ -22,32 +29,55 @@ namespace TMD
             animatorManager = GetComponent<AnimatorManager>();
         }
 
-        // Start is called before the first frame update
-        public void EquipItems()
+        public void EquipLeftHandItems(ItemObject item = null)
         {
-            if (rightHandItemObject)
+            item = item != null ? item : GetCurrentItemObject(isRightHand: false);
+            leftHandItem = slotManager.LoadItemOnSlot(item, isRightHand: false);
+            animatorManager.CrossFade(item.GetLeftArmIdleAnimation());
+            animatorManager.CrossFade(item.GetLeftArmEmptyAnimation());
+        }
+
+        public void EquipRightHandItems(ItemObject item = null)
+        {
+            item = item != null ? item : GetCurrentItemObject();
+            rightHandItem = slotManager.LoadItemOnSlot(item);
+            animatorManager.CrossFade(item.GetRightArmIdleAnimation());
+            animatorManager.CrossFade(item.GetRightArmEmptyAnimation());
+        }
+
+        public void SwitchLeftHandItems()
+        {
+            EquipLeftHandItems(GetNextQuickSlotItem(isRightHand: false));
+        }
+        public void SwitchRightHandItems()
+        {
+            EquipRightHandItems(GetNextQuickSlotItem());
+        }
+
+
+        public ItemObject GetNextQuickSlotItem(bool isRightHand = true)
+        {
+            if (isRightHand)
             {
-                rightHandItem = slotManager.LoadItemOnSlot(rightHandItemObject);
-                if (rightHandItem)
-                {
-                    animatorManager.CrossFade(rightHandItemObject.GetRightArmIdleAnimation());
-                }
-                else
-                {
-                    animatorManager.CrossFade(rightHandItemObject.GetRightArmIdleAnimation());
-                }
+                currentRightItemIndex = (currentRightItemIndex + 1) % QUICK_SLOT_CAPACITY;
+                return rightHandQuickSlotItemObjects[currentRightItemIndex];
             }
-            if (leftHandItemObject)
+            else
             {
-                leftHandItem = slotManager.LoadItemOnSlot(leftHandItemObject, isRightHand: false);
-                if (leftHandItem)
-                {
-                    animatorManager.CrossFade(leftHandItemObject.GetLeftArmIdleAnimation());
-                }
-                else
-                {
-                    animatorManager.CrossFade(leftHandItemObject.GetLeftArmEmptyAnimation());
-                }
+                currentLeftItemIndex = (currentLeftItemIndex + 1) % QUICK_SLOT_CAPACITY;
+                return leftHandQuickSlotItemObjects[currentLeftItemIndex];
+            }
+        }
+
+        public ItemObject GetCurrentItemObject(bool isRightHand = true)
+        {
+            if (isRightHand)
+            {
+                return rightHandQuickSlotItemObjects[currentRightItemIndex];
+            }
+            else
+            {
+                return leftHandQuickSlotItemObjects[currentLeftItemIndex];
             }
         }
     }

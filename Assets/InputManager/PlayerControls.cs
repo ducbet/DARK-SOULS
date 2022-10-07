@@ -180,6 +180,38 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""UpArrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""682499c1-b6bc-492e-9f1e-dabdd5295c11"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""DownArrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""f960930c-0f3f-4199-929c-38d184d03173"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Left Arrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8150e3f-5508-4f03-afa7-c5dd9065f326"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Right Arrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""08743508-8bc6-48b4-99a6-85f700d807db"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -191,6 +223,50 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1775405f-c545-4f7f-aced-27cfd7942a02"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UpArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""83b0643e-c855-4b12-84eb-8825bc7d8285"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DownArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""21d19740-e2b6-47fa-8722-66ed7fd6cdfd"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left Arrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82ab885b-f4a2-4858-82c9-2fdd8056f020"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right Arrow"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -228,6 +304,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         // PlayerAction
         m_PlayerAction = asset.FindActionMap("PlayerAction", throwIfNotFound: true);
         m_PlayerAction_LeftClick = m_PlayerAction.FindAction("LeftClick", throwIfNotFound: true);
+        m_PlayerAction_UpArrow = m_PlayerAction.FindAction("UpArrow", throwIfNotFound: true);
+        m_PlayerAction_DownArrow = m_PlayerAction.FindAction("DownArrow", throwIfNotFound: true);
+        m_PlayerAction_LeftArrow = m_PlayerAction.FindAction("Left Arrow", throwIfNotFound: true);
+        m_PlayerAction_RightArrow = m_PlayerAction.FindAction("Right Arrow", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -368,11 +448,19 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputActionMap m_PlayerAction;
     private IPlayerActionActions m_PlayerActionActionsCallbackInterface;
     private readonly InputAction m_PlayerAction_LeftClick;
+    private readonly InputAction m_PlayerAction_UpArrow;
+    private readonly InputAction m_PlayerAction_DownArrow;
+    private readonly InputAction m_PlayerAction_LeftArrow;
+    private readonly InputAction m_PlayerAction_RightArrow;
     public struct PlayerActionActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerActionActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @LeftClick => m_Wrapper.m_PlayerAction_LeftClick;
+        public InputAction @UpArrow => m_Wrapper.m_PlayerAction_UpArrow;
+        public InputAction @DownArrow => m_Wrapper.m_PlayerAction_DownArrow;
+        public InputAction @LeftArrow => m_Wrapper.m_PlayerAction_LeftArrow;
+        public InputAction @RightArrow => m_Wrapper.m_PlayerAction_RightArrow;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -385,6 +473,18 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @LeftClick.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLeftClick;
                 @LeftClick.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLeftClick;
                 @LeftClick.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLeftClick;
+                @UpArrow.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnUpArrow;
+                @UpArrow.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnUpArrow;
+                @UpArrow.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnUpArrow;
+                @DownArrow.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnDownArrow;
+                @DownArrow.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnDownArrow;
+                @DownArrow.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnDownArrow;
+                @LeftArrow.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLeftArrow;
+                @LeftArrow.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLeftArrow;
+                @LeftArrow.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLeftArrow;
+                @RightArrow.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnRightArrow;
+                @RightArrow.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnRightArrow;
+                @RightArrow.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnRightArrow;
             }
             m_Wrapper.m_PlayerActionActionsCallbackInterface = instance;
             if (instance != null)
@@ -392,6 +492,18 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @LeftClick.started += instance.OnLeftClick;
                 @LeftClick.performed += instance.OnLeftClick;
                 @LeftClick.canceled += instance.OnLeftClick;
+                @UpArrow.started += instance.OnUpArrow;
+                @UpArrow.performed += instance.OnUpArrow;
+                @UpArrow.canceled += instance.OnUpArrow;
+                @DownArrow.started += instance.OnDownArrow;
+                @DownArrow.performed += instance.OnDownArrow;
+                @DownArrow.canceled += instance.OnDownArrow;
+                @LeftArrow.started += instance.OnLeftArrow;
+                @LeftArrow.performed += instance.OnLeftArrow;
+                @LeftArrow.canceled += instance.OnLeftArrow;
+                @RightArrow.started += instance.OnRightArrow;
+                @RightArrow.performed += instance.OnRightArrow;
+                @RightArrow.canceled += instance.OnRightArrow;
             }
         }
     }
@@ -419,5 +531,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     public interface IPlayerActionActions
     {
         void OnLeftClick(InputAction.CallbackContext context);
+        void OnUpArrow(InputAction.CallbackContext context);
+        void OnDownArrow(InputAction.CallbackContext context);
+        void OnLeftArrow(InputAction.CallbackContext context);
+        void OnRightArrow(InputAction.CallbackContext context);
     }
 }

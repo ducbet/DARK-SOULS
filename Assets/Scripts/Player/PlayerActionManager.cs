@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace TMD
 {
@@ -8,6 +9,7 @@ namespace TMD
     [RequireComponent(typeof(PlayerLocomotion))]
     [RequireComponent(typeof(AnimatorManager))]
     [RequireComponent(typeof(PlayerAttacker))]
+    [RequireComponent(typeof(InventoryManager))]
     public class PlayerActionManager : MonoBehaviour
     {
         /*
@@ -31,13 +33,31 @@ namespace TMD
 
         private void Start()
         {
-            inventoryManager.EquipItems();
+            inventoryManager.EquipLeftHandItems();
+            inventoryManager.EquipRightHandItems();
+            inputManager.playerControls.PlayerAction.LeftArrow.performed += HandleLeftHandQuickSlotInput;
+            inputManager.playerControls.PlayerAction.RightArrow.performed += HandleRightHandQuickSlotInput;
+        }
+
+        private void OnDestroy()
+        {
+            inputManager.playerControls.PlayerAction.LeftArrow.performed -= HandleLeftHandQuickSlotInput;
+            inputManager.playerControls.PlayerAction.RightArrow.performed -= HandleRightHandQuickSlotInput;
         }
 
         public void HandleAllActions()
         {
             HandleAttack();
             HandleRollingOrDodgeBack();
+        }
+        public void HandleRightHandQuickSlotInput(InputAction.CallbackContext context)
+        {
+            inventoryManager.SwitchRightHandItems();
+        }
+
+        public void HandleLeftHandQuickSlotInput(InputAction.CallbackContext context)
+        {
+            inventoryManager.SwitchLeftHandItems();
         }
 
         private void HandleAttack()

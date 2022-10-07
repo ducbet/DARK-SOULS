@@ -40,11 +40,14 @@ namespace TMD
         }
         public string GetAttackAnimation()
         {
-            ItemObject leftHandItemObject = inventoryManager.leftHandItemObject;
-            ItemObject rightHandItemObject = inventoryManager.rightHandItemObject;
+            ItemObject leftHandItemObject = inventoryManager.GetCurrentItemObject(isRightHand: false);
+            ItemObject rightHandItemObject = inventoryManager.GetCurrentItemObject();
             if (leftHandItemObject && rightHandItemObject)
             {
-                return ((WeaponObject)rightHandItemObject).GetAttackAnimation(lastAttackName);
+                if (rightHandItemObject is WeaponObject)
+                {
+                    return ((WeaponObject)rightHandItemObject).GetAttackAnimation(lastAttackName);
+                }
             }
             else if (leftHandItemObject)
             {
@@ -52,7 +55,10 @@ namespace TMD
             }
             else if (rightHandItemObject)
             {
-                return ((WeaponObject)rightHandItemObject).GetAttackAnimation(lastAttackName);
+                if (rightHandItemObject is WeaponObject)
+                {
+                    return ((WeaponObject)rightHandItemObject).GetAttackAnimation(lastAttackName);
+                }
             }
             return "";
         }

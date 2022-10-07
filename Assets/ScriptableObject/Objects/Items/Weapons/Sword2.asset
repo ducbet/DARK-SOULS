@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3350e534cfdbfc249a304f9bc80ee504, type: 3}
-  m_Name: Sword
+  m_Name: Sword2
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 7954882599007014714, guid: 87e577166ff33494d99b196aebbe18c5, type: 3}
-  itemName: chevalier_sword
+  itemPrefab: {fileID: 8286446769607963046, guid: 25b0ae9f835ebf94fbc593b14495fc37, type: 3}
+  itemName: Sword 2
   itemIcon: {fileID: 0}
-  damage: 10
+  damage: 20
   straight_sword_oh_light_attack_01: straight_sword_oh_light_attack_01
   straight_sword_oh_light_attack_02: straight_sword_oh_light_attack_02
   straight_sword_oh_heavy_attack_01: straight_sword_oh_heavy_attack_01
