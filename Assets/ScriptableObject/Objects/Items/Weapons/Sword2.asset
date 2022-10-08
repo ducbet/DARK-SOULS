@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 8286446769607963046, guid: 25b0ae9f835ebf94fbc593b14495fc37, type: 3}
   itemName: Sword 2
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: d74d45d72aa57334fba24aeae10dc0cf, type: 3}
   damage: 20
   straight_sword_oh_light_attack_01: straight_sword_oh_light_attack_01
   straight_sword_oh_light_attack_02: straight_sword_oh_light_attack_02

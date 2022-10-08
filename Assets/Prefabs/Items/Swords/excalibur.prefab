@@ -468,6 +468,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5617985479510185053}
+  - component: {fileID: 103543905876849067}
+  - component: {fileID: 4616494363496317984}
   m_Layer: 0
   m_Name: Sketchfab_model
   m_TagString: Untagged
@@ -491,6 +493,32 @@ Transform:
   m_Father: {fileID: 5719393517885508534}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &103543905876849067
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2831926577000236812}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 918.2558, y: 197.15572, z: 7634.1587}
+  m_Center: {x: 6.3550134, y: 96.39697, z: -4355.458}
+--- !u!114 &4616494363496317984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2831926577000236812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d849cea3b9b9c74e92a5948ccd8f760, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
 --- !u!1 &2940303947976599200
 GameObject:
   m_ObjectHideFlags: 0
