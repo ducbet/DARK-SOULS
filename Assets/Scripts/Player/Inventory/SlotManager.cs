@@ -8,9 +8,11 @@ namespace TMD
     {
         ItemHolderSlot leftHandSlot;
         ItemHolderSlot rightHandSlot;
+        private QuickSlotUI quickSlotUI;
 
         private void Awake()
         {
+            quickSlotUI = FindObjectOfType<QuickSlotUI>();
             foreach (ItemHolderSlot weaponHolderSlot in GetComponentsInChildren<ItemHolderSlot>())
             {
                 if (weaponHolderSlot.isLeftHand)
@@ -28,10 +30,12 @@ namespace TMD
         {
             if (isRightHand)
             {
+                quickSlotUI.UpdateQuickSlotIcon(item);
                 return rightHandSlot.LoadItemModel(item);
             }
             else
             {
+                quickSlotUI.UpdateQuickSlotIcon(item, isRightHand: false);
                 return leftHandSlot.LoadItemModel(item);
             }
         }

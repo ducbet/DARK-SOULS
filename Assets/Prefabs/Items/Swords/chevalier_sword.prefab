@@ -218,8 +218,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.34, y: 0.19, z: 1.53}
-  m_Center: {x: -0.003, y: 0.026, z: -0.267}
+  m_Size: {x: 0.34, y: 0.19, z: 1.9963535}
+  m_Center: {x: -0.003000006, y: 0.026, z: -0.5001767}
 --- !u!114 &2068362662711526873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +233,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  damageCollider: {fileID: 0}
 --- !u!1 &7954882599007014714
 GameObject:
   m_ObjectHideFlags: 0
