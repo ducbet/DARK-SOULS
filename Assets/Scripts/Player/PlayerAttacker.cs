@@ -15,8 +15,8 @@ namespace TMD
         [HideInInspector] public InventoryManager inventoryManager;
         [HideInInspector] public AnimatorManager animatorManager;
 
-        private string lastAttackName = "";
-        
+        public string lastAttackName = "";
+
 
         private void Awake()
         {
@@ -24,14 +24,19 @@ namespace TMD
             animatorManager = GetComponent<AnimatorManager>();
         }
 
-        public void Attack()
+        /*
+        Return: true if attack is triggered. false if cancaled 
+         */
+        public bool Attack()
         {
             string attackAnimationName = GetAttackAnimation();
             lastAttackName = attackAnimationName;
             if (attackAnimationName != "")
             {
                 animatorManager.PlayTargetAttackAnimation(attackAnimationName);
+                return true;
             }
+            return false;
         }
 
         public void ClearComboAttack()
@@ -61,6 +66,31 @@ namespace TMD
                 }
             }
             return "";
+        }
+
+        public int GetAttackStaminaCost(string animationAttackName)
+        {
+            ItemObject leftHandItemObject = inventoryManager.GetCurrentItemObject(isRightHand: false);
+            ItemObject rightHandItemObject = inventoryManager.GetCurrentItemObject();
+            if (leftHandItemObject && rightHandItemObject)
+            {
+                if (rightHandItemObject is WeaponObject)
+                {
+                    return ((WeaponObject)rightHandItemObject).GetStaminaCost(animationAttackName);
+                }
+            }
+            else if (leftHandItemObject)
+            {
+                return 0;
+            }
+            else if (rightHandItemObject)
+            {
+                if (rightHandItemObject is WeaponObject)
+                {
+                    return ((WeaponObject)rightHandItemObject).GetStaminaCost(animationAttackName);
+                }
+            }
+            return 0;
         }
     }
 }

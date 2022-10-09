@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace TMD
 {
-    public class HealthBar : MonoBehaviour
+    public class SliderBar : MonoBehaviour
     {
         public Slider slider;
 
@@ -20,7 +20,7 @@ namespace TMD
             slider.value = maxValue;
         }
 
-        public void SetCurrentHealth(int currentHealth)
+        public void SetValue(int currentHealth)
         {
             slider.value = currentHealth;
         }

@@ -10,6 +10,7 @@ namespace TMD
     [RequireComponent(typeof(AnimatorManager))]
     [RequireComponent(typeof(PlayerAttacker))]
     [RequireComponent(typeof(InventoryManager))]
+    [RequireComponent(typeof(PlayerStats))]
     public class PlayerActionManager : MonoBehaviour
     {
         /*
@@ -21,6 +22,7 @@ namespace TMD
         [HideInInspector] public AnimatorManager animatorManager;
         [HideInInspector] public PlayerAttacker playerAttacker;
         [HideInInspector] public InventoryManager inventoryManager;
+        [HideInInspector] public PlayerStats playerStats;
 
         private void Awake()
         {
@@ -29,6 +31,7 @@ namespace TMD
             animatorManager = GetComponent<AnimatorManager>();
             playerAttacker = GetComponent<PlayerAttacker>();
             inventoryManager = GetComponent<InventoryManager>();
+            playerStats = GetComponent<PlayerStats>();
         }
 
         private void Start()
@@ -47,7 +50,7 @@ namespace TMD
 
         public void HandleAllActions()
         {
-            HandleAttack();
+            HandleSingleAttack();
             HandleRollingOrDodgeBack();
         }
         public void HandleRightHandQuickSlotInput(InputAction.CallbackContext context)
@@ -60,7 +63,7 @@ namespace TMD
             inventoryManager.SwitchLeftHandItems();
         }
 
-        private void HandleAttack()
+        private void HandleSingleAttack()
         {
             if (animatorManager.isInteracting)
             {
@@ -68,20 +71,22 @@ namespace TMD
             }
             if (inputManager.isLeftClick)
             {
+                playerAttacker.ClearComboAttack();
                 Attack();
             }
         }
 
         private void Attack()
         {
-            playerAttacker.ClearComboAttack();
             playerAttacker.Attack();
+            playerStats.DrainStamina(playerAttacker.GetAttackStaminaCost(playerAttacker.lastAttackName));
         }
+
         public void HandleComboAttack()
         {
             if (inputManager.isLeftClick)
             {
-                playerAttacker.Attack();
+                Attack();
             }
         }
 
