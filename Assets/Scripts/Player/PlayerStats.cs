@@ -7,29 +7,38 @@ namespace TMD
     public class PlayerStats : MonoBehaviour
     {
         public int healthLevel = 10;
-        public int maxHealth;
-        public int currentHealth;
+        public int staminaLevel = 10;
+        public SliderBar healthBar;
+        public SliderBar staminaBar;
 
-        public HealthBar healthBar;
-        public AnimatorManager animatorManager;
+        private AnimatorManager animatorManager;
+        private int maxHealth;
+        private int currentHealth;
+        private int maxStamina;
+        private int currentStamina;
+
 
         private void Awake()
         {
-            if (healthBar == null)
-            {
-                healthBar = FindObjectOfType<HealthBar>();
-            }
             animatorManager = GetComponent<AnimatorManager>();
         }
         private void Start()
         {
             SetMaxHealthFromHealthLevel();
+            SetMaxStaminaFromStaminaLevel();
         }
         private void SetMaxHealthFromHealthLevel()
         {
             maxHealth = healthLevel * 10;
             currentHealth = maxHealth;
             healthBar.SetMaxHealth(maxHealth);
+        }
+
+        private void SetMaxStaminaFromStaminaLevel()
+        {
+            maxStamina = staminaLevel * 10;
+            currentStamina = maxStamina;
+            staminaBar.SetMaxHealth(maxStamina);
         }
 
         public void TakeDamage(int damageAmount)
@@ -44,11 +53,17 @@ namespace TMD
                     return;
                 }
             }
-            healthBar.SetCurrentHealth(currentHealth);
+            healthBar.SetValue(currentHealth);
             if (!animatorManager.isInteracting)
             {
                 animatorManager.PlayTargetAnimation(animatorManager.dodgeBackAnimation);
             }
+        }
+
+        public void DrainStamina(int staminaAmount)
+        {
+            currentStamina -= staminaAmount;
+            staminaBar.SetValue(currentStamina);
         }
     }
 }

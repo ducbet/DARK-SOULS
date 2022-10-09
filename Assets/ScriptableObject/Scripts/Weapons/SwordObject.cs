@@ -25,9 +25,26 @@ namespace TMD
             {"straight_sword_oh_heavy_attack_02", "straight_sword_oh_light_attack_01"},
         };
 
+        private int defaultStaminaCost = 10;
+        private Dictionary<string, int> staminaCosts = new Dictionary<string, int>{
+            {"straight_sword_oh_light_attack_01", 10},
+            {"straight_sword_oh_light_attack_02", 10},
+            {"straight_sword_oh_heavy_attack_01", 15},
+            {"straight_sword_oh_heavy_attack_02", 15},
+        };
+
         public override int GetDamage()
         {
             return damage;
+        }
+
+        public override int GetStaminaCost(string animationName)
+        {
+            if (staminaCosts.ContainsKey(animationName))
+            {
+                return staminaCosts[animationName];
+            }
+            return defaultStaminaCost;
         }
 
         public override Dictionary<string, string> GetComboAttacks()
