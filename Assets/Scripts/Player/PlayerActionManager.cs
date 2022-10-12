@@ -24,6 +24,14 @@ namespace TMD
         [HideInInspector] public InventoryManager inventoryManager;
         [HideInInspector] public PlayerStats playerStats;
 
+        public LayerMask interactableLayers;
+        public GameObject interactableItem;
+        public Coroutine checkForInteractableObject;
+
+        [Header("Check For Interactable Object Attr")]
+        public float checkObjectInterval = 0.5f;
+        public float checkObjectRayThickness = 1f;
+        public float checkObjectRayLength = 2f;
         private void Awake()
         {
             inputManager = GetComponent<InputManager>();
@@ -32,6 +40,13 @@ namespace TMD
             playerAttacker = GetComponent<PlayerAttacker>();
             inventoryManager = GetComponent<InventoryManager>();
             playerStats = GetComponent<PlayerStats>();
+
+            if (interactableLayers == 0)
+            {
+                interactableLayers = (int)~(CameraManager.LayerMasks.TransparentFX | CameraManager.LayerMasks.IgnoreRaycast |
+                    CameraManager.LayerMasks.UI | CameraManager.LayerMasks.Controller | CameraManager.LayerMasks.Ground |
+                    CameraManager.LayerMasks.Water | CameraManager.LayerMasks.Environment | CameraManager.LayerMasks.Player);
+            }
         }
 
         private void Start()
@@ -40,12 +55,18 @@ namespace TMD
             inventoryManager.EquipRightHandItems();
             inputManager.playerControls.PlayerAction.LeftArrow.performed += HandleLeftHandQuickSlotInput;
             inputManager.playerControls.PlayerAction.RightArrow.performed += HandleRightHandQuickSlotInput;
+            inputManager.playerControls.PlayerAction.Interact.performed += HandleInteractingObjectInput;
+
+            checkForInteractableObject = StartCoroutine(CheckForInteractableObject());
+
         }
 
         private void OnDestroy()
         {
             inputManager.playerControls.PlayerAction.LeftArrow.performed -= HandleLeftHandQuickSlotInput;
             inputManager.playerControls.PlayerAction.RightArrow.performed -= HandleRightHandQuickSlotInput;
+            inputManager.playerControls.PlayerAction.Interact.performed -= HandleInteractingObjectInput;
+            StopCoroutine(checkForInteractableObject);  // OnDestroy is enough? also when player dead?
         }
 
         public void HandleAllActions()
@@ -61,6 +82,55 @@ namespace TMD
         public void HandleLeftHandQuickSlotInput(InputAction.CallbackContext context)
         {
             inventoryManager.SwitchLeftHandItems();
+        }
+
+        public void HandleInteractingObjectInput(InputAction.CallbackContext context)
+        {
+            if (interactableItem == null)
+            {
+                return;
+            }
+            Interactable interactableComponent = interactableItem.GetComponent<Interactable>();
+            if (interactableComponent == null)
+            {
+                return;
+            }
+            interactableComponent.Interact(new PickUpCommand(this));
+        }
+
+        public void PickUpItem(ItemObject item)
+        {
+            playerLocomotion.StopMovingXZ();  // Stop moving while picking up item
+            animatorManager.PlayTargetAnimation(animatorManager.pickUpAnimation);
+            inventoryManager.AddItemToInventory(item);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, transform.position + gameObject.transform.forward * 2f);
+            Gizmos.DrawWireSphere(transform.position, 1f);
+        }
+
+        IEnumerator CheckForInteractableObject()
+        {
+            RaycastHit hit;
+            while (true)
+            {
+                yield return new WaitForSeconds(checkObjectInterval);
+                // why interactableLayers while the param is ignore layers???
+                if (Physics.SphereCast(transform.position, checkObjectRayThickness, 
+                    transform.forward, out hit, checkObjectRayLength, interactableLayers))
+                {
+                    if (hit.collider.gameObject.GetComponent<Interactable>() != null)
+                    {
+                        Debug.Log("interactableItem: " + hit.collider.name);
+                        interactableItem = hit.collider.gameObject;
+                        continue;
+                    }
+                }
+                interactableItem = null;
+            }
         }
 
         private void HandleSingleAttack()

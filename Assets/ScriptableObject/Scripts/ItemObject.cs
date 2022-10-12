@@ -8,11 +8,15 @@ namespace TMD
     {
         public GameObject itemPrefab;
         [Header("Item Attributes")]
-        public string itemName;
         public Sprite itemIcon;
 
         [HideInInspector] private string leftArmEmptyAnimation = "Left Arm Empty";
         [HideInInspector] private string righArmEmptAnimation = "Right Arm Empty";
+
+        public string GetItemName()
+        {
+            return itemPrefab.name;
+        }
 
         public string GetLeftArmEmptyAnimation()
         {

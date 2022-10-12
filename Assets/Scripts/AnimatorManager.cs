@@ -29,9 +29,11 @@ namespace TMD
         [HideInInspector] public int rollAnimation;
         [HideInInspector] private string dodgeBackAnimationName = "Dodge Back";
         [HideInInspector] public int dodgeBackAnimation;
+        [HideInInspector] private string pickUpAnimationName = "Pick Up";
+        [HideInInspector] public int pickUpAnimation;
         [HideInInspector] private string dieAnimationName = "Die";
         [HideInInspector] public int dieAnimation;
-        
+
 
         private float fadeLength = 0.2f;
 
@@ -116,6 +118,7 @@ namespace TMD
             landingAnimation = Animator.StringToHash(landingAnimationName);
             rollAnimation = Animator.StringToHash(rollAnimationName);
             dodgeBackAnimation = Animator.StringToHash(dodgeBackAnimationName);
+            pickUpAnimation = Animator.StringToHash(pickUpAnimationName);
             dieAnimation = Animator.StringToHash(dieAnimationName);
         }
     }

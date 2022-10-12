@@ -212,6 +212,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""dcbdc424-eed8-4082-81b2-76e71b721987"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -269,6 +277,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Right Arrow"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3450f834-0532-4ad6-9721-432d5e144e41"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeybroadAndMouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -308,6 +327,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerAction_DownArrow = m_PlayerAction.FindAction("DownArrow", throwIfNotFound: true);
         m_PlayerAction_LeftArrow = m_PlayerAction.FindAction("Left Arrow", throwIfNotFound: true);
         m_PlayerAction_RightArrow = m_PlayerAction.FindAction("Right Arrow", throwIfNotFound: true);
+        m_PlayerAction_Interact = m_PlayerAction.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -452,6 +472,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerAction_DownArrow;
     private readonly InputAction m_PlayerAction_LeftArrow;
     private readonly InputAction m_PlayerAction_RightArrow;
+    private readonly InputAction m_PlayerAction_Interact;
     public struct PlayerActionActions
     {
         private @PlayerControls m_Wrapper;
@@ -461,6 +482,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @DownArrow => m_Wrapper.m_PlayerAction_DownArrow;
         public InputAction @LeftArrow => m_Wrapper.m_PlayerAction_LeftArrow;
         public InputAction @RightArrow => m_Wrapper.m_PlayerAction_RightArrow;
+        public InputAction @Interact => m_Wrapper.m_PlayerAction_Interact;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -485,6 +507,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @RightArrow.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnRightArrow;
                 @RightArrow.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnRightArrow;
                 @RightArrow.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnRightArrow;
+                @Interact.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_PlayerActionActionsCallbackInterface = instance;
             if (instance != null)
@@ -504,6 +529,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @RightArrow.started += instance.OnRightArrow;
                 @RightArrow.performed += instance.OnRightArrow;
                 @RightArrow.canceled += instance.OnRightArrow;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -535,5 +563,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnDownArrow(InputAction.CallbackContext context);
         void OnLeftArrow(InputAction.CallbackContext context);
         void OnRightArrow(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }
