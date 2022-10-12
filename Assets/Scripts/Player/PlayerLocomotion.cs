@@ -146,16 +146,21 @@ namespace TMD
             }
             inAirTime += Time.deltaTime;
             // Have to set velocity because we don't set velocity in HandleTranslation while falling
-            playerRigidbody.velocity = SmoothFallingVelocityXZ();
+            SlowDownXZ();
             playerRigidbody.AddForce(Vector3.down * fallingVelocity * inAirTime);
         }
 
-        private Vector3 SmoothFallingVelocityXZ()
+        public void StopMovingXZ()
+        {
+            playerRigidbody.velocity = new Vector3(0, playerRigidbody.velocity.y, 0);
+        }
+
+        private void SlowDownXZ()
         {
             float velocityY = playerRigidbody.velocity.y;
             Vector3 velocityXZ = Vector3.SmoothDamp(playerRigidbody.velocity, Vector3.zero, ref leapingVelocity, leapingVelocitySmoothTime);
             velocityXZ.y = velocityY;
-            return velocityXZ;
+            playerRigidbody.velocity = velocityXZ;
         }
         private bool IsFalling()
         {

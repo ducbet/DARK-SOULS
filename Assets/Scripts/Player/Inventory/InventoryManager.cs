@@ -14,6 +14,8 @@ namespace TMD
         public ItemObject[] leftHandQuickSlotItemObjects = new ItemObject[QUICK_SLOT_CAPACITY];
         public ItemObject[] rightHandQuickSlotItemObjects = new ItemObject[QUICK_SLOT_CAPACITY];
 
+        public List<ItemObject> inventory;
+
         [HideInInspector] public ItemObject leftHandItemObject;
         [HideInInspector] public ItemObject rightHandItemObject;
 
@@ -54,6 +56,11 @@ namespace TMD
             EquipRightHandItems(GetNextQuickSlotItem());
         }
 
+
+        public void AddItemToInventory(ItemObject item)
+        {
+            inventory.Add(item);
+        }
 
         public ItemObject GetNextQuickSlotItem(bool isRightHand = true)
         {

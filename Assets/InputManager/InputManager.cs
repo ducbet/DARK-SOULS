@@ -19,6 +19,7 @@ public class InputManager : MonoBehaviour
     [HideInInspector] public bool isDownArrow;
     [HideInInspector] public bool isLeftArrow;
     [HideInInspector] public bool isRightArrow;
+    [HideInInspector] public bool isInteractingObject;
 
     public PlayerControls playerControls;
 
@@ -53,6 +54,8 @@ public class InputManager : MonoBehaviour
         playerControls.PlayerAction.LeftArrow.canceled += context => isLeftArrow = false;
         playerControls.PlayerAction.RightArrow.performed += context => isRightArrow = true;
         playerControls.PlayerAction.RightArrow.canceled += context => isRightArrow = false;
+        playerControls.PlayerAction.Interact.performed += context => isInteractingObject = true;
+        playerControls.PlayerAction.Interact.canceled += context => isInteractingObject = false;
 
         playerControls.CameraMovement.Rotation.performed += context =>
         {
