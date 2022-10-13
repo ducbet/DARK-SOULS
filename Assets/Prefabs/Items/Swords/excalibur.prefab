@@ -533,7 +533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gizmosRadius: 0.5
-  object_name: 
+  instanceRoot: {fileID: 8286446769607963046}
   itemObject: {fileID: 11400000, guid: 810d81fbf1d654c4a89bea110bd7b684, type: 2}
 --- !u!1 &2940303947976599200
 GameObject:

@@ -98,7 +98,9 @@ namespace TMD
             {
                 return;
             }
-            interactableComponent.Interact(new PickUpCommand(this));
+            PickUpCommand pickUpCommand = new PickUpCommand(this);
+            pickUpCommand.SetTargetItem(interactableComponent.GetItem());
+            interactableComponent.Interact(pickUpCommand);
         }
 
         public void PickUpItem(ItemObject item)
@@ -106,6 +108,7 @@ namespace TMD
             playerLocomotion.StopMovingXZ();  // Stop moving while picking up item
             animatorManager.PlayTargetAnimation(animatorManager.pickUpAnimation);
             inventoryManager.AddItemToInventory(item);
+            interactablePopup.Hide();
         }
 
         private void OnDrawGizmos()
@@ -128,7 +131,6 @@ namespace TMD
                     Interactable interactableScript = hit.collider.gameObject.GetComponent<Interactable>();
                     if (interactableScript != null)
                     {
-                        Debug.Log("interactableItem: " + hit.collider.name);
                         interactablePopup.Show(interactableScript.GetPopupMessage());
                         interactableItem = hit.collider.gameObject;
                         continue;
