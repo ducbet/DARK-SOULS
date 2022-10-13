@@ -20,5 +20,10 @@ namespace TMD
             Debug.Log("Interact " + itemObject.GetItemName() + " item");
             return itemObject;
         }
+
+        public virtual string GetPopupMessage()
+        {
+            return "";
+        }
     }
 }

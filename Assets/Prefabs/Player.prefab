@@ -969,6 +969,7 @@ MonoBehaviour:
   isDownArrow: 0
   isLeftArrow: 0
   isRightArrow: 0
+  isInteractingObject: 0
 --- !u!114 &4386741327950740776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -993,6 +994,7 @@ MonoBehaviour:
   landingAnimation: 0
   rollAnimation: 0
   dodgeBackAnimation: 0
+  pickUpAnimation: 0
   dieAnimation: 0
   deltaPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &2578535529363219477
@@ -1015,6 +1017,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f03ec37fe2c63f24f9cc950663e24ce1, type: 2}
   - {fileID: 11400000, guid: 0b334e19b02338c4e8fe4b723ff7d1a2, type: 2}
   - {fileID: 11400000, guid: 810d81fbf1d654c4a89bea110bd7b684, type: 2}
+  inventory: []
   leftHandItemObject: {fileID: 0}
   rightHandItemObject: {fileID: 0}
   leftHandItem: {fileID: 0}
@@ -1047,6 +1050,7 @@ MonoBehaviour:
   heavyAttackDetectTime: 0.2
   inventoryManager: {fileID: 0}
   animatorManager: {fileID: 0}
+  lastAttackName: 
 --- !u!114 &1471450998823266550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,6 +1068,14 @@ MonoBehaviour:
   animatorManager: {fileID: 0}
   playerAttacker: {fileID: 0}
   inventoryManager: {fileID: 0}
+  playerStats: {fileID: 0}
+  interactableLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  interactableItem: {fileID: 0}
+  checkObjectInterval: 0.5
+  checkObjectRayThickness: 1
+  checkObjectRayLength: 2
 --- !u!1 &3077814609596926773
 GameObject:
   m_ObjectHideFlags: 0
