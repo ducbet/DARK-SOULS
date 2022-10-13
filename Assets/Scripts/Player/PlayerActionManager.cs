@@ -32,6 +32,8 @@ namespace TMD
         public float checkObjectInterval = 0.5f;
         public float checkObjectRayThickness = 1f;
         public float checkObjectRayLength = 2f;
+        private InteractablePopup interactablePopup;
+
         private void Awake()
         {
             inputManager = GetComponent<InputManager>();
@@ -40,6 +42,7 @@ namespace TMD
             playerAttacker = GetComponent<PlayerAttacker>();
             inventoryManager = GetComponent<InventoryManager>();
             playerStats = GetComponent<PlayerStats>();
+            interactablePopup = FindObjectOfType<InteractablePopup>();
 
             if (interactableLayers == 0)
             {
@@ -119,17 +122,20 @@ namespace TMD
             {
                 yield return new WaitForSeconds(checkObjectInterval);
                 // why interactableLayers while the param is ignore layers???
-                if (Physics.SphereCast(transform.position, checkObjectRayThickness, 
+                if (Physics.SphereCast(transform.position, checkObjectRayThickness,
                     transform.forward, out hit, checkObjectRayLength, interactableLayers))
                 {
-                    if (hit.collider.gameObject.GetComponent<Interactable>() != null)
+                    Interactable interactableScript = hit.collider.gameObject.GetComponent<Interactable>();
+                    if (interactableScript != null)
                     {
                         Debug.Log("interactableItem: " + hit.collider.name);
+                        interactablePopup.Show(interactableScript.GetPopupMessage());
                         interactableItem = hit.collider.gameObject;
                         continue;
                     }
                 }
                 interactableItem = null;
+                interactablePopup.Hide();
             }
         }
 

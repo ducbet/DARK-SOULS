@@ -12,5 +12,10 @@ namespace TMD
             ((PickUpCommand) command).Execute(itemObject);
             return itemObject;
         }
+
+        public override string GetPopupMessage()
+        {
+            return "Pick up " + itemObject.GetItemName();
+        }
     }
 }
