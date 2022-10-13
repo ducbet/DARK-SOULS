@@ -6,11 +6,11 @@ namespace TMD
 {
     public class PickUpable : Interactable
     {
-        public override ItemObject Interact(Command command)
+        public override void Interact(Command command)
         {
             base.Interact(command);
-            ((PickUpCommand) command).Execute(itemObject);
-            return itemObject;
+            command.Execute();
+            Destroy(instanceRoot);
         }
 
         public override string GetPopupMessage()
