@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace TMD
@@ -6,36 +5,7 @@ namespace TMD
     [RequireComponent(typeof(Animator))]
     public class AnimatorManager : MonoBehaviour
     {
-        public bool isInteracting = false;
         public bool isUsingRootMotion = false;
-        public bool isIgnoreYAxisRootMotion = false;
-
-        [HideInInspector] private string movementYParamName = "MovementY";
-        [HideInInspector] public int movementYParam;
-        [HideInInspector] private string isInteractingParamName = "IsInteracting";
-        [HideInInspector] public int isInteractingParam;
-        [HideInInspector] private string isUsingRootMotionParamName = "IsUsingRootMotion";
-        [HideInInspector] public int isUsingRootMotionParam;
-        [HideInInspector] private string isIgnoreYAxisRootMotionParamName = "IsIgnoreYAxisRootMotion";
-        [HideInInspector] public int isIgnoreYAxisRootMotionParam;
-        [HideInInspector] private string isGroundParamName = "IsGround";
-        [HideInInspector] public int isGroundParam;
-
-        [HideInInspector] private string fallingAnimationName = "Falling";
-        [HideInInspector] public int fallingAnimation;
-        [HideInInspector] private string landingAnimationName = "Landing";
-        [HideInInspector] public int landingAnimation;
-        [HideInInspector] private string rollAnimationName = "Roll";
-        [HideInInspector] public int rollAnimation;
-        [HideInInspector] private string dodgeBackAnimationName = "Dodge Back";
-        [HideInInspector] public int dodgeBackAnimation;
-        [HideInInspector] private string pickUpAnimationName = "Pick Up";
-        [HideInInspector] public int pickUpAnimation;
-        [HideInInspector] private string dieAnimationName = "Die";
-        [HideInInspector] public int dieAnimation;
-
-
-        private float fadeLength = 0.2f;
 
         [HideInInspector] public Vector3 deltaPosition = Vector3.zero;
 
@@ -44,59 +14,32 @@ namespace TMD
         private void Awake()
         {
             animator = GetComponent<Animator>();
-            HashStrings();
         }
 
-        public void SetFloat(int animationId, float value)
-        {
-            animator.SetFloat(animationId, value, 0.1f, Time.deltaTime);
-        }
-
-        public void CrossFade(string animationName)
+        public void CrossFade(string animationName, float fadeLength = 0.2f)
         {
             animator.CrossFade(animationName, fadeLength);
         }
 
-        public void PlayTargetAnimation(string animationName, bool _isInteracting = true)
+        public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)
         {
-            Debug.Log("PlayTargetAnimation animationName: " + animationName + ", isInteracting: " + isInteracting);
-            deltaPosition = Vector3.zero;
-            isInteracting = _isInteracting;
-            animator.SetBool(isInteractingParam, _isInteracting);
             animator.CrossFade(animationName, fadeLength);
         }
 
-        public void PlayTargetAnimation(int animationId, bool _isInteracting = true)
+        public void PlayTargetAnimation(int animationId, float fadeLength = 0.2f)
         {
-            Debug.Log("PlayTargetAnimation animationId: " + animationId + ", isInteracting: " + isInteracting);
-            deltaPosition = Vector3.zero;
-            isInteracting = _isInteracting;
-            animator.SetBool(isInteractingParam, _isInteracting);
             animator.CrossFade(animationId, fadeLength);
         }
 
-        public void PlayTargetAttackAnimation(string animationName, bool isInteracting = true)
+        public void EnableRootMotion()
         {
-            animator.SetBool(isUsingRootMotionParam, true);
-            animator.SetBool(isIgnoreYAxisRootMotionParam, true);
-            PlayTargetAnimation(animationName, isInteracting);
+            isUsingRootMotion = true;
+            deltaPosition = Vector3.zero;
         }
 
-        public void SetBool(int boolId, bool value)
+        public void DisableRootMotion()
         {
-            animator.SetBool(boolId, value);
-        }
-
-        public bool GetBool(int boolId)
-        {
-            return animator.GetBool(boolId);
-        }
-
-        public void UpdateAnimatorUsingState()
-        {
-            isInteracting = GetBool(isInteractingParam);
-            isUsingRootMotion = GetBool(isUsingRootMotionParam);
-            isIgnoreYAxisRootMotion = GetBool(isIgnoreYAxisRootMotionParam);
+            isUsingRootMotion = false;
         }
 
         private void OnAnimatorMove()
@@ -106,20 +49,53 @@ namespace TMD
                 deltaPosition = animator.deltaPosition / Time.deltaTime;
             }
         }
-        private void HashStrings()
-        {
-            movementYParam = Animator.StringToHash(movementYParamName);
-            isInteractingParam = Animator.StringToHash(isInteractingParamName);
-            isUsingRootMotionParam = Animator.StringToHash(isUsingRootMotionParamName);
-            isIgnoreYAxisRootMotionParam = Animator.StringToHash(isIgnoreYAxisRootMotionParamName);
-            isGroundParam = Animator.StringToHash(isGroundParamName);
 
-            fallingAnimation = Animator.StringToHash(fallingAnimationName);
-            landingAnimation = Animator.StringToHash(landingAnimationName);
-            rollAnimation = Animator.StringToHash(rollAnimationName);
-            dodgeBackAnimation = Animator.StringToHash(dodgeBackAnimationName);
-            pickUpAnimation = Animator.StringToHash(pickUpAnimationName);
-            dieAnimation = Animator.StringToHash(dieAnimationName);
+        public int HashString(string stringName)
+        {
+            return Animator.StringToHash(stringName);
+        }
+
+        public void SetBool(int boolId, bool value)
+        {
+            animator.SetBool(boolId, value);
+        }
+
+        public void SetBool(string boolName, bool value)
+        {
+            animator.SetBool(boolName, value);
+        }
+
+        public bool GetBool(int boolId)
+        {
+            return animator.GetBool(boolId);
+        }
+
+        public float GetFloat(int floatId)
+        {
+            return animator.GetFloat(floatId);
+        }
+
+        public float GetFloat(string floatName)
+        {
+            return animator.GetFloat(floatName);
+        }
+
+        public void SetFloat(int floatId, float value)
+        {
+            animator.SetFloat(floatId, value, 0.1f, Time.deltaTime);
+        }
+
+        public void SetFloat(string floatName, float value)
+        {
+            animator.SetFloat(floatName, value, 0.1f, Time.deltaTime);
+        }
+        public void SetFloatNoSmooth(int floatId, float value)
+        {
+            animator.SetFloat(floatId, value);
+        }
+        public void SetFloatNoSmooth(string floatName, float value)
+        {
+            animator.SetFloat(floatName, value);
         }
     }
 }

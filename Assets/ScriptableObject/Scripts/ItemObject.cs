@@ -10,8 +10,8 @@ namespace TMD
         [Header("Item Attributes")]
         public Sprite itemIcon;
 
-        [HideInInspector] private string leftArmEmptyAnimation = "Left Arm Empty";
-        [HideInInspector] private string righArmEmptAnimation = "Right Arm Empty";
+        private string leftArmEmptyAnimation = "Left Arm Empty";
+        private string righArmEmptAnimation = "Right Arm Empty";
 
         public string GetItemName()
         {

@@ -11,7 +11,7 @@ namespace TMD
         public SliderBar healthBar;
         public SliderBar staminaBar;
 
-        private AnimatorManager animatorManager;
+        private PlayerMovementStateMachine playerMovementStateMachine;
         private int maxHealth;
         private int currentHealth;
         private int maxStamina;
@@ -20,7 +20,7 @@ namespace TMD
 
         private void Awake()
         {
-            animatorManager = GetComponent<AnimatorManager>();
+            playerMovementStateMachine = GetComponent<PlayerMovementStateMachine>();
         }
         private void Start()
         {
@@ -47,16 +47,14 @@ namespace TMD
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                if (!animatorManager.isInteracting)
-                {
-                    animatorManager.PlayTargetAnimation(animatorManager.dieAnimation);
-                    return;
-                }
+                healthBar.SetValue(currentHealth);
+                playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Die);
+                return;
             }
             healthBar.SetValue(currentHealth);
-            if (!animatorManager.isInteracting)
+            if (State.IsAssignableFromState<PlaneMoveState>(playerMovementStateMachine.currentState))
             {
-                animatorManager.PlayTargetAnimation(animatorManager.dodgeBackAnimation);
+                playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.DodgingBack);
             }
         }
 
