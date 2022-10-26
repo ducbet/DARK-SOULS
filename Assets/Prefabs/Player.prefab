@@ -830,8 +830,8 @@ GameObject:
   - component: {fileID: 4386741327950740776}
   - component: {fileID: 2578535529363219477}
   - component: {fileID: 5084470340357255030}
-  - component: {fileID: 30295218}
   - component: {fileID: 1471450998823266550}
+  - component: {fileID: 6783583631056025424}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -929,20 +929,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eab4ad12a88fd744952fa7f683719d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentStateUI: {fileID: 0}
+  startLandingHeight: 1.5
+  groundCheckLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  isGrounded: 1
   runThreshold: 0.55
   walkingSpeed: 1
   runningSpeed: 4
   sprintingSpeed: 7
-  rotationSpeed: 6
-  rollingVelocityScale: 1
-  startLandingHeight: 1.5
-  fallingVelocity: 33
-  groundCheckLayers:
+  inventoryManager: {fileID: 0}
+  rootMotionSpeed: 1
+  canStartComboAttack: 0
+  checkObjectInterval: 0.5
+  checkObjectRayThickness: 1
+  checkObjectRayLength: 2
+  interactablePopup: {fileID: 0}
+  interactableLayers:
     serializedVersion: 2
     m_Bits: 0
+  interactableItem: {fileID: 0}
+  rollingVelocityScale: 1
+  fallingVelocity: 33
+  leapingVelocity: {x: 0, y: 0, z: 0}
   leapingVelocitySmoothTime: 2
+  isPlayingAnimation: 0
   inputManager: {fileID: 0}
-  animatorManager: {fileID: 0}
 --- !u!114 &3389422401111712525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -982,19 +995,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78fcbae1724a2a54282f55f42f752369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isInteracting: 0
   isUsingRootMotion: 0
-  isIgnoreYAxisRootMotion: 0
-  movementYParam: 0
-  isInteractingParam: 0
-  isUsingRootMotionParam: 0
-  isIgnoreYAxisRootMotionParam: 0
-  isGroundParam: 0
-  fallingAnimation: 0
-  landingAnimation: 0
-  rollAnimation: 0
-  dodgeBackAnimation: 0
-  pickUpAnimation: 0
+  moveForwardStateParamName: MoveForwardState
+  moveForwardStateParam: 0
+  dieAnimationName: Die
   dieAnimation: 0
   deltaPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &2578535529363219477
@@ -1035,22 +1039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e2ae14a272351d4d98ee92ba1d94d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &30295218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2578535527813668420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da60ed7a976fcb946ada3f4b94bb9e73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heavyAttackDetectTime: 0.2
-  inventoryManager: {fileID: 0}
-  animatorManager: {fileID: 0}
-  lastAttackName: 
 --- !u!114 &1471450998823266550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,18 +1052,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputManager: {fileID: 0}
-  playerLocomotion: {fileID: 0}
+  playerMovementStateMachine: {fileID: 0}
   animatorManager: {fileID: 0}
-  playerAttacker: {fileID: 0}
   inventoryManager: {fileID: 0}
   playerStats: {fileID: 0}
-  interactableLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  interactableItem: {fileID: 0}
-  checkObjectInterval: 0.5
-  checkObjectRayThickness: 1
-  checkObjectRayLength: 2
+--- !u!114 &6783583631056025424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2578535527813668420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56c36e9ed9043724daf626fd18583165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthLevel: 10
+  staminaLevel: 10
+  healthBar: {fileID: 0}
+  staminaBar: {fileID: 0}
 --- !u!1 &3077814609596926773
 GameObject:
   m_ObjectHideFlags: 0

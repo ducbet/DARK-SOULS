@@ -4,17 +4,17 @@ namespace TMD
 {
     public class PickUpCommand : ActionCommand
     {
-        private MonoBehaviour actionManager;  // component that contain pick up function
+        private PickingUpState pickingUpState;
         private ItemObject targetItem;
 
-        public PickUpCommand(MonoBehaviour _actionManager)
+        public PickUpCommand(PickingUpState pickingUpState)
         {
-            actionManager = _actionManager;
+            this.pickingUpState = pickingUpState;
         }
 
-        public void SetTargetItem(ItemObject _targetItem)
+        public void SetTargetItem(ItemObject targetItem)
         {
-            targetItem = _targetItem;
+            this.targetItem = targetItem;
         }
 
         public override void Execute()
@@ -23,10 +23,7 @@ namespace TMD
             {
                 Debug.Log("PickUpCommand: targetItem is null");
             }
-            if (actionManager is PlayerActionManager)
-            {
-                ((PlayerActionManager)actionManager).PickUpItem(targetItem);
-            }
+            pickingUpState.PickUpItem(targetItem);
         }
     }
 }

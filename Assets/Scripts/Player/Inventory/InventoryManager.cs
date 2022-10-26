@@ -31,6 +31,12 @@ namespace TMD
             animatorManager = GetComponent<AnimatorManager>();
         }
 
+        private void Start()
+        {
+            EquipLeftHandItems();
+            EquipRightHandItems();
+        }
+
         public void EquipLeftHandItems(ItemObject item = null)
         {
             item = item != null ? item : GetCurrentItemObject(isRightHand: false);
