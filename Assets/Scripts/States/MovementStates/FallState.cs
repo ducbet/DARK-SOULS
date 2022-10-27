@@ -65,10 +65,6 @@ namespace TMD
 
         public override void LateUpdate()
         {
-            if (IsStateChanged())
-            {
-                return;
-            }
         }
 
         public void ResetFallingTime()

@@ -20,6 +20,7 @@ public class InputManager : MonoBehaviour
     [HideInInspector] public bool isLeftArrow;
     [HideInInspector] public bool isRightArrow;
     [HideInInspector] public bool isInteractingObject;
+    [HideInInspector] public bool isJumping;
 
     public PlayerControls playerControls;
 
@@ -56,6 +57,8 @@ public class InputManager : MonoBehaviour
         playerControls.PlayerAction.RightArrow.canceled += context => isRightArrow = false;
         playerControls.PlayerAction.Interact.performed += context => isInteractingObject = true;
         playerControls.PlayerAction.Interact.canceled += context => isInteractingObject = false;
+        playerControls.PlayerAction.Jump.performed += context => isJumping = true;
+        playerControls.PlayerAction.Jump.canceled += context => isJumping = false;
 
         playerControls.CameraMovement.Rotation.performed += context =>
         {
