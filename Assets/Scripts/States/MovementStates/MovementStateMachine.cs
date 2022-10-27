@@ -23,6 +23,7 @@ namespace TMD
             Rolling,
             DodgingBack,
             PickingUp,
+            Jumping,
             Fall,
             Die,
             Attacking, // TODO: will be moved to PlayerActionStateMachine in the future
@@ -53,6 +54,7 @@ namespace TMD
         public bool isWalking { get; protected set; } = false;
         public bool isRolling { get; protected set; } = false;
         public bool isInteractingObject { get; protected set; } = false;
+        public bool isJumping { get; protected set; } = false;
 
         // TODO: will be moved to PlayerActionStateMachine in the future
         public bool isLeftClick { get; protected set; } = false;
@@ -78,6 +80,7 @@ namespace TMD
         public float leapingVelocitySmoothTime = 2f;
 
         public bool isPlayingAnimation = false;  // animations except Idle, Walking, Running, Sprinting
+        public bool canStartFalling = false;
 
         protected virtual void Awake()
         {
@@ -133,6 +136,7 @@ namespace TMD
             states[(int)MOVEMENT_STATE_ENUMS.Rolling] = new RollingState(this);
             states[(int)MOVEMENT_STATE_ENUMS.DodgingBack] = new DodgingBackState(this);
             states[(int)MOVEMENT_STATE_ENUMS.PickingUp] = new PickingUpState(this);
+            states[(int)MOVEMENT_STATE_ENUMS.Jumping] = new JumpState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Die] = new DieState(this);
 
             // TODO: will be moved to PlayerActionStateMachine in the future
@@ -167,6 +171,12 @@ namespace TMD
         public void HandleAnimationEndedEvent()
         {
             isPlayingAnimation = false;
+        }
+
+        public void CheckCanStartFalling()
+        {
+            // Use for JumpState
+            canStartFalling = true;
         }
 
         public virtual void CalculateMoveDirection()

@@ -11,7 +11,6 @@ namespace TMD
         public override void Enter()
         {
             base.Enter();
-            movementStateMachine.animatorManager.PlayTargetAnimation("Empty");
         }
 
         public override void Exit()

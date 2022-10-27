@@ -9,12 +9,14 @@ namespace TMD
         protected string moveForwardStateParamName = "MoveForwardState";
         protected int moveForwardStateParam;
 
-        public PlaneMoveState(MovementStateMachine movementStateMachine) : base(movementStateMachine) {
+        public PlaneMoveState(MovementStateMachine movementStateMachine) : base(movementStateMachine)
+        {
             moveForwardStateParam = base.movementStateMachine.animatorManager.HashString(moveForwardStateParamName);
         }
         public override void Enter()
         {
             base.Enter();
+            movementStateMachine.animatorManager.PlayTargetAnimation("Empty");
         }
 
         public override void Exit()
@@ -42,6 +44,11 @@ namespace TMD
             if (movementStateMachine.isLeftClick)
             {
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Attacking);
+                return;
+            }
+            if (movementStateMachine.isJumping)
+            {
+                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Jumping);
                 return;
             }
             movementStateMachine.CalculateMoveMagnitude();

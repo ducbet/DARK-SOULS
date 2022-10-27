@@ -28,6 +28,8 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Roll.canceled += SetIsRollingCanceled;
             inputManager.playerControls.PlayerAction.Interact.performed += SetIsInteractingObjectPerformed;
             inputManager.playerControls.PlayerAction.Interact.canceled += SetIsInteractingObjectCanceled;
+            inputManager.playerControls.PlayerAction.Jump.performed += SetIsJumpingPerformed;
+            inputManager.playerControls.PlayerAction.Jump.canceled += SetIsJumpingCanceled;
 
             // TODO: will be moved to PlayerActionStateMachine in the future
             inputManager.playerControls.PlayerAction.LeftClick.performed += SetIsLeftClickPerformed;
@@ -44,6 +46,8 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Roll.canceled -= SetIsRollingCanceled;
             inputManager.playerControls.PlayerAction.Interact.performed -= SetIsInteractingObjectPerformed;
             inputManager.playerControls.PlayerAction.Interact.canceled -= SetIsInteractingObjectCanceled;
+            inputManager.playerControls.PlayerAction.Jump.performed -= SetIsJumpingPerformed;
+            inputManager.playerControls.PlayerAction.Jump.canceled -= SetIsJumpingCanceled;
 
             // TODO: will be moved to PlayerActionStateMachine in the future
             inputManager.playerControls.PlayerAction.LeftClick.performed -= SetIsLeftClickPerformed;
@@ -91,6 +95,15 @@ namespace TMD
         {
             isLeftClick = false;
         }
+        private void SetIsJumpingPerformed(InputAction.CallbackContext context)
+        {
+            isJumping = true;
+        }
+        private void SetIsJumpingCanceled(InputAction.CallbackContext context)
+        {
+            isJumping = false;
+        }
+        
         public override void CalculateMoveDirection()
         {
             base.CalculateMoveDirection();
