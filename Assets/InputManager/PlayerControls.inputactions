@@ -296,6 +296,33 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "SystemAction",
+            "id": "1984058f-5f02-4c8b-a3e2-3aa5d6af831e",
+            "actions": [
+                {
+                    "name": "ToggleSelectMeunu",
+                    "type": "Button",
+                    "id": "8bc7ff5f-27f3-414c-a2a2-98d33b9a655d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7a121579-b7eb-4d01-a80e-064e525f3b4a",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeybroadAndMouse",
+                    "action": "ToggleSelectMeunu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

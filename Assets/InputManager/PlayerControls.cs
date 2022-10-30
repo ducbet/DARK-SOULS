@@ -309,6 +309,33 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SystemAction"",
+            ""id"": ""1984058f-5f02-4c8b-a3e2-3aa5d6af831e"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleSelectMeunu"",
+                    ""type"": ""Button"",
+                    ""id"": ""8bc7ff5f-27f3-414c-a2a2-98d33b9a655d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""7a121579-b7eb-4d01-a80e-064e525f3b4a"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeybroadAndMouse"",
+                    ""action"": ""ToggleSelectMeunu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -348,6 +375,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerAction_RightArrow = m_PlayerAction.FindAction("Right Arrow", throwIfNotFound: true);
         m_PlayerAction_Interact = m_PlayerAction.FindAction("Interact", throwIfNotFound: true);
         m_PlayerAction_Jump = m_PlayerAction.FindAction("Jump", throwIfNotFound: true);
+        // SystemAction
+        m_SystemAction = asset.FindActionMap("SystemAction", throwIfNotFound: true);
+        m_SystemAction_ToggleSelectMeunu = m_SystemAction.FindAction("ToggleSelectMeunu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -564,6 +594,39 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         }
     }
     public PlayerActionActions @PlayerAction => new PlayerActionActions(this);
+
+    // SystemAction
+    private readonly InputActionMap m_SystemAction;
+    private ISystemActionActions m_SystemActionActionsCallbackInterface;
+    private readonly InputAction m_SystemAction_ToggleSelectMeunu;
+    public struct SystemActionActions
+    {
+        private @PlayerControls m_Wrapper;
+        public SystemActionActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleSelectMeunu => m_Wrapper.m_SystemAction_ToggleSelectMeunu;
+        public InputActionMap Get() { return m_Wrapper.m_SystemAction; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SystemActionActions set) { return set.Get(); }
+        public void SetCallbacks(ISystemActionActions instance)
+        {
+            if (m_Wrapper.m_SystemActionActionsCallbackInterface != null)
+            {
+                @ToggleSelectMeunu.started -= m_Wrapper.m_SystemActionActionsCallbackInterface.OnToggleSelectMeunu;
+                @ToggleSelectMeunu.performed -= m_Wrapper.m_SystemActionActionsCallbackInterface.OnToggleSelectMeunu;
+                @ToggleSelectMeunu.canceled -= m_Wrapper.m_SystemActionActionsCallbackInterface.OnToggleSelectMeunu;
+            }
+            m_Wrapper.m_SystemActionActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleSelectMeunu.started += instance.OnToggleSelectMeunu;
+                @ToggleSelectMeunu.performed += instance.OnToggleSelectMeunu;
+                @ToggleSelectMeunu.canceled += instance.OnToggleSelectMeunu;
+            }
+        }
+    }
+    public SystemActionActions @SystemAction => new SystemActionActions(this);
     private int m_KeybroadAndMouseSchemeIndex = -1;
     public InputControlScheme KeybroadAndMouseScheme
     {
@@ -593,5 +656,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnRightArrow(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+    }
+    public interface ISystemActionActions
+    {
+        void OnToggleSelectMeunu(InputAction.CallbackContext context);
     }
 }
