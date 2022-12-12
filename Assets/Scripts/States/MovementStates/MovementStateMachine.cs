@@ -9,7 +9,6 @@ namespace TMD
     public class MovementStateMachine : StateMachine
     {
         // MovementStateMachine but also contains actions. Will be separated later
-
         // debug
         public Text currentStateUI;
         
