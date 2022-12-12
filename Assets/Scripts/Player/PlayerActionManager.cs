@@ -18,9 +18,6 @@ namespace TMD
         [HideInInspector] public InventoryManager inventoryManager;
         [HideInInspector] public PlayerStats playerStats;
 
-        
-
-
         private void Awake()
         {
             inputManager = GetComponent<InputManager>();
