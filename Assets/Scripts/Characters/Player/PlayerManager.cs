@@ -5,7 +5,8 @@ namespace TMD
     [RequireComponent(typeof(PlayerActionManager))]
     [RequireComponent(typeof(AnimatorManager))]
     [RequireComponent(typeof(PlayerMovementStateMachine))]
-    public class PlayerManager : MonoBehaviour
+    [RequireComponent(typeof(PlayerLockOnStateMachine))]
+    public class PlayerManager : CharacterManager
     {
         public static string PLAYER_TAG = "Player";
 

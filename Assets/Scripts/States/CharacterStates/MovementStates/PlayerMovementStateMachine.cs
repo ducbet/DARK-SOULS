@@ -35,7 +35,7 @@ namespace TMD
             inputManager.playerControls.PlayerAction.LeftClick.performed += SetIsLeftClickPerformed;
             inputManager.playerControls.PlayerAction.LeftClick.canceled += SetIsLeftClickCanceled;
         }
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             base.OnDestroy();
             inputManager.playerControls.PlayerMovement.Sprint.performed -= SetIsSprintingPerformed;

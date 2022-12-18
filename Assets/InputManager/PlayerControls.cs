@@ -228,6 +228,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""LockOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""becb5885-9a9d-4cca-aaf5-7435a3eba32c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -307,6 +315,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff28100f-c254-49a0-ad11-0efefd1029eb"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeybroadAndMouse"",
+                    ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -375,6 +394,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerAction_RightArrow = m_PlayerAction.FindAction("Right Arrow", throwIfNotFound: true);
         m_PlayerAction_Interact = m_PlayerAction.FindAction("Interact", throwIfNotFound: true);
         m_PlayerAction_Jump = m_PlayerAction.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerAction_LockOn = m_PlayerAction.FindAction("LockOn", throwIfNotFound: true);
         // SystemAction
         m_SystemAction = asset.FindActionMap("SystemAction", throwIfNotFound: true);
         m_SystemAction_ToggleSelectMeunu = m_SystemAction.FindAction("ToggleSelectMeunu", throwIfNotFound: true);
@@ -524,6 +544,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerAction_RightArrow;
     private readonly InputAction m_PlayerAction_Interact;
     private readonly InputAction m_PlayerAction_Jump;
+    private readonly InputAction m_PlayerAction_LockOn;
     public struct PlayerActionActions
     {
         private @PlayerControls m_Wrapper;
@@ -535,6 +556,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @RightArrow => m_Wrapper.m_PlayerAction_RightArrow;
         public InputAction @Interact => m_Wrapper.m_PlayerAction_Interact;
         public InputAction @Jump => m_Wrapper.m_PlayerAction_Jump;
+        public InputAction @LockOn => m_Wrapper.m_PlayerAction_LockOn;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -565,6 +587,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnJump;
+                @LockOn.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOn;
+                @LockOn.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOn;
+                @LockOn.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOn;
             }
             m_Wrapper.m_PlayerActionActionsCallbackInterface = instance;
             if (instance != null)
@@ -590,6 +615,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @LockOn.started += instance.OnLockOn;
+                @LockOn.performed += instance.OnLockOn;
+                @LockOn.canceled += instance.OnLockOn;
             }
         }
     }
@@ -656,6 +684,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnRightArrow(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnLockOn(InputAction.CallbackContext context);
     }
     public interface ISystemActionActions
     {

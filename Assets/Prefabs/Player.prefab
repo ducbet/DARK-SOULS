@@ -832,6 +832,7 @@ GameObject:
   - component: {fileID: 5084470340357255030}
   - component: {fileID: 1471450998823266550}
   - component: {fileID: 6783583631056025424}
+  - component: {fileID: 2631225476514234974}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -853,6 +854,7 @@ Transform:
   - {fileID: 5649205106253618307}
   - {fileID: 2694580842866132033}
   - {fileID: 7265236413727171690}
+  - {fileID: 6444175122266912919}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -917,6 +919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d14997ecb03ae544a741d928dce6066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lockOnTransform: {fileID: 0}
 --- !u!114 &3389422401111712524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,7 +958,7 @@ MonoBehaviour:
   leapingVelocity: {x: 0, y: 0, z: 0}
   leapingVelocitySmoothTime: 2
   isPlayingAnimation: 0
-  inputManager: {fileID: 0}
+  canStartFalling: 0
 --- !u!114 &3389422401111712525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -983,6 +986,7 @@ MonoBehaviour:
   isLeftArrow: 0
   isRightArrow: 0
   isInteractingObject: 0
+  isJumping: 0
 --- !u!114 &4386741327950740776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -996,10 +1000,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isUsingRootMotion: 0
-  moveForwardStateParamName: MoveForwardState
-  moveForwardStateParam: 0
-  dieAnimationName: Die
-  dieAnimation: 0
   deltaPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &2578535529363219477
 MonoBehaviour:
@@ -1072,6 +1072,20 @@ MonoBehaviour:
   staminaLevel: 10
   healthBar: {fileID: 0}
   staminaBar: {fileID: 0}
+--- !u!114 &2631225476514234974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2578535527813668420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b16db988a6d4eee4db91378cf3b7f95d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentStateUI: {fileID: 0}
+  cameraManager: {fileID: 0}
 --- !u!1 &3077814609596926773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2667,3 +2681,65 @@ Transform:
   m_Father: {fileID: 7992296811747305104}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5827935252877762650
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2919208638360749310}
+    m_Modifications:
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9126711527680538247, guid: f70850176a122444f921851acc694899, type: 3}
+      propertyPath: m_Name
+      value: LockOnPoint
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f70850176a122444f921851acc694899, type: 3}
+--- !u!4 &6444175122266912919 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 688684732600391885, guid: f70850176a122444f921851acc694899, type: 3}
+  m_PrefabInstance: {fileID: 5827935252877762650}
+  m_PrefabAsset: {fileID: 0}
