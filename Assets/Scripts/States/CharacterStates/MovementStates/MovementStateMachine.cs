@@ -110,7 +110,7 @@ namespace TMD
             checkForInteractableObject = StartCoroutine(CheckForInteractableObject());
         }
 
-        protected void OnDestroy()
+        protected virtual void OnDestroy()
         {
             // TODO: will be moved to PlayerActionStateMachine in the future
             StopCoroutine(checkForInteractableObject);  // OnDestroy is enough? also when player dead?
@@ -120,7 +120,7 @@ namespace TMD
         {
             base.Update();
             CheckGrounded();
-            currentStateUI.text = currentState.GetType().ToString(); // Debug
+            //currentStateUI.text = currentState.GetType().ToString(); // Debug
         }
 
         private void InitStates()
