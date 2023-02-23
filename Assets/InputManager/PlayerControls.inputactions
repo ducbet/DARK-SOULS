@@ -223,6 +223,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "LockOnLeftTarget",
+                    "type": "Button",
+                    "id": "c69b89b0-fb4f-4c57-b02e-a97e41009af6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "LockOnRightTarget",
+                    "type": "Button",
+                    "id": "4a7f30da-4414-44f2-afe9-42b7603a0e74",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -311,6 +327,28 @@
                     "processors": "",
                     "groups": "KeybroadAndMouse",
                     "action": "LockOn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0d9fe334-e403-4486-971b-bc5676096f97",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeybroadAndMouse",
+                    "action": "LockOnLeftTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f48658f6-4759-4f82-93f0-b69bf99f1a6f",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LockOnRightTarget",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
