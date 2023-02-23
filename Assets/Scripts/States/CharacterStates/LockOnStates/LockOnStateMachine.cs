@@ -17,6 +17,9 @@ namespace TMD
             LockingOff
         };
 
+        public bool isLockOnLeftTarget { get; set; } = false;
+        public bool isLockOnRightTarget { get; set; } = false;
+
         protected virtual void Awake()
         {
             InitStates();
@@ -39,7 +42,7 @@ namespace TMD
             Gizmos.color = Color.red;
             Gizmos.DrawLine(transform.position, transform.position + transform.forward * 5);
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position + transform.forward * 5, 1);
+            Gizmos.DrawWireSphere(transform.position + transform.forward * 5, 2);
         }
 
         protected virtual void OnDestroy()

@@ -236,6 +236,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""LockOnLeftTarget"",
+                    ""type"": ""Button"",
+                    ""id"": ""c69b89b0-fb4f-4c57-b02e-a97e41009af6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""LockOnRightTarget"",
+                    ""type"": ""Button"",
+                    ""id"": ""4a7f30da-4414-44f2-afe9-42b7603a0e74"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -326,6 +342,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""LockOn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d9fe334-e403-4486-971b-bc5676096f97"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeybroadAndMouse"",
+                    ""action"": ""LockOnLeftTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f48658f6-4759-4f82-93f0-b69bf99f1a6f"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOnRightTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -395,6 +433,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerAction_Interact = m_PlayerAction.FindAction("Interact", throwIfNotFound: true);
         m_PlayerAction_Jump = m_PlayerAction.FindAction("Jump", throwIfNotFound: true);
         m_PlayerAction_LockOn = m_PlayerAction.FindAction("LockOn", throwIfNotFound: true);
+        m_PlayerAction_LockOnLeftTarget = m_PlayerAction.FindAction("LockOnLeftTarget", throwIfNotFound: true);
+        m_PlayerAction_LockOnRightTarget = m_PlayerAction.FindAction("LockOnRightTarget", throwIfNotFound: true);
         // SystemAction
         m_SystemAction = asset.FindActionMap("SystemAction", throwIfNotFound: true);
         m_SystemAction_ToggleSelectMeunu = m_SystemAction.FindAction("ToggleSelectMeunu", throwIfNotFound: true);
@@ -545,6 +585,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerAction_Interact;
     private readonly InputAction m_PlayerAction_Jump;
     private readonly InputAction m_PlayerAction_LockOn;
+    private readonly InputAction m_PlayerAction_LockOnLeftTarget;
+    private readonly InputAction m_PlayerAction_LockOnRightTarget;
     public struct PlayerActionActions
     {
         private @PlayerControls m_Wrapper;
@@ -557,6 +599,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Interact => m_Wrapper.m_PlayerAction_Interact;
         public InputAction @Jump => m_Wrapper.m_PlayerAction_Jump;
         public InputAction @LockOn => m_Wrapper.m_PlayerAction_LockOn;
+        public InputAction @LockOnLeftTarget => m_Wrapper.m_PlayerAction_LockOnLeftTarget;
+        public InputAction @LockOnRightTarget => m_Wrapper.m_PlayerAction_LockOnRightTarget;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -590,6 +634,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @LockOn.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOn;
                 @LockOn.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOn;
                 @LockOn.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOn;
+                @LockOnLeftTarget.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOnLeftTarget;
+                @LockOnLeftTarget.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOnLeftTarget;
+                @LockOnLeftTarget.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOnLeftTarget;
+                @LockOnRightTarget.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOnRightTarget;
+                @LockOnRightTarget.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOnRightTarget;
+                @LockOnRightTarget.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnLockOnRightTarget;
             }
             m_Wrapper.m_PlayerActionActionsCallbackInterface = instance;
             if (instance != null)
@@ -618,6 +668,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @LockOn.started += instance.OnLockOn;
                 @LockOn.performed += instance.OnLockOn;
                 @LockOn.canceled += instance.OnLockOn;
+                @LockOnLeftTarget.started += instance.OnLockOnLeftTarget;
+                @LockOnLeftTarget.performed += instance.OnLockOnLeftTarget;
+                @LockOnLeftTarget.canceled += instance.OnLockOnLeftTarget;
+                @LockOnRightTarget.started += instance.OnLockOnRightTarget;
+                @LockOnRightTarget.performed += instance.OnLockOnRightTarget;
+                @LockOnRightTarget.canceled += instance.OnLockOnRightTarget;
             }
         }
     }
@@ -685,6 +741,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnLockOn(InputAction.CallbackContext context);
+        void OnLockOnLeftTarget(InputAction.CallbackContext context);
+        void OnLockOnRightTarget(InputAction.CallbackContext context);
     }
     public interface ISystemActionActions
     {
