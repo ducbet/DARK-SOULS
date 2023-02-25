@@ -16,10 +16,7 @@ namespace TMD
         {
             base.Enter();
             Debug.Log("LockingOffState: Enter");
-            if (lockOnStateMachine.GetType() == typeof(PlayerLockOnStateMachine))
-            {
-                ((PlayerLockOnStateMachine)lockOnStateMachine).cameraManager.lockOnTarget = null;
-            }
+            lockOnStateMachine.lockOnTarget = null;
         }
 
         public override void FixedUpdate()

@@ -5,6 +5,7 @@ namespace TMD
     public class CameraManager : MonoBehaviour
     {
         public Transform target;
+        private LockOnStateMachine lockOnStateMachine;
         [Header("Translation attributes")]
         public float translationSmoothTime = 0.1f;
 
@@ -31,7 +32,6 @@ namespace TMD
         private float defaultCameraDistance;
         private bool canZoomOut = false;
 
-        [HideInInspector] public Transform lockOnTarget { get; set; }
 
         public LayerMask collisionLayers;
         public enum LayerBits
@@ -64,7 +64,9 @@ namespace TMD
         {
             if (target == null)
             {
-                target = FindObjectOfType<PlayerManager>().transform;
+                PlayerManager playerManager = FindObjectOfType<PlayerManager>();
+                target = playerManager.transform;
+                lockOnStateMachine = playerManager.GetComponent<LockOnStateMachine>();
             }
 
             cameraTransform = Camera.main.transform;
@@ -99,26 +101,24 @@ namespace TMD
 
         private void HandleRotation()
         {
-            if (lockOnTarget == null)
-            {
-                // rotate camera on X axis: vertical rotation (rotate camera up and down)
-                cameraRotatelAngle.x -= inputManager.cameraRotationX * cameraRotationSpeed * Time.deltaTime;
-                cameraRotatelAngle.x = Mathf.Clamp(cameraRotatelAngle.x, minimumVerticalAngle, maximumVerticalAngle);
-                cameraTransform.localRotation = Quaternion.Euler(cameraRotatelAngle);
-
-                // rotate pivot on Y axis: horizontal rotation (rotate camera around pivot)
-                pivotRotateAngle.y += inputManager.cameraRotationY * cameraRotationSpeed * Time.deltaTime;
-                rotationPivotTransform.rotation = Quaternion.Euler(pivotRotateAngle);
-            }
-            else
+            if (lockOnStateMachine != null && lockOnStateMachine.lockOnTarget != null)
             {
                 // lock on target
                 // lock X axis: vertical rotation
                 // ???
 
                 // lock Y axis: horizontal rotation
-                rotationPivotTransform.LookAt(lockOnTarget.position);
+                rotationPivotTransform.LookAt(lockOnStateMachine.lockOnTarget.position);
+                return;
             }
+            // rotate camera on X axis: vertical rotation (rotate camera up and down)
+            cameraRotatelAngle.x -= inputManager.cameraRotationX * cameraRotationSpeed * Time.deltaTime;
+            cameraRotatelAngle.x = Mathf.Clamp(cameraRotatelAngle.x, minimumVerticalAngle, maximumVerticalAngle);
+            cameraTransform.localRotation = Quaternion.Euler(cameraRotatelAngle);
+
+            // rotate pivot on Y axis: horizontal rotation (rotate camera around pivot)
+            pivotRotateAngle.y += inputManager.cameraRotationY * cameraRotationSpeed * Time.deltaTime;
+            rotationPivotTransform.rotation = Quaternion.Euler(pivotRotateAngle);
         }
 
         private void HandleCameraCollision()

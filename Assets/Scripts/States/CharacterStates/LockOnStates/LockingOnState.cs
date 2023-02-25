@@ -34,16 +34,18 @@ namespace TMD
         public override void Enter()
         {
             base.Enter();
-            Debug.Log("LockingOnState: Enter");
             GetNearestObject();
-            //Debug.Log("shortestDistance: " + nearestDistance);
             if (nearestObject == null)
             {
                 lockOnStateMachine.SwitchState(LockOnStateMachine.LOCK_ON_STATE_ENUMS.LockingOff);
                 return;
             }
             PlayerLockOnTarget();
-            
+        }
+        public override void Exit()
+        {
+            base.Exit();
+            lockOnStateMachine.lockOnTarget = null;
         }
 
         private void PlayerLockOnTarget()
@@ -52,10 +54,7 @@ namespace TMD
             {
                 return;
             }
-            if (lockOnStateMachine.GetType() == typeof(PlayerLockOnStateMachine))
-            {
-                ((PlayerLockOnStateMachine)lockOnStateMachine).cameraManager.lockOnTarget = GetLockOnPointTransform();
-            }
+            lockOnStateMachine.lockOnTarget = GetLockOnPointTransform();
         }
 
         private int GetVectorLeftRightSide(Vector3 targetVector, Vector3 rightVector)

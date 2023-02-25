@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class WalkState : PlaneMoveState
+    public class WalkingState : PlaneMoveState
     {
-        public WalkState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
+        public WalkingState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
 
         public override void Enter()
         {
@@ -43,18 +43,28 @@ namespace TMD
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle);
                 return;
             }
-            if (!movementStateMachine.isWalking && movementStateMachine.moveMagnitude >= movementStateMachine.runThreshold)
-            {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Running);
-                return;
-            }
             if (movementStateMachine.isRolling)
             {
                 // If Idle -> DodgingBack, else Rolling
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Rolling);
                 return;
             }
-            movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.Walking);
+        }
+        protected bool isRunning()
+        {
+            return !movementStateMachine.isWalking && movementStateMachine.moveMagnitude >= movementStateMachine.runThreshold;
+        }
+        protected float getWalkForwardAnimValue()
+        {
+            if (movementStateMachine.GetPlayerMovementVertical() > 0 || !movementStateMachine.isLockingOn)
+            {
+                return (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.WalkingForward;
+            }
+            else if (movementStateMachine.GetPlayerMovementVertical() < 0)
+            {
+                return -(float)MovementStateMachine.MOVEMENT_STATE_ENUMS.WalkingForward;
+            }
+            return 0;
         }
     }
 }

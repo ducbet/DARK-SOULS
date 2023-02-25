@@ -40,7 +40,7 @@ namespace TMD
             }
             if (!movementStateMachine.isSprinting)
             {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Running);
+                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.RunningForward);
                 return;
             }
             if (movementStateMachine.isRolling)

@@ -42,7 +42,7 @@ namespace TMD
             }
             if (movementStateMachine.moveMagnitude > 0)
             {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Walking);
+                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.WalkingForward);
                 return;
             }
             if (movementStateMachine.isRolling)
@@ -57,6 +57,7 @@ namespace TMD
                 return;
             }
             movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, 0f);
+            movementStateMachine.animatorManager.SetFloat(moveHorizontalStateParam, 0f);
         }
     }
 }

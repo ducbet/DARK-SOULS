@@ -15,9 +15,13 @@ namespace TMD
         public enum MOVEMENT_STATE_ENUMS {
             // Idle~Sprinting enums used to pass to animation blend tree. Must be put it in the beggin
             Idle, 
-            Walking, 
-            Running, 
+            WalkingForward, 
+            RunningForward, 
             Sprinting,
+            WalkingStrafeLeft,
+            RunningStrafeLeft,
+            WalkingStrafeRight,
+            RunningStrafeRight,
             Laned,
             Rolling,
             DodgingBack,
@@ -27,7 +31,7 @@ namespace TMD
             Die,
             Attacking, // TODO: will be moved to PlayerActionStateMachine in the future
         };
-        
+
         [HideInInspector] public AnimatorManager animatorManager { get; private set; }
         [HideInInspector] public Rigidbody rgBody { get; private set; }
 
@@ -38,6 +42,7 @@ namespace TMD
         public bool isGrounded = true;
 
         public Vector3 moveDirection { get; protected set; } = Vector3.zero;
+        public Vector3 lockingOnDirection { get; protected set; } = Vector3.zero;  // only player has camera. The rest NPC must use this to facing target
         public float moveMagnitude { get; protected set; } = 0f;
 
         [Header("Translation Attributes")]
@@ -54,6 +59,7 @@ namespace TMD
         public bool isRolling { get; protected set; } = false;
         public bool isInteractingObject { get; protected set; } = false;
         public bool isJumping { get; protected set; } = false;
+        public bool isLockingOn { get; protected set; } = false;
 
         // TODO: will be moved to PlayerActionStateMachine in the future
         public bool isLeftClick { get; protected set; } = false;
@@ -127,9 +133,13 @@ namespace TMD
         {
             states = new State[Enum.GetNames(typeof(MOVEMENT_STATE_ENUMS)).Length];
             states[(int)MOVEMENT_STATE_ENUMS.Idle] = new IdleState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.Walking] = new WalkState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.Running] = new RunState(this);
+            states[(int)MOVEMENT_STATE_ENUMS.WalkingForward] = new WalkingForwardState(this);
+            states[(int)MOVEMENT_STATE_ENUMS.RunningForward] = new RunForwardState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Sprinting] = new SprintState(this);
+            states[(int)MOVEMENT_STATE_ENUMS.WalkingStrafeLeft] = new WalkingStrafeLeftState(this);
+            states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeLeft] = new RunningStrafeLeftState(this);
+            states[(int)MOVEMENT_STATE_ENUMS.WalkingStrafeRight] = new WalkingStrafeRightState(this);
+            states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeRight] = new RunningStrafeRightState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Laned] = new LandedState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Fall] = new FallState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Rolling] = new RollingState(this);
@@ -184,6 +194,15 @@ namespace TMD
 
         public virtual void CalculateMoveMagnitude()
         {
+        }
+        public virtual float GetPlayerMovementHorizontal()
+        {
+            return 0;
+        }
+
+        public virtual float GetPlayerMovementVertical()
+        {
+            return 0;
         }
 
         #region TODO: will be moved to PlayerActionStateMachine in the future

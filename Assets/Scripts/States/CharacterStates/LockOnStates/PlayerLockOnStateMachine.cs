@@ -52,7 +52,7 @@ namespace TMD
 
         private void SetIsLockingOnPerformed(InputAction.CallbackContext context)
         {
-            if (State.IsAssignableFromState<LockingOnState>(currentState))
+            if (isLockingOn)
             {
                 SwitchState(LockOnStateMachine.LOCK_ON_STATE_ENUMS.LockingOff);
             }
