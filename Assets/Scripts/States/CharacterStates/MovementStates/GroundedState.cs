@@ -62,7 +62,17 @@ namespace TMD
             {
                 return;
             }
-            Quaternion lookDirection = Quaternion.LookRotation(movementStateMachine.moveDirection);
+
+            Quaternion lookDirection = Quaternion.identity;
+            if (movementStateMachine.isLockingOn)
+            {
+                lookDirection = Quaternion.LookRotation(movementStateMachine.lockingOnDirection);
+            }
+            else
+            {
+                lookDirection = Quaternion.LookRotation(movementStateMachine.moveDirection);
+            }
+            
             lookDirection = Quaternion.Slerp(movementStateMachine.transform.rotation, lookDirection, movementStateMachine.rotationSpeed * Time.deltaTime);
             movementStateMachine.transform.rotation = lookDirection;
         }

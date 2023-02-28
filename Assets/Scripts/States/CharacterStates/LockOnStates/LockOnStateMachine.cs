@@ -16,7 +16,8 @@ namespace TMD
             LockingOn,
             LockingOff
         };
-
+        [HideInInspector] public Transform lockOnTarget { get; set; }
+        public bool isLockingOn { get; protected set; } = false;
         public bool isLockOnLeftTarget { get; set; } = false;
         public bool isLockOnRightTarget { get; set; } = false;
 

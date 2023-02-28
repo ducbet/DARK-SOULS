@@ -3,8 +3,6 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     [HideInInspector] public Vector2 playerMovement;
-    [HideInInspector] public float playerMovementX;
-    [HideInInspector] public float playerMovementY;
 
     [HideInInspector] public Vector2 cameraRotation;
     [HideInInspector] public float cameraRotationX;
@@ -30,12 +28,7 @@ public class InputManager : MonoBehaviour
         {
             playerControls = new PlayerControls();
         }
-        playerControls.PlayerMovement.Movement.performed += context =>
-        {
-            playerMovement = context.ReadValue<Vector2>();
-            playerMovementX = playerMovement.x;
-            playerMovementY = playerMovement.y;
-        };
+        playerControls.PlayerMovement.Movement.performed += context => playerMovement = context.ReadValue<Vector2>();
         playerControls.PlayerMovement.Sprint.performed += context => isSprinting = true;
         playerControls.PlayerMovement.Sprint.canceled += context => isSprinting = false;
         playerControls.PlayerMovement.Walk.performed += context => isWalking = true;

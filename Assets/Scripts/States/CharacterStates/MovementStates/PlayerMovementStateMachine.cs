@@ -34,6 +34,8 @@ namespace TMD
             // TODO: will be moved to PlayerActionStateMachine in the future
             inputManager.playerControls.PlayerAction.LeftClick.performed += SetIsLeftClickPerformed;
             inputManager.playerControls.PlayerAction.LeftClick.canceled += SetIsLeftClickCanceled;
+
+            inputManager.playerControls.PlayerAction.LockOn.performed += SetIsLockingOnPerformed;
         }
         protected override void OnDestroy()
         {
@@ -52,6 +54,8 @@ namespace TMD
             // TODO: will be moved to PlayerActionStateMachine in the future
             inputManager.playerControls.PlayerAction.LeftClick.performed -= SetIsLeftClickPerformed;
             inputManager.playerControls.PlayerAction.LeftClick.canceled -= SetIsLeftClickCanceled;
+
+            inputManager.playerControls.PlayerAction.LockOn.performed -= SetIsLockingOnPerformed;
         }
         private void SetIsSprintingPerformed(InputAction.CallbackContext context)
         {
@@ -103,20 +107,52 @@ namespace TMD
         {
             isJumping = false;
         }
-        
+
+        private void SetIsLockingOnPerformed(InputAction.CallbackContext context)
+        {
+            // detect and toggle isLockingOn
+            if (isLockingOn)
+            {
+                // if isLockingOn == true -> set to false
+                isLockingOn = false;
+                lockingOnDirection = Vector3.zero;
+            }
+            else
+            {
+                // if isLockingOn == false -> set to true
+                isLockingOn = true;
+            }
+        }
+
         public override void CalculateMoveDirection()
         {
             base.CalculateMoveDirection();
-            Vector3 _moveDirection = cameraTransform.forward * inputManager.playerMovementY + cameraTransform.right * inputManager.playerMovementX;
+            
+            Vector3 _moveDirection = cameraTransform.forward * inputManager.playerMovement.y + cameraTransform.right * inputManager.playerMovement.x;
             _moveDirection.y = 0;
             moveDirection = _moveDirection;
             moveDirection.Normalize();
+
+            if (isLockingOn)
+            {
+                lockingOnDirection = cameraTransform.forward;
+            }
         }
 
         public override void CalculateMoveMagnitude()
         {
             base.CalculateMoveMagnitude();
             moveMagnitude = inputManager.playerMovement.magnitude;
+        }
+
+        public override float GetPlayerMovementHorizontal()
+        {
+            return inputManager.playerMovement.x;
+        }
+
+        public override float GetPlayerMovementVertical()
+        {
+            return inputManager.playerMovement.y;
         }
     }
 }

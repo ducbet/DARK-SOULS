@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class RunState : PlaneMoveState
+    public class RunningState : PlaneMoveState
     {
-        public RunState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
+        public RunningState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
         public override void Enter()
         {
             base.Enter();
@@ -37,12 +37,7 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.isWalking || movementStateMachine.moveMagnitude < movementStateMachine.runThreshold)
-            {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Walking);
-                return;
-            }
-            if (movementStateMachine.isSprinting)
+            if (movementStateMachine.isSprinting && !movementStateMachine.isLockingOn)
             {
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Sprinting);
                 return;
@@ -53,7 +48,23 @@ namespace TMD
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Rolling);
                 return;
             }
-            movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.Running);
+        }
+        protected bool isWalking()
+        {
+            return movementStateMachine.isWalking || movementStateMachine.moveMagnitude < movementStateMachine.runThreshold;
+        }
+
+        protected float getRunForwardAnimValue()
+        {
+            if (movementStateMachine.GetPlayerMovementVertical() > 0 || !movementStateMachine.isLockingOn)
+            {
+                return (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.RunningForward;
+            }
+            else if (movementStateMachine.GetPlayerMovementVertical() < 0)
+            {
+                return -(float)MovementStateMachine.MOVEMENT_STATE_ENUMS.RunningForward;
+            }
+            return 0;
         }
     }
 }

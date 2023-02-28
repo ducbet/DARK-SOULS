@@ -7,11 +7,14 @@ namespace TMD
     public class PlaneMoveState : GroundedState
     {
         protected string moveForwardStateParamName = "MoveForwardState";
+        protected string moveHorizontalStateParamName = "MoveHorizontalState";
         protected int moveForwardStateParam;
+        protected int moveHorizontalStateParam;
 
         public PlaneMoveState(MovementStateMachine movementStateMachine) : base(movementStateMachine)
         {
             moveForwardStateParam = base.movementStateMachine.animatorManager.HashString(moveForwardStateParamName);
+            moveHorizontalStateParam = base.movementStateMachine.animatorManager.HashString(moveHorizontalStateParamName);
         }
         public override void Enter()
         {
