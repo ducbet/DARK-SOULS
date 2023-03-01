@@ -34,6 +34,7 @@ namespace TMD
 
         [HideInInspector] public AnimatorManager animatorManager { get; private set; }
         [HideInInspector] public Rigidbody rgBody { get; private set; }
+        [HideInInspector] public LockOnStateMachine lockOnStateMachine { get; private set; }
 
         [Header("Check grounded Attributes")]
         private Vector3 groundCheckOriginOffset = new Vector3(0f, 1f, 0f);
@@ -59,7 +60,6 @@ namespace TMD
         public bool isRolling { get; protected set; } = false;
         public bool isInteractingObject { get; protected set; } = false;
         public bool isJumping { get; protected set; } = false;
-        public bool isLockingOn { get; protected set; } = false;
 
         // TODO: will be moved to PlayerActionStateMachine in the future
         public bool isLeftClick { get; protected set; } = false;
@@ -91,11 +91,13 @@ namespace TMD
         {
             animatorManager = GetComponent<AnimatorManager>();
             rgBody = GetComponent<Rigidbody>();
+            lockOnStateMachine = GetComponent<LockOnStateMachine>();
             inventoryManager = GetComponent<InventoryManager>(); // TODO: will be moved to PlayerActionStateMachine in the future
             if (groundCheckLayers == 0)
             {
                 groundCheckLayers = (int)CameraManager.LayerMasks.Ground;
             }
+
 
             // TODO: will be moved to PlayerActionStateMachine in the future
             interactablePopup = FindObjectOfType<InteractablePopup>();
@@ -203,6 +205,20 @@ namespace TMD
         public virtual float GetPlayerMovementVertical()
         {
             return 0;
+        }
+
+        public bool IsLockingOn()
+        {
+            return lockOnStateMachine && lockOnStateMachine.isLockingOn;
+        }
+
+        public Vector3 GetLockOnDirection()
+        {
+            if (lockOnStateMachine == null)
+            {
+                return Vector3.zero;
+            }
+            return lockOnStateMachine.GetLockOnDirection();
         }
 
         #region TODO: will be moved to PlayerActionStateMachine in the future

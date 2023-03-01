@@ -8,11 +8,13 @@ namespace TMD
     {
         private LockOnStateMachine lockOnStateMachine;
 
-        private Transform objTranform = null;  // camera tranform if current object is player. else are object transform
+        private Transform objTranform = null;  // camera tranform if current object is player. else are object selfLockOnPoint
         private GameObject nearestObject = null;  // use to ignore locked on object when switch left and right
         private float spherecastThickness = 2f;
-        private float lockOnMaxDistance = 5f;
+        private float lockOnMaxDistance = 10f;
         public LayerMask lockableOnLayers;
+        public LayerMask groundCheckLayers;
+
 
         public LockingOnState(LockOnStateMachine lockOnStateMachine, Transform cameraTranform = null)
         {
@@ -21,6 +23,10 @@ namespace TMD
             {
                 lockableOnLayers = (int)(CameraManager.LayerMasks.Enemy);
             }
+            if (groundCheckLayers == 0)
+            {
+                groundCheckLayers = (int)CameraManager.LayerMasks.Ground;
+            }
 
             if (cameraTranform != null)
             {
@@ -28,33 +34,70 @@ namespace TMD
             }
             else
             {
-                this.objTranform = lockOnStateMachine.transform;
+                this.objTranform = lockOnStateMachine.selfLockOnPoint;
             }
         }
         public override void Enter()
         {
             base.Enter();
+            lockOnStateMachine.isLockingOn = true;
             GetNearestObject();
             if (nearestObject == null)
             {
                 lockOnStateMachine.SwitchState(LockOnStateMachine.LOCK_ON_STATE_ENUMS.LockingOff);
                 return;
             }
-            PlayerLockOnTarget();
+            LockOnTarget();
+            lockOnStateMachine.StartValidatingTarget();
         }
         public override void Exit()
         {
             base.Exit();
             lockOnStateMachine.lockOnTarget = null;
+            lockOnStateMachine.isLockingOn = false;
+            lockOnStateMachine.StopValidatingTarget();
         }
 
-        private void PlayerLockOnTarget()
+        private void LockOnTarget()
         {
             if (nearestObject == null)
             {
                 return;
             }
             lockOnStateMachine.lockOnTarget = GetLockOnPointTransform();
+        }
+
+        private bool IsTargetBlocked(Transform target)
+        {
+            // check whether there is any obstacle blocking the target
+            Transform targetLockOnPoint = target.Find("LockOnPoint");
+            Vector3 targetPosition = targetLockOnPoint != null ? targetLockOnPoint.position : target.position;
+
+            RaycastHit hit;
+            if (Physics.Linecast(lockOnStateMachine.selfLockOnPoint.position, targetPosition, out hit, groundCheckLayers))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsTargetTooFar(Transform target)
+        {
+            // check whether the target is too far from self (when player locked and ran away,...)
+            return Vector3.Distance(target.position, lockOnStateMachine.selfLockOnPoint.position) > lockOnMaxDistance;
+        }
+
+        public bool IsTargetValid(Transform target)
+        {
+            if (IsTargetBlocked(target))
+            {
+                return false;
+            }
+            if (IsTargetTooFar(target))
+            {
+                return false;
+            }
+            return true;
         }
 
         private int GetVectorLeftRightSide(Vector3 targetVector, Vector3 rightVector)
@@ -88,9 +131,20 @@ namespace TMD
 
         private GameObject GetNearestObject(bool left = false, bool right = false)
         {
-            RaycastHit[] hits = Physics.SphereCastAll(lockOnStateMachine.transform.position, spherecastThickness, objTranform.forward, lockOnMaxDistance, lockableOnLayers);
+            RaycastHit[] hits = Physics.SphereCastAll(lockOnStateMachine.selfLockOnPoint.position, spherecastThickness, objTranform.forward, lockOnMaxDistance, lockableOnLayers);
             float nearestDistance = Mathf.Infinity;
             GameObject _nearestObject = null;
+
+            void SelectNearestDistance(RaycastHit hit)
+            {
+                if (IsTargetBlocked(hit.collider.transform))
+                {
+                    return;
+                }
+                nearestDistance = hit.distance;
+                _nearestObject = hit.collider.gameObject;
+            }
+
             foreach (RaycastHit hit in hits)
             {
                 if (hit.collider.gameObject == this.nearestObject)
@@ -101,20 +155,17 @@ namespace TMD
                 {
                     continue;
                 }
-                if (left && IsVectorLeftSide(hit.collider.transform.position - lockOnStateMachine.transform.position, objTranform))
+                if (left && IsVectorLeftSide(hit.collider.transform.position - lockOnStateMachine.selfLockOnPoint.position, objTranform))
                 {
-                    nearestDistance = hit.distance;
-                    _nearestObject = hit.collider.gameObject;
+                    SelectNearestDistance(hit);
                 }
-                else if (right && IsVectorRightSide(hit.collider.transform.position - lockOnStateMachine.transform.position, objTranform))
+                else if (right && IsVectorRightSide(hit.collider.transform.position - lockOnStateMachine.selfLockOnPoint.position, objTranform))
                 {
-                    nearestDistance = hit.distance;
-                    _nearestObject = hit.collider.gameObject;
+                    SelectNearestDistance(hit);
                 }
                 else if (!left && !right)
                 {
-                    nearestDistance = hit.distance;
-                    _nearestObject = hit.collider.gameObject;
+                    SelectNearestDistance(hit);
                 }
             }
             this.nearestObject = _nearestObject;
@@ -148,13 +199,13 @@ namespace TMD
             if (lockOnStateMachine.isLockOnLeftTarget)
             {
                 GetNearestObject(left: true);
-                PlayerLockOnTarget();
+                LockOnTarget();
                 lockOnStateMachine.isLockOnLeftTarget = false;
             }
             if (lockOnStateMachine.isLockOnRightTarget)
             {
                 GetNearestObject(right: true);
-                PlayerLockOnTarget();
+                LockOnTarget();
                 lockOnStateMachine.isLockOnRightTarget = false;
             }
         }

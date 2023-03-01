@@ -17,6 +17,7 @@ namespace TMD
             base.Enter();
             Debug.Log("LockingOffState: Enter");
             lockOnStateMachine.lockOnTarget = null;
+            lockOnStateMachine.isLockingOn = false;
         }
 
         public override void FixedUpdate()

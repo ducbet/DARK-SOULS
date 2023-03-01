@@ -37,7 +37,7 @@ namespace TMD
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.RunningForward);
                 return;
             }
-            if (movementStateMachine.isLockingOn)
+            if (movementStateMachine.IsLockingOn())
             {
                 if (movementStateMachine.GetPlayerMovementHorizontal() > 0)
                 {

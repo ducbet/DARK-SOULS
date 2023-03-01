@@ -17,9 +17,13 @@ namespace TMD
             LockingOff
         };
         [HideInInspector] public Transform lockOnTarget { get; set; }
-        public bool isLockingOn { get; protected set; } = false;
+        public bool isLockingOn { get; set; } = false;
         public bool isLockOnLeftTarget { get; set; } = false;
         public bool isLockOnRightTarget { get; set; } = false;
+
+        [HideInInspector] public Transform selfLockOnPoint = null;
+
+        private IEnumerator validateTargetCoroutine = null; // check target is obstacled, too far away,...
 
         protected virtual void Awake()
         {
@@ -29,6 +33,7 @@ namespace TMD
         protected virtual void Start()
         {
             SwitchState(states[(int)LOCK_ON_STATE_ENUMS.LockingOff]);
+            selfLockOnPoint = transform.Find("LockOnPoint");
         }
 
         protected override void Update()
@@ -54,6 +59,41 @@ namespace TMD
             states = new State[Enum.GetNames(typeof(LOCK_ON_STATE_ENUMS)).Length];
             states[(int)LOCK_ON_STATE_ENUMS.LockingOn] = new LockingOnState(this);
             states[(int)LOCK_ON_STATE_ENUMS.LockingOff] = new LockingOffState(this);
+        }
+        public Vector3 GetLockOnDirection()
+        {
+            if (lockOnTarget == null)
+            {
+                return Vector3.zero;
+            }
+            return lockOnTarget.position - transform.position;
+        }
+
+        public void StartValidatingTarget()
+        {
+            validateTargetCoroutine = ValidateTarget();
+            StartCoroutine(validateTargetCoroutine);
+        }
+        public void StopValidatingTarget()
+        {
+            if (validateTargetCoroutine == null)
+            {
+                return;
+            }
+            StopCoroutine(validateTargetCoroutine);
+        }
+
+        public IEnumerator ValidateTarget()
+        {
+            while (lockOnTarget != null)
+            {
+                if (((LockingOnState)states[(int)LOCK_ON_STATE_ENUMS.LockingOn]).IsTargetValid(lockOnTarget) == false)
+                {
+                    break;
+                }
+                yield return new WaitForSeconds(0.2f);
+            }
+            SwitchState(LockOnStateMachine.LOCK_ON_STATE_ENUMS.LockingOff);
         }
     }
 }
