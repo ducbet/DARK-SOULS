@@ -56,7 +56,7 @@ namespace TMD
         }
         protected float getWalkForwardAnimValue()
         {
-            if (movementStateMachine.GetPlayerMovementVertical() > 0 || !movementStateMachine.isLockingOn)
+            if (movementStateMachine.GetPlayerMovementVertical() > 0 || !movementStateMachine.IsLockingOn())
             {
                 return (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.WalkingForward;
             }

@@ -37,7 +37,7 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.isSprinting && !movementStateMachine.isLockingOn)
+            if (movementStateMachine.isSprinting && !movementStateMachine.IsLockingOn())
             {
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Sprinting);
                 return;
@@ -56,7 +56,7 @@ namespace TMD
 
         protected float getRunForwardAnimValue()
         {
-            if (movementStateMachine.GetPlayerMovementVertical() > 0 || !movementStateMachine.isLockingOn)
+            if (movementStateMachine.GetPlayerMovementVertical() > 0 || !movementStateMachine.IsLockingOn())
             {
                 return (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.RunningForward;
             }
