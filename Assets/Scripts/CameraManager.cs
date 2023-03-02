@@ -43,8 +43,7 @@ namespace TMD
             Controller = 6,
             Environment = 7,
             Ground = 8,
-            Player = 9,
-            Enemy = 10,
+            Character = 9,
         }
 
         public enum LayerMasks
@@ -56,8 +55,7 @@ namespace TMD
             Controller = 1 << LayerBits.Controller,
             Environment = 1 << LayerBits.Environment,
             Ground = 1 << LayerBits.Ground,
-            Player = 1 << LayerBits.Player,
-            Enemy = 1 << LayerBits.Enemy,
+            Character = 1 << LayerBits.Character,
         }
 
         private void Awake()
@@ -81,7 +79,7 @@ namespace TMD
 
             if (collisionLayers == 0)
             {
-                collisionLayers = (int)~(LayerMasks.TransparentFX | LayerMasks.IgnoreRaycast | LayerMasks.UI | LayerMasks.Controller | LayerMasks.Environment | LayerMasks.Player);
+                collisionLayers = (int)~(LayerMasks.TransparentFX | LayerMasks.IgnoreRaycast | LayerMasks.UI | LayerMasks.Controller | LayerMasks.Environment | LayerMasks.Character);
             }
         }
 
