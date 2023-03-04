@@ -20,9 +20,9 @@ namespace TMD
         {
             if (isStateChanged)
             {
-                Debug.LogWarning("IsStateChanged: " + isStateChanged +
-                    ". Changed from state " + this.GetType().Name +
-                    " in the middle of Update/... function");
+                //Debug.LogWarning("IsStateChanged: " + isStateChanged +
+                //    ". Changed from state " + this.GetType().Name +
+                //    " in the middle of Update/... function");
             }
             return isStateChanged;
         }

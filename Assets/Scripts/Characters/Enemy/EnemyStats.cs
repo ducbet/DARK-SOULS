@@ -5,18 +5,11 @@ using UnityEngine;
 namespace TMD
 {
     [RequireComponent(typeof(Animator))]
-    public class EnemyStats : MonoBehaviour
+    public class EnemyStats : CharacterStats
     {
-        public static string ENEMY_TAG = "Enemy";
-
-        public int healthLevel = 1;
-        public int maxHealth;
-        public int currentHealth;
-
         public Animator animator;
         private void Awake()
         {
-
             animator = GetComponent<Animator>();
         }
         private void Start()
@@ -29,7 +22,7 @@ namespace TMD
             currentHealth = maxHealth;
         }
 
-        public void TakeDamage(int damageAmount)
+        public override void TakeDamage(int damageAmount)
         {
             currentHealth -= damageAmount;
             if (currentHealth <= 0)

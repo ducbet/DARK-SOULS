@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TMD
 {
@@ -9,12 +10,22 @@ namespace TMD
         public State currentState;
         public State[] states;
 
+        // debug
+        public Text currentStateUI;
+
+        protected virtual void Start()
+        {
+            currentStateUI = GameObject.Find("DebugCurrentState").GetComponent<Text>();
+        }
+
         public void SwitchState(State newState)
         {
             preState = currentState;
             currentState?.Exit();
             currentState = newState;
             currentState?.Enter();
+            Debug.Log(gameObject.name + " current state: " + currentState.GetType().ToString());
+            currentStateUI.text = currentState.GetType().ToString(); // Debug
         }
 
         public void SwitchState(Enum stateEnum)

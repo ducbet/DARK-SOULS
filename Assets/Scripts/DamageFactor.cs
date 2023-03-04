@@ -34,15 +34,10 @@ namespace TMD
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag(PlayerManager.PLAYER_TAG))
+            if (other.CompareTag(PlayerManager.PLAYER_TAG) || other.CompareTag(EnemyManager.ENEMY_TAG))
             {
-                PlayerStats playerStats = other.GetComponent<PlayerStats>();
-                playerStats.TakeDamage(damage);
-            }
-            else if (other.CompareTag(EnemyStats.ENEMY_TAG))
-            {
-                EnemyStats enemyStats = other.GetComponent<EnemyStats>();
-                enemyStats.TakeDamage(damage);
+                CharacterStats characterStats = other.GetComponent<CharacterStats>();
+                characterStats.TakeDamage(damage);
             }
         }
     }

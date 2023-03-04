@@ -8,9 +8,6 @@ namespace TMD
 {
     public class LockOnStateMachine : StateMachine
     {
-        // debug
-        public Text currentStateUI;
-
         public enum LOCK_ON_STATE_ENUMS
         {
             LockingOn,
@@ -30,8 +27,9 @@ namespace TMD
             InitStates();
         }
 
-        protected virtual void Start()
+        protected override void Start()
         {
+            base.Start();
             SwitchState(states[(int)LOCK_ON_STATE_ENUMS.LockingOff]);
             selfLockOnPoint = transform.Find("LockOnPoint");
         }
@@ -39,7 +37,6 @@ namespace TMD
         protected override void Update()
         {
             base.Update();
-            currentStateUI.text = currentState.GetType().ToString(); // Debug
         }
 
         void OnDrawGizmos()
@@ -91,9 +88,9 @@ namespace TMD
                 {
                     break;
                 }
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.5f);
             }
-            SwitchState(LockOnStateMachine.LOCK_ON_STATE_ENUMS.LockingOff);
+            SwitchState(LOCK_ON_STATE_ENUMS.LockingOff);
         }
     }
 }

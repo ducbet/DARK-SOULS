@@ -21,7 +21,7 @@ namespace TMD
             this.lockOnStateMachine = lockOnStateMachine;
             if (lockableOnLayers == 0)
             {
-                lockableOnLayers = (int)(CameraManager.LayerMasks.Enemy);
+                lockableOnLayers = (int)(CameraManager.LayerMasks.Character);
             }
             if (groundCheckLayers == 0)
             {
@@ -86,14 +86,28 @@ namespace TMD
             // check whether the target is too far from self (when player locked and ran away,...)
             return Vector3.Distance(target.position, lockOnStateMachine.selfLockOnPoint.position) > lockOnMaxDistance;
         }
+        private bool IsSelf(Transform target)
+        {
+            // target can be LockOnPoint or the parent target. check LockOnPoint first
+            if (target.gameObject == lockOnStateMachine.gameObject)
+            {
+                return true;
+            }
+            return target.parent.gameObject == lockOnStateMachine.gameObject;
+        }
 
         public bool IsTargetValid(Transform target)
         {
-            if (IsTargetBlocked(target))
+            if (IsSelf(target))
             {
+                
                 return false;
             }
             if (IsTargetTooFar(target))
+            {
+                return false;
+            }
+            if (IsTargetBlocked(target))
             {
                 return false;
             }

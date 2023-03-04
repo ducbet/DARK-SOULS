@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace TMD
 {
+    [RequireComponent(typeof(DetectCharacterStateMachine))]
     public class EnemyManager : CharacterManager
     {
-        public static string PLAYER_TAG = "Enemy";
+        public static string ENEMY_TAG = "Enemy";
 
     }
 }

@@ -8,10 +8,6 @@ namespace TMD
 {
     public class MovementStateMachine : StateMachine
     {
-        // MovementStateMachine but also contains actions. Will be separated later
-        // debug
-        public Text currentStateUI;
-        
         public enum MOVEMENT_STATE_ENUMS {
             // Idle~Sprinting enums used to pass to animation blend tree. Must be put it in the beggin
             Idle, 
@@ -105,14 +101,15 @@ namespace TMD
             {
                 interactableLayers = (int)~(CameraManager.LayerMasks.TransparentFX | CameraManager.LayerMasks.IgnoreRaycast |
                     CameraManager.LayerMasks.UI | CameraManager.LayerMasks.Controller | CameraManager.LayerMasks.Ground |
-                    CameraManager.LayerMasks.Water | CameraManager.LayerMasks.Environment | CameraManager.LayerMasks.Player);
+                    CameraManager.LayerMasks.Water | CameraManager.LayerMasks.Environment | CameraManager.LayerMasks.Character);
             }
 
             InitStates();
         }
 
-        protected virtual void Start()
+        protected override void Start()
         {
+            base.Start();
             SwitchState(states[(int)MOVEMENT_STATE_ENUMS.Idle]);
 
             checkForInteractableObject = StartCoroutine(CheckForInteractableObject());
@@ -128,7 +125,6 @@ namespace TMD
         {
             base.Update();
             CheckGrounded();
-            //currentStateUI.text = currentState.GetType().ToString(); // Debug
         }
 
         private void InitStates()

@@ -4,19 +4,12 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class PlayerStats : MonoBehaviour
+    public class PlayerStats : CharacterStats
     {
-        public int healthLevel = 10;
-        public int staminaLevel = 10;
         public SliderBar healthBar;
         public SliderBar staminaBar;
 
         private PlayerMovementStateMachine playerMovementStateMachine;
-        private int maxHealth;
-        private int currentHealth;
-        private int maxStamina;
-        private int currentStamina;
-
 
         private void Awake()
         {
@@ -24,6 +17,8 @@ namespace TMD
         }
         private void Start()
         {
+            healthBar = GameObject.Find("PlayerGUI").transform.Find("HealthBar").GetComponent<SliderBar>();
+            staminaBar = GameObject.Find("PlayerGUI").transform.Find("StaminaBar").GetComponent<SliderBar>();
             SetMaxHealthFromHealthLevel();
             SetMaxStaminaFromStaminaLevel();
         }
@@ -41,7 +36,7 @@ namespace TMD
             staminaBar.SetMaxHealth(maxStamina);
         }
 
-        public void TakeDamage(int damageAmount)
+        public override void TakeDamage(int damageAmount)
         {
             currentHealth -= damageAmount;
             if (currentHealth <= 0)

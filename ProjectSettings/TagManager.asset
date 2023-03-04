@@ -15,8 +15,8 @@ TagManager:
   - Controller
   - Environment
   - Ground
-  - Player
-  - Enemy
+  - Character
+  - 
   - 
   - 
   - 
