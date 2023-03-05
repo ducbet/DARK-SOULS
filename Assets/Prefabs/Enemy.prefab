@@ -1353,13 +1353,14 @@ GameObject:
   - component: {fileID: 5907205690330182499}
   - component: {fileID: 5907205690330182496}
   - component: {fileID: 2225744634132661549}
+  - component: {fileID: 3163525076242158575}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6228519216620551579
 Transform:
   m_ObjectHideFlags: 0
@@ -1392,7 +1393,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &5907205690330182500
 CapsuleCollider:
@@ -1441,7 +1442,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthLevel: 1
   staminaLevel: 10
-  animator: {fileID: 0}
+  animatorManager: {fileID: 0}
 --- !u!114 &2225744634132661549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1455,6 +1456,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockOnTransform: {fileID: 0}
+--- !u!114 &3163525076242158575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6718233296665110305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9f6d72c17814342b34d4c59f4d039f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentStateUI: {fileID: 0}
+  startLandingHeight: 1.5
+  groundCheckLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  isGrounded: 1
+  runThreshold: 0.55
+  walkingSpeed: 1
+  runningSpeed: 4
+  sprintingSpeed: 7
+  inventoryManager: {fileID: 0}
+  rootMotionSpeed: 1
+  canStartComboAttack: 0
+  checkObjectInterval: 0.2
+  checkObjectRayThickness: 1
+  checkObjectRayLength: 2
+  interactablePopup: {fileID: 0}
+  interactableLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  interactableItem: {fileID: 0}
+  rollingVelocityScale: 1
+  fallingVelocity: 33
+  leapingVelocity: {x: 0, y: 0, z: 0}
+  leapingVelocitySmoothTime: 2
+  isPlayingAnimation: 0
+  canStartFalling: 0
+  foundTarget: {fileID: 0}
 --- !u!1 &6845362427090764922
 GameObject:
   m_ObjectHideFlags: 0

@@ -110,7 +110,7 @@ namespace TMD
         protected override void Start()
         {
             base.Start();
-            SwitchState(states[(int)MOVEMENT_STATE_ENUMS.Idle]);
+            SwitchState(MOVEMENT_STATE_ENUMS.Idle);
 
             checkForInteractableObject = StartCoroutine(CheckForInteractableObject());
         }

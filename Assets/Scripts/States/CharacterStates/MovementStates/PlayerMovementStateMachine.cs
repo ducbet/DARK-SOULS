@@ -110,8 +110,7 @@ namespace TMD
             
             Vector3 _moveDirection = cameraTransform.forward * inputManager.playerMovement.y + cameraTransform.right * inputManager.playerMovement.x;
             _moveDirection.y = 0;
-            moveDirection = _moveDirection;
-            moveDirection.Normalize();
+            moveDirection = Vector3.Normalize(_moveDirection);
         }
 
         public override void CalculateMoveMagnitude()
