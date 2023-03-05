@@ -41,16 +41,16 @@ namespace TMD
         {
             item = item != null ? item : GetCurrentItemObject(isRightHand: false);
             leftHandItem = slotManager.LoadItemOnSlot(item, isRightHand: false);
-            animatorManager.CrossFade(item.GetLeftArmIdleAnimation());
-            animatorManager.CrossFade(item.GetLeftArmEmptyAnimation());
+            animatorManager.PlayTargetAnimation(item.GetLeftArmIdleAnimation());
+            animatorManager.PlayTargetAnimation(item.GetLeftArmEmptyAnimation());
         }
 
         public void EquipRightHandItems(ItemObject item = null)
         {
             item = item != null ? item : GetCurrentItemObject();
             rightHandItem = slotManager.LoadItemOnSlot(item);
-            animatorManager.CrossFade(item.GetRightArmIdleAnimation());
-            animatorManager.CrossFade(item.GetRightArmEmptyAnimation());
+            animatorManager.PlayTargetAnimation(item.GetRightArmIdleAnimation());
+            animatorManager.PlayTargetAnimation(item.GetRightArmEmptyAnimation());
         }
 
         public void SwitchLeftHandItems()

@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace TMD
 {
-    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(AnimatorManager))]
     public class EnemyStats : CharacterStats
     {
-        public Animator animator;
+        [HideInInspector] public AnimatorManager animatorManager;
         private void Awake()
         {
-            animator = GetComponent<Animator>();
+            animatorManager = GetComponent<AnimatorManager>();
         }
         private void Start()
         {
@@ -28,10 +28,10 @@ namespace TMD
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                animator.Play("Die");
+                animatorManager.PlayTargetAnimation("Die");
                 return;
             }
-            animator.Play("Dodge Back");
+            animatorManager.PlayTargetAnimation("Dodge Back");
         }
     }
 }
