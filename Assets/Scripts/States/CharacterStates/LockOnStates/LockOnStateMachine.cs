@@ -30,7 +30,7 @@ namespace TMD
         protected override void Start()
         {
             base.Start();
-            SwitchState(states[(int)LOCK_ON_STATE_ENUMS.LockingOff]);
+            SwitchState(LOCK_ON_STATE_ENUMS.LockingOff);
             selfLockOnPoint = transform.Find("LockOnPoint");
         }
 

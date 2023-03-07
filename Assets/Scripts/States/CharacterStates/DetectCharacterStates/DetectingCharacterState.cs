@@ -45,7 +45,7 @@ namespace TMD
                 GameObject character = collider.gameObject;
                 if (IsTargetValid(character.transform))
                 {
-                    detectCharacterStateMachine.foundTarget = character.transform;
+                    detectCharacterStateMachine.FoundTarget = character.transform;
                     return character;
                 }
             }
@@ -53,21 +53,22 @@ namespace TMD
         }
 
         // make shared funtion later
-        public bool IsTargetValid(Transform target)
+        public bool IsTargetValid(Transform target, bool isFollowing = false)
         {
-            if (IsSelf(target))
+            // only have to check IsTargetBlocked when following target. 
+            if (!isFollowing && IsSelf(target))
             {
                 return false;
             }
-            if (IsTargetTooFar(target))
+            if (!isFollowing && IsTargetTooFar(target))
             {
                 return false;
             }
-            if (IsTargetBlocked(target))
+            if (!isFollowing && IsTargetOutsidePOV(target))
             {
                 return false;
             }
-            if (IsTargetOutsidePOV(target))
+            if (IsTargetBlocked(target, isFollowing))
             {
                 return false;
             }
@@ -79,14 +80,21 @@ namespace TMD
             return target.gameObject == detectCharacterStateMachine.gameObject;
         }
 
-        private bool IsTargetBlocked(Transform target)
+        private bool IsTargetBlocked(Transform target, bool isFollowing)
         {
             // check whether there is any obstacle blocking the target
-            Transform targetLockOnPoint = target.Find("LockOnPoint");
-            Vector3 targetPosition = targetLockOnPoint != null ? targetLockOnPoint.position : target.position;
-
+            Vector3 targetPosition = Vector3.zero;
+            if (isFollowing)
+            {
+                targetPosition = detectCharacterStateMachine.TargetLockOnPoint.position;
+            }
+            else
+            {
+                Transform targetLockOnPoint = target.Find("LockOnPoint");
+                targetPosition = targetLockOnPoint != null ? targetLockOnPoint.position : target.position;
+            }
             RaycastHit hit;
-            if (Physics.Linecast(detectCharacterStateMachine.transform.position, targetPosition, out hit, groundCheckLayers))
+            if (Physics.Linecast(detectCharacterStateMachine.SelfLockOnPoint.position, targetPosition, out hit, groundCheckLayers))
             {
                 return true;
             }

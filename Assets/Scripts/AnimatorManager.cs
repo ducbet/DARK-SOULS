@@ -15,20 +15,29 @@ namespace TMD
         {
             animator = GetComponent<Animator>();
         }
-
-        public void CrossFade(string animationName, float fadeLength = 0.2f)
-        {
-            animator.CrossFade(animationName, fadeLength);
-        }
-
+       
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)
         {
-            animator.CrossFade(animationName, fadeLength);
+            if (fadeLength == 0f)
+            {
+                animator.Play(animationName);
+            }
+            else
+            {
+                animator.CrossFade(animationName, fadeLength);
+            }
         }
 
         public void PlayTargetAnimation(int animationId, float fadeLength = 0.2f)
         {
-            animator.CrossFade(animationId, fadeLength);
+            if (fadeLength == 0f)
+            {
+                animator.Play(animationId);
+            }
+            else
+            {
+                animator.CrossFade(animationId, fadeLength);
+            }
         }
 
         public void EnableRootMotion()

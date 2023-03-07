@@ -17,18 +17,17 @@ namespace TMD
         {
             currentStateUI = GameObject.Find("DebugCurrentState").GetComponent<Text>();
         }
-
-        public void SwitchState(State newState)
+        private void SwitchState(State newState)
         {
             preState = currentState;
             currentState?.Exit();
             currentState = newState;
             currentState?.Enter();
-            Debug.Log(gameObject.name + " current state: " + currentState.GetType().ToString());
+            //Debug.Log(gameObject.name + " current state: " + currentState.GetType().ToString());
             currentStateUI.text = currentState.GetType().ToString(); // Debug
         }
 
-        public void SwitchState(Enum stateEnum)
+        public virtual void SwitchState(Enum stateEnum)
         {
             SwitchState(GetState(stateEnum));
         }

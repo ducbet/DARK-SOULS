@@ -16,7 +16,7 @@ namespace TMD
         {
             base.Enter();
             detectCharacterStateMachine.isStopDetecting = true;
-            detectCharacterStateMachine.foundTarget = null;
+            detectCharacterStateMachine.FoundTarget = null;
             detectCharacterStateMachine.StopValidatingFoundTarget();
         }
 

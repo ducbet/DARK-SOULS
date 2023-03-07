@@ -66,7 +66,10 @@ namespace TMD
             Quaternion lookDirection = Quaternion.identity;
             if (movementStateMachine.IsLockingOn())
             {
-                lookDirection = Quaternion.LookRotation(movementStateMachine.GetLockOnDirection());
+                Vector3 lockOnDirection = movementStateMachine.GetLockOnDirection();
+                lockOnDirection.y = 0;
+                lockOnDirection.Normalize();
+                lookDirection = Quaternion.LookRotation(lockOnDirection);
             }
             else
             {
