@@ -21,7 +21,7 @@ namespace TMD
         public override void Exit()
         {
             base.Exit();
-            detectCharacterStateMachine.foundTarget = null;
+            detectCharacterStateMachine.FoundTarget = null;
             detectCharacterStateMachine.StopValidatingFoundTarget();
         }
 

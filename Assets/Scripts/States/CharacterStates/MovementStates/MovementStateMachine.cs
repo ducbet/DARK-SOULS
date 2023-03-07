@@ -50,6 +50,7 @@ namespace TMD
 
         // Rotation Attributes
         public float rotationSpeed { get; private set; } = 6f;
+        public bool is_AI_control { get; set; } = true; // = false if NavMeshAgent controls the movement
 
         public bool isSprinting { get; protected set; } = false;
         public bool isWalking { get; protected set; } = false;

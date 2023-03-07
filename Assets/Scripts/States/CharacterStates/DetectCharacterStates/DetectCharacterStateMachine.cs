@@ -14,7 +14,26 @@ namespace TMD
             StopDetecting  // resting state. Have to change DetectingState by trigger,...
         };
 
-        [HideInInspector] public Transform foundTarget { get; set; }
+        private Transform foundTarget;
+        [HideInInspector] public Transform SelfLockOnPoint { get; private set; }
+        [HideInInspector] public Transform TargetLockOnPoint { get; private set; }
+        [HideInInspector] public Transform FoundTarget {
+            get {
+                return foundTarget;
+            }
+            set {
+                foundTarget = value;
+                if (foundTarget == null)
+                {
+                    TargetLockOnPoint = null;
+                }
+                else
+                {
+                    TargetLockOnPoint = foundTarget.Find("LockOnPoint");
+                    TargetLockOnPoint = TargetLockOnPoint != null ? TargetLockOnPoint : foundTarget;
+                }
+            } 
+        }
         public bool isStopDetecting = false;
         public LayerMask characterLayer;
 
@@ -26,6 +45,9 @@ namespace TMD
         protected virtual void Awake()
         {
             InitStates();
+
+            SelfLockOnPoint = transform.Find("LockOnPoint");
+            SelfLockOnPoint = SelfLockOnPoint != null ? SelfLockOnPoint : transform;
         }
         protected override void Start()
         {
@@ -70,14 +92,14 @@ namespace TMD
         {
             yield return null; // Wait until the next frame. If not, the state is changed before listerner can execute
             // used after detecting and start validating found target
-            while (foundTarget != null)
+            while (FoundTarget != null)
             {
                 if (isStopDetecting)
                 {
                     StopDetecting();
                     yield break;
                 }
-                if (((DetectingCharacterState)states[(int)DETECT_CHARACTER_STATE_ENUMS.DetectingState]).IsTargetValid(foundTarget) == false)
+                if (((DetectingCharacterState)states[(int)DETECT_CHARACTER_STATE_ENUMS.DetectingState]).IsTargetValid(FoundTarget, isFollowing: true) == false)
                 {
                     SwitchState(DETECT_CHARACTER_STATE_ENUMS.DetectingState);
                     yield break;
@@ -128,7 +150,7 @@ namespace TMD
         public IEnumerator DetectTarget()
         {
             yield return null; // Wait until the next frame. If not, the state is changed before listerner can execute
-            while (foundTarget == null)
+            while (FoundTarget == null)
             {
                 if (isStopDetecting)
                 {
@@ -154,7 +176,7 @@ namespace TMD
         }
         protected virtual void OnFoundTarget()
         {
-            TargetFound?.Invoke(this, foundTarget);
+            TargetFound?.Invoke(this, FoundTarget);
         }
 
         protected virtual void OnTargetNotFound()
