@@ -23,10 +23,7 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.is_AI_control)
-            {
-                movementStateMachine.rgBody.velocity = movementStateMachine.moveDirection * movementStateMachine.sprintingSpeed;
-            }
+            movementStateMachine.rgBody.velocity = movementStateMachine.moveDirection * movementStateMachine.sprintingSpeed;
         }
 
         public override void LateUpdate()

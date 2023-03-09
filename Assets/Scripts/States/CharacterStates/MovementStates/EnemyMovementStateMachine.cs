@@ -21,9 +21,12 @@ namespace TMD
         {
             base.Awake();
             navMeshAgent = GetComponent<NavMeshAgent>();
+            navMeshAgent.updatePosition = false;
+            navMeshAgent.updateRotation = false;
+            //navMeshAgent.updateUpAxis = false;
+
             detectCharacterStateMachine = GetComponent<DetectCharacterStateMachine>();
-            movementStateMachine = GetComponent<MovementStateMachine>();
-            movementStateMachine.is_AI_control = false;  // disable movement of state. Use navMeshAgent movement
+            //movementStateMachine = GetComponent<MovementStateMachine>();
             detectCharacterStateMachine.TargetFound += StartFollowingTarget;
             detectCharacterStateMachine.TargetNotFound += StopFollowingTarget;
 
@@ -51,6 +54,8 @@ namespace TMD
         public override void CalculateMoveDirection()
         {
             base.CalculateMoveDirection();
+            moveDirection = Vector3.Normalize(navMeshAgent.desiredVelocity);
+            navMeshAgent.nextPosition = transform.position;  // reset navmesh position self position (because the speed is different)
         }
 
         public override void CalculateMoveMagnitude()
