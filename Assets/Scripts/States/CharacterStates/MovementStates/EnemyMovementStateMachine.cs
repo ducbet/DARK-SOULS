@@ -26,13 +26,16 @@ namespace TMD
             //navMeshAgent.updateUpAxis = false;
 
             detectCharacterStateMachine = GetComponent<DetectCharacterStateMachine>();
-            //movementStateMachine = GetComponent<MovementStateMachine>();
-            detectCharacterStateMachine.TargetFound += StartFollowingTarget;
-            detectCharacterStateMachine.TargetNotFound += StopFollowingTarget;
+            movementStateMachine = GetComponent<MovementStateMachine>();
+            movementStateMachine.rgBody.isKinematic = false;
+            //detectCharacterStateMachine.TargetFound += StartFollowingTarget;
+            //detectCharacterStateMachine.TargetNotFound += StopFollowingTarget;
+
+            movementStateMachine.CharacterLanded += HandleCharacterLanded;
 
             // test
-            //GameObject player = GameObject.Find("Player");
-            //StartFollowingTarget(null, player.transform);
+            GameObject player = GameObject.Find("Player");
+            StartFollowingTarget(null, player.transform);
         }
 
         protected override void OnDestroy()
@@ -40,6 +43,7 @@ namespace TMD
             base.OnDestroy();
             detectCharacterStateMachine.TargetFound -= StartFollowingTarget;
             detectCharacterStateMachine.TargetNotFound -= StopFollowingTarget;
+            movementStateMachine.CharacterLanded -= HandleCharacterLanded;
         }
 
         protected override void Start()
@@ -56,6 +60,23 @@ namespace TMD
             base.CalculateMoveDirection();
             moveDirection = Vector3.Normalize(navMeshAgent.desiredVelocity);
             navMeshAgent.nextPosition = transform.position;  // reset navmesh position self position (because the speed is different)
+            if (navMeshAgent.isOnOffMeshLink)
+            {
+                StartCoroutine(StartJumpingCoroutine());
+            }
+        }
+
+        public IEnumerator StartJumpingCoroutine()
+        {
+            isJumping = true;
+            yield return null;
+            isJumping = false;
+        }
+
+        public void HandleCharacterLanded(object sender, EventArgs e)
+        {
+            navMeshAgent.CompleteOffMeshLink();
+            navMeshAgent.nextPosition = transform.position;
         }
 
         public override void CalculateMoveMagnitude()

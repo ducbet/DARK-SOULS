@@ -82,6 +82,7 @@ namespace TMD
 
         public bool isPlayingAnimation = false;  // animations except Idle, Walking, Running, Sprinting
         public bool canStartFalling = false;
+        public event EventHandler CharacterLanded;
 
         protected virtual void Awake()
         {
@@ -125,6 +126,15 @@ namespace TMD
         {
             base.Update();
             CheckGrounded();
+        }
+        public override void SwitchState(Enum stateEnum)
+        {
+            base.SwitchState(stateEnum);
+            if ((MOVEMENT_STATE_ENUMS)stateEnum == MOVEMENT_STATE_ENUMS.Laned)
+            {
+                CharacterLanded?.Invoke(this, EventArgs.Empty);
+                return;
+            }
         }
 
         private void InitStates()
