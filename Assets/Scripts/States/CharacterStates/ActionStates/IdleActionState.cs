@@ -36,9 +36,14 @@ namespace TMD
             }
             if (actionStateMachine.isRolling)
             {
-                // If Idle -> DodgingBack, else Rolling
-                //actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.DodgingBack);
-                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Rolling);
+                if (actionStateMachine.isMoving)
+                {
+                    actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Rolling);
+                }
+                else
+                {
+                    actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.DodgingBack);
+                }
                 return;
             }
             if (actionStateMachine.isInteractingObject && actionStateMachine.interactableItem != null)

@@ -15,16 +15,18 @@ namespace TMD
             Attacking,
             Dying,
             //Jumping,
-            //DodgingBack
+            DodgingBack,
         };
         [HideInInspector] public Rigidbody rgBody { get; private set; }
         [HideInInspector] public AnimatorManager animatorManager { get; private set; }
+        [HideInInspector] public MovementStateMachine movementStateMachine { get; private set; }
         [HideInInspector] public InventoryManager inventoryManager;
         [Header("Roll Attributes")]
         public float rollingVelocityScale = 1f;
         public bool isPlayingAnimation = false;
         public event EventHandler<ActionStateMachine.ACTION_STATE_ENUMS> ActionPerformed;
         public Coroutine checkForInteractableObject;
+        public bool isMoving { get; set; } = false;
         public bool isRolling { get; protected set; } = false;
         public bool isInteractingObject { get; protected set; } = false;
 
@@ -42,6 +44,11 @@ namespace TMD
             rgBody = GetComponent<Rigidbody>();
             animatorManager = GetComponent<AnimatorManager>();
             inventoryManager = GetComponent<InventoryManager>();
+            movementStateMachine = GetComponent<MovementStateMachine>();
+            if (movementStateMachine)
+            {
+                movementStateMachine.OnMoving += OnMovingHandler;
+            }
 
             interactablePopup = FindObjectOfType<InteractablePopup>();
             if (interactableLayers == 0)
@@ -77,6 +84,7 @@ namespace TMD
             states[(int)ACTION_STATE_ENUMS.Idle] = new IdleActionState(this);
             states[(int)ACTION_STATE_ENUMS.Rolling] = new RollingState(this);
             states[(int)ACTION_STATE_ENUMS.PickingUp] = new PickingUpState(this);
+            states[(int)ACTION_STATE_ENUMS.DodgingBack] = new DodgingBackState(this);
         }
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)
         {
@@ -117,6 +125,15 @@ namespace TMD
                 }
                 yield return new WaitForSeconds(checkObjectInterval);
             }
+        }
+        public void OnMovingHandler(object sender, MovementStateMachine.MOVEMENT_STATE_ENUMS newMovementState)
+        {
+            if (newMovementState == MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle)
+            {
+                isMoving = false;
+                return;
+            }
+            isMoving = true;
         }
     }
 }

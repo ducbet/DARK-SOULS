@@ -42,12 +42,6 @@ namespace TMD
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Sprinting);
                 return;
             }
-            //if (movementStateMachine.isRolling)
-            //{
-            //    // If Idle -> DodgingBack, else Rolling
-            //    movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Rolling);
-            //    return;
-            //}
         }
         protected bool isWalking()
         {

@@ -2,26 +2,26 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class DodgingBackState : GroundedState
+    public class DodgingBackState : ActionState
     {
         private string dodgeBackAnimationName = "Dodge Back";
         private int dodgeBackAnimation;
 
-        public DodgingBackState(MovementStateMachine movementStateMachine) : base(movementStateMachine)
+        public DodgingBackState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
         {
-            dodgeBackAnimation = movementStateMachine.animatorManager.HashString(dodgeBackAnimationName);
+            dodgeBackAnimation = actionStateMachine.animatorManager.HashString(dodgeBackAnimationName);
         }
         public override void Enter()
         {
             base.Enter();
-            movementStateMachine.animatorManager.EnableRootMotion();
-            movementStateMachine.PlayTargetAnimation(dodgeBackAnimation);
+            actionStateMachine.animatorManager.EnableRootMotion();
+            actionStateMachine.PlayTargetAnimation(dodgeBackAnimation);
         }
 
         public override void Exit()
         {
             base.Exit();
-            movementStateMachine.animatorManager.DisableRootMotion();
+            actionStateMachine.animatorManager.DisableRootMotion();
         }
 
         public override void FixedUpdate()
@@ -41,13 +41,13 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.animatorManager.isUsingRootMotion)
+            if (actionStateMachine.animatorManager.isUsingRootMotion)
             {
-                HandleRootMotionMovements(movementStateMachine.rollingVelocityScale);
+                HandleRootMotionMovements(actionStateMachine.rollingVelocityScale);
             }
-            if (!movementStateMachine.isPlayingAnimation)
+            if (!actionStateMachine.isPlayingAnimation)
             {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle);
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Idle);
                 return;
             }
         }

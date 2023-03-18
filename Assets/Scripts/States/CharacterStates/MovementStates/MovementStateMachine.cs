@@ -8,11 +8,12 @@ namespace TMD
 {
     public class MovementStateMachine : StateMachine
     {
-        public enum MOVEMENT_STATE_ENUMS {
+        public enum MOVEMENT_STATE_ENUMS
+        {
             // Idle~Sprinting enums used to pass to animation blend tree. Must be put it in the beggin
-            Idle, 
-            WalkingForward, 
-            RunningForward, 
+            Idle,
+            WalkingForward,
+            RunningForward,
             Sprinting,
             WalkingStrafeLeft,
             RunningStrafeLeft,
@@ -72,6 +73,7 @@ namespace TMD
         public bool isPlayingAnimation = false;  // animations except Idle, Walking, Running, Sprinting
         public bool canStartFalling = false;
         public event EventHandler CharacterLanded;
+        public event EventHandler<MovementStateMachine.MOVEMENT_STATE_ENUMS> OnMoving;
 
         protected virtual void Awake()
         {
@@ -81,7 +83,7 @@ namespace TMD
             actionStateMachine = GetComponent<ActionStateMachine>();
             if (actionStateMachine)
             {
-                actionStateMachine.ActionPerformed += ActionPerformed2;
+                actionStateMachine.ActionPerformed += ActionPerformed;
             }
             inventoryManager = GetComponent<InventoryManager>(); // TODO: will be moved to PlayerActionStateMachine in the future
             if (groundCheckLayers == 0)
@@ -89,8 +91,6 @@ namespace TMD
                 groundCheckLayers = (int)CameraManager.LayerMasks.Ground;
             }
 
-
-            
             InitStates();
         }
 
@@ -112,6 +112,7 @@ namespace TMD
         public override void SwitchState(Enum stateEnum)
         {
             base.SwitchState(stateEnum);
+            OnMoving?.Invoke(this, (MOVEMENT_STATE_ENUMS)stateEnum);
             if ((MOVEMENT_STATE_ENUMS)stateEnum == MOVEMENT_STATE_ENUMS.Laned)
             {
                 CharacterLanded?.Invoke(this, EventArgs.Empty);
@@ -132,7 +133,6 @@ namespace TMD
             states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeRight] = new RunningStrafeRightState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Laned] = new LandedState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Fall] = new FallState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.DodgingBack] = new DodgingBackState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Jumping] = new JumpState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Die] = new DieState(this);
 
@@ -153,7 +153,7 @@ namespace TMD
             }
         }
 
-        public void ActionPerformed2(object sender, ActionStateMachine.ACTION_STATE_ENUMS newActionState)
+        public void ActionPerformed(object sender, ActionStateMachine.ACTION_STATE_ENUMS newActionState)
         {
             if (newActionState == ActionStateMachine.ACTION_STATE_ENUMS.Idle)
             {
