@@ -24,8 +24,6 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Sprint.canceled += SetIsSprintingCanceled;
             inputManager.playerControls.PlayerMovement.Walk.performed += SetIsWalkingPerformed;
             inputManager.playerControls.PlayerMovement.Walk.canceled += SetIsWalkingCanceled;
-            inputManager.playerControls.PlayerAction.Interact.performed += SetIsInteractingObjectPerformed;
-            inputManager.playerControls.PlayerAction.Interact.canceled += SetIsInteractingObjectCanceled;
             inputManager.playerControls.PlayerAction.Jump.performed += SetIsJumpingPerformed;
             inputManager.playerControls.PlayerAction.Jump.canceled += SetIsJumpingCanceled;
 
@@ -40,8 +38,6 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Sprint.canceled -= SetIsSprintingCanceled;
             inputManager.playerControls.PlayerMovement.Walk.performed -= SetIsWalkingPerformed;
             inputManager.playerControls.PlayerMovement.Walk.canceled -= SetIsWalkingCanceled;
-            inputManager.playerControls.PlayerAction.Interact.performed -= SetIsInteractingObjectPerformed;
-            inputManager.playerControls.PlayerAction.Interact.canceled -= SetIsInteractingObjectCanceled;
             inputManager.playerControls.PlayerAction.Jump.performed -= SetIsJumpingPerformed;
             inputManager.playerControls.PlayerAction.Jump.canceled -= SetIsJumpingCanceled;
 
@@ -64,14 +60,6 @@ namespace TMD
         private void SetIsWalkingCanceled(InputAction.CallbackContext context)
         {
             isWalking = false;
-        }
-        private void SetIsInteractingObjectPerformed(InputAction.CallbackContext context)
-        {
-            isInteractingObject = true;
-        }
-        private void SetIsInteractingObjectCanceled(InputAction.CallbackContext context)
-        {
-            isInteractingObject = false;
         }
 
         // TODO: will be moved to PlayerActionStateMachine in the future

@@ -41,6 +41,11 @@ namespace TMD
                 actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Rolling);
                 return;
             }
+            if (actionStateMachine.isInteractingObject && actionStateMachine.interactableItem != null)
+            {
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.PickingUp);
+                return;
+            }
         }
     }
 }

@@ -2,20 +2,20 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class PickingUpState : GroundedState
+    public class PickingUpState : ActionState
     {
         private string pickUpAnimationName = "Pick Up";
         private int pickUpAnimation;
 
-        public PickingUpState(MovementStateMachine movementStateMachine) : base(movementStateMachine)
+        public PickingUpState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
         {
-            pickUpAnimation = base.movementStateMachine.animatorManager.HashString(pickUpAnimationName);
+            pickUpAnimation = base.actionStateMachine.animatorManager.HashString(pickUpAnimationName);
         }
         public override void Enter()
         {
             base.Enter();
-            movementStateMachine.animatorManager.EnableRootMotion();
-            movementStateMachine.PlayTargetAnimation(pickUpAnimation);
+            actionStateMachine.animatorManager.EnableRootMotion();
+            actionStateMachine.PlayTargetAnimation(pickUpAnimation);
 
             StartPickUpCommand();
         }
@@ -23,7 +23,7 @@ namespace TMD
         public override void Exit()
         {
             base.Exit();
-            movementStateMachine.animatorManager.DisableRootMotion();
+            actionStateMachine.animatorManager.DisableRootMotion();
         }
 
         public override void FixedUpdate()
@@ -43,24 +43,24 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.animatorManager.isUsingRootMotion)
+            if (actionStateMachine.animatorManager.isUsingRootMotion)
             {
-                HandleRootMotionMovements(movementStateMachine.rollingVelocityScale);
+                HandleRootMotionMovements(actionStateMachine.rollingVelocityScale);
             }
-            if (!movementStateMachine.isPlayingAnimation)
+            if (!actionStateMachine.isPlayingAnimation)
             {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle);
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Idle);
                 return;
             }
         }
 
         private void StartPickUpCommand()
         {
-            if (movementStateMachine.interactableItem == null)
+            if (actionStateMachine.interactableItem == null)
             {
                 return;
             }
-            Interactable interactableComponent = movementStateMachine.interactableItem.GetComponent<Interactable>();
+            Interactable interactableComponent = actionStateMachine.interactableItem.GetComponent<Interactable>();
             if (interactableComponent == null)
             {
                 return;
@@ -73,13 +73,13 @@ namespace TMD
         public void PickUpItem(ItemObject item)
         {
             StopMovingXZ();
-            movementStateMachine.inventoryManager.AddItemToInventory(item);
-            movementStateMachine.interactablePopup.Hide();
+            actionStateMachine.inventoryManager.AddItemToInventory(item);
+            actionStateMachine.interactablePopup.Hide();
         }
 
         public void StopMovingXZ()
         {
-            movementStateMachine.rgBody.velocity = new Vector3(0, movementStateMachine.rgBody.velocity.y, 0);
+            actionStateMachine.rgBody.velocity = new Vector3(0, actionStateMachine.rgBody.velocity.y, 0);
         }
     }
 }

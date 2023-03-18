@@ -19,9 +19,7 @@ namespace TMD
             WalkingStrafeRight,
             RunningStrafeRight,
             Laned,
-            Rolling,
             DodgingBack,
-            PickingUp,
             Jumping,
             Fall,
             Die,
@@ -54,7 +52,6 @@ namespace TMD
 
         public bool isSprinting { get; protected set; } = false;
         public bool isWalking { get; protected set; } = false;
-        public bool isInteractingObject { get; protected set; } = false;
         public bool isJumping { get; protected set; } = false;
 
         // TODO: will be moved to PlayerActionStateMachine in the future
@@ -62,15 +59,6 @@ namespace TMD
         [HideInInspector] public InventoryManager inventoryManager;
         public float rootMotionSpeed = 1f;
         public bool canStartComboAttack = false;
-        [Header("Check For Interactable Object Attr")]
-        public float checkObjectInterval = 0.2f;
-        public float checkObjectRayThickness = 1f;
-        public float checkObjectRayLength = 2f;
-        public InteractablePopup interactablePopup;
-        public LayerMask interactableLayers;
-        public Coroutine checkForInteractableObject;
-        public GameObject interactableItem;
-
 
         [Header("Roll Attributes")]
         public float rollingVelocityScale = 1f;
@@ -102,15 +90,7 @@ namespace TMD
             }
 
 
-            // TODO: will be moved to PlayerActionStateMachine in the future
-            interactablePopup = FindObjectOfType<InteractablePopup>();
-            if (interactableLayers == 0)
-            {
-                interactableLayers = (int)~(CameraManager.LayerMasks.TransparentFX | CameraManager.LayerMasks.IgnoreRaycast |
-                    CameraManager.LayerMasks.UI | CameraManager.LayerMasks.Controller | CameraManager.LayerMasks.Ground |
-                    CameraManager.LayerMasks.Water | CameraManager.LayerMasks.Environment | CameraManager.LayerMasks.Character);
-            }
-
+            
             InitStates();
         }
 
@@ -118,14 +98,10 @@ namespace TMD
         {
             base.Start();
             SwitchState(MOVEMENT_STATE_ENUMS.Idle);
-
-            checkForInteractableObject = StartCoroutine(CheckForInteractableObject());
         }
 
         protected virtual void OnDestroy()
         {
-            // TODO: will be moved to PlayerActionStateMachine in the future
-            StopCoroutine(checkForInteractableObject);  // OnDestroy is enough? also when player dead?
         }
 
         protected override void Update()
@@ -157,7 +133,6 @@ namespace TMD
             states[(int)MOVEMENT_STATE_ENUMS.Laned] = new LandedState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Fall] = new FallState(this);
             states[(int)MOVEMENT_STATE_ENUMS.DodgingBack] = new DodgingBackState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.PickingUp] = new PickingUpState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Jumping] = new JumpState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Die] = new DieState(this);
 
@@ -249,31 +224,6 @@ namespace TMD
             if (isLeftClick)
             {
                 canStartComboAttack = true;
-            }
-        }
-
-        IEnumerator CheckForInteractableObject()
-        {
-            RaycastHit hit;
-            while (true)
-            {
-                // why interactableLayers while the param is ignore layers???
-                if (Physics.SphereCast(transform.position, checkObjectRayThickness,
-                    transform.forward, out hit, checkObjectRayLength, interactableLayers))
-                {
-                    Interactable interactableScript = hit.collider.gameObject.GetComponent<Interactable>();
-                    if (interactableScript != null)
-                    {
-                        interactablePopup.Show(interactableScript.GetPopupMessage());
-                        interactableItem = hit.collider.gameObject;
-                    }
-                }
-                else
-                {
-                    interactableItem = null;
-                    interactablePopup.Hide();
-                }
-                yield return new WaitForSeconds(checkObjectInterval);
             }
         }
         #endregion

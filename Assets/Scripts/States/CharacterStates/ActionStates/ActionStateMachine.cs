@@ -19,27 +19,50 @@ namespace TMD
         };
         [HideInInspector] public Rigidbody rgBody { get; private set; }
         [HideInInspector] public AnimatorManager animatorManager { get; private set; }
+        [HideInInspector] public InventoryManager inventoryManager;
         [Header("Roll Attributes")]
         public float rollingVelocityScale = 1f;
         public bool isPlayingAnimation = false;
         public event EventHandler<ActionStateMachine.ACTION_STATE_ENUMS> ActionPerformed;
+        public Coroutine checkForInteractableObject;
         public bool isRolling { get; protected set; } = false;
+        public bool isInteractingObject { get; protected set; } = false;
 
+        [Header("Check For Interactable Object Attr")]
+        public float checkObjectInterval = 0.2f;
+        public float checkObjectRayThickness = 1f;
+        public float checkObjectRayLength = 2f;
+
+        public InteractablePopup interactablePopup;
+        public LayerMask interactableLayers;
+        public GameObject interactableItem;
 
         protected virtual void Awake()
         {
             rgBody = GetComponent<Rigidbody>();
             animatorManager = GetComponent<AnimatorManager>();
+            inventoryManager = GetComponent<InventoryManager>();
+
+            interactablePopup = FindObjectOfType<InteractablePopup>();
+            if (interactableLayers == 0)
+            {
+                interactableLayers = (int)~(CameraManager.LayerMasks.TransparentFX | CameraManager.LayerMasks.IgnoreRaycast |
+                    CameraManager.LayerMasks.UI | CameraManager.LayerMasks.Controller | CameraManager.LayerMasks.Ground |
+                    CameraManager.LayerMasks.Water | CameraManager.LayerMasks.Environment | CameraManager.LayerMasks.Character);
+            }
+
             InitStates();
         }
         protected override void Start()
         {
             base.Start();
             SwitchState(ACTION_STATE_ENUMS.Idle);
+            checkForInteractableObject = StartCoroutine(CheckForInteractableObject());
         }
 
         protected virtual void OnDestroy()
         {
+            StopCoroutine(checkForInteractableObject);  // OnDestroy is enough? also when player dead?
         }
 
         public override void SwitchState(Enum stateEnum)
@@ -53,6 +76,7 @@ namespace TMD
             states = new State[Enum.GetNames(typeof(ACTION_STATE_ENUMS)).Length];
             states[(int)ACTION_STATE_ENUMS.Idle] = new IdleActionState(this);
             states[(int)ACTION_STATE_ENUMS.Rolling] = new RollingState(this);
+            states[(int)ACTION_STATE_ENUMS.PickingUp] = new PickingUpState(this);
         }
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)
         {
@@ -69,6 +93,30 @@ namespace TMD
         {
             // called from animation
             isPlayingAnimation = false;
+        }
+        IEnumerator CheckForInteractableObject()
+        {
+            RaycastHit hit;
+            while (true)
+            {
+                // why interactableLayers while the param is ignore layers???
+                if (Physics.SphereCast(transform.position, checkObjectRayThickness,
+                    transform.forward, out hit, checkObjectRayLength, interactableLayers))
+                {
+                    Interactable interactableScript = hit.collider.gameObject.GetComponent<Interactable>();
+                    if (interactableScript != null)
+                    {
+                        interactablePopup.Show(interactableScript.GetPopupMessage());
+                        interactableItem = hit.collider.gameObject;
+                    }
+                }
+                else
+                {
+                    interactableItem = null;
+                    interactablePopup.Hide();
+                }
+                yield return new WaitForSeconds(checkObjectInterval);
+            }
         }
     }
 }

@@ -50,11 +50,6 @@ namespace TMD
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.WalkingForward);
                 return;
             }
-            if (movementStateMachine.isInteractingObject && movementStateMachine.interactableItem != null)
-            {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.PickingUp);
-                return;
-            }
             movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, 0f);
             movementStateMachine.animatorManager.SetFloat(moveHorizontalStateParam, 0f);
         }
