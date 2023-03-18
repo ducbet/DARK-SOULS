@@ -24,8 +24,6 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Sprint.canceled += SetIsSprintingCanceled;
             inputManager.playerControls.PlayerMovement.Walk.performed += SetIsWalkingPerformed;
             inputManager.playerControls.PlayerMovement.Walk.canceled += SetIsWalkingCanceled;
-            inputManager.playerControls.PlayerMovement.Roll.performed += SetIsRollingPerformed;
-            inputManager.playerControls.PlayerMovement.Roll.canceled += SetIsRollingCanceled;
             inputManager.playerControls.PlayerAction.Interact.performed += SetIsInteractingObjectPerformed;
             inputManager.playerControls.PlayerAction.Interact.canceled += SetIsInteractingObjectCanceled;
             inputManager.playerControls.PlayerAction.Jump.performed += SetIsJumpingPerformed;
@@ -42,8 +40,6 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Sprint.canceled -= SetIsSprintingCanceled;
             inputManager.playerControls.PlayerMovement.Walk.performed -= SetIsWalkingPerformed;
             inputManager.playerControls.PlayerMovement.Walk.canceled -= SetIsWalkingCanceled;
-            inputManager.playerControls.PlayerMovement.Roll.performed -= SetIsRollingPerformed;
-            inputManager.playerControls.PlayerMovement.Roll.canceled -= SetIsRollingCanceled;
             inputManager.playerControls.PlayerAction.Interact.performed -= SetIsInteractingObjectPerformed;
             inputManager.playerControls.PlayerAction.Interact.canceled -= SetIsInteractingObjectCanceled;
             inputManager.playerControls.PlayerAction.Jump.performed -= SetIsJumpingPerformed;
@@ -68,14 +64,6 @@ namespace TMD
         private void SetIsWalkingCanceled(InputAction.CallbackContext context)
         {
             isWalking = false;
-        }
-        private void SetIsRollingPerformed(InputAction.CallbackContext context)
-        {
-            isRolling = true;
-        }
-        private void SetIsRollingCanceled(InputAction.CallbackContext context)
-        {
-            isRolling = false;
         }
         private void SetIsInteractingObjectPerformed(InputAction.CallbackContext context)
         {

@@ -11,6 +11,7 @@ namespace TMD
         public override void Enter()
         {
             base.Enter();
+            movementStateMachine.rgBody.velocity = Vector3.zero;
         }
 
         public override void Exit()
@@ -25,7 +26,11 @@ namespace TMD
             {
                 return;
             }
-            movementStateMachine.rgBody.velocity = Vector3.zero;
+            if (movementStateMachine.isDoingAction)
+            {
+                return;
+            }
+            //movementStateMachine.rgBody.velocity = Vector3.zero;
         }
 
         public override void LateUpdate()
@@ -43,12 +48,6 @@ namespace TMD
             if (movementStateMachine.moveMagnitude > 0)
             {
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.WalkingForward);
-                return;
-            }
-            if (movementStateMachine.isRolling)
-            {
-                // If Idle -> DodgingBack, else Rolling
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.DodgingBack);
                 return;
             }
             if (movementStateMachine.isInteractingObject && movementStateMachine.interactableItem != null)

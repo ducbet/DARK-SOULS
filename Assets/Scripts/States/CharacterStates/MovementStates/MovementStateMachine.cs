@@ -31,6 +31,7 @@ namespace TMD
         [HideInInspector] public AnimatorManager animatorManager { get; private set; }
         [HideInInspector] public Rigidbody rgBody { get; private set; }
         [HideInInspector] public LockOnStateMachine lockOnStateMachine { get; private set; }
+        [HideInInspector] public ActionStateMachine actionStateMachine { get; private set; }
 
         [Header("Check grounded Attributes")]
         private Vector3 groundCheckOriginOffset = new Vector3(0f, 1f, 0f);
@@ -53,7 +54,6 @@ namespace TMD
 
         public bool isSprinting { get; protected set; } = false;
         public bool isWalking { get; protected set; } = false;
-        public bool isRolling { get; protected set; } = false;
         public bool isInteractingObject { get; protected set; } = false;
         public bool isJumping { get; protected set; } = false;
 
@@ -80,6 +80,7 @@ namespace TMD
         public Vector3 leapingVelocity;
         public float leapingVelocitySmoothTime = 2f;
 
+        public bool isDoingAction = false;
         public bool isPlayingAnimation = false;  // animations except Idle, Walking, Running, Sprinting
         public bool canStartFalling = false;
         public event EventHandler CharacterLanded;
@@ -89,6 +90,11 @@ namespace TMD
             animatorManager = GetComponent<AnimatorManager>();
             rgBody = GetComponent<Rigidbody>();
             lockOnStateMachine = GetComponent<LockOnStateMachine>();
+            actionStateMachine = GetComponent<ActionStateMachine>();
+            if (actionStateMachine)
+            {
+                actionStateMachine.ActionPerformed += ActionPerformed2;
+            }
             inventoryManager = GetComponent<InventoryManager>(); // TODO: will be moved to PlayerActionStateMachine in the future
             if (groundCheckLayers == 0)
             {
@@ -150,7 +156,6 @@ namespace TMD
             states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeRight] = new RunningStrafeRightState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Laned] = new LandedState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Fall] = new FallState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.Rolling] = new RollingState(this);
             states[(int)MOVEMENT_STATE_ENUMS.DodgingBack] = new DodgingBackState(this);
             states[(int)MOVEMENT_STATE_ENUMS.PickingUp] = new PickingUpState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Jumping] = new JumpState(this);
@@ -173,6 +178,16 @@ namespace TMD
             }
         }
 
+        public void ActionPerformed2(object sender, ActionStateMachine.ACTION_STATE_ENUMS newActionState)
+        {
+            if (newActionState == ActionStateMachine.ACTION_STATE_ENUMS.Idle)
+            {
+                isDoingAction = false;
+                return;
+            }
+            isDoingAction = true;
+        }
+
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)
         {
             isPlayingAnimation = true;
@@ -187,6 +202,7 @@ namespace TMD
 
         public void HandleAnimationEndedEvent()
         {
+            // called from animation
             isPlayingAnimation = false;
         }
 

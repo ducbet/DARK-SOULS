@@ -5,6 +5,7 @@ namespace TMD
     [RequireComponent(typeof(PlayerActionManager))]
     [RequireComponent(typeof(AnimatorManager))]
     [RequireComponent(typeof(PlayerMovementStateMachine))]
+    [RequireComponent(typeof(PlayerActionStateMachine))]
     [RequireComponent(typeof(PlayerLockOnStateMachine))]
     public class PlayerManager : CharacterManager
     {
