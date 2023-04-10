@@ -22,15 +22,6 @@ namespace TMD
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            if (IsStateChanged())
-            {
-                return;
-            }
-            if (movementStateMachine.isDoingAction)
-            {
-                return;
-            }
-            //movementStateMachine.rgBody.velocity = Vector3.zero;
         }
 
         public override void LateUpdate()
@@ -43,6 +34,11 @@ namespace TMD
             base.Update();
             if (IsStateChanged())
             {
+                return;
+            }
+            if (IsStopMovement())
+            {
+                StopMoving();
                 return;
             }
             if (movementStateMachine.moveMagnitude > 0)

@@ -44,6 +44,11 @@ namespace TMD
             {
                 return;
             }
+            if (IsStopMovement() && IsAssignableFromState<IdleState>(movementStateMachine.currentState) == false)
+            {
+                StopMoving();
+                return;
+            }
             if (movementStateMachine.isLeftClick)
             {
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Attacking);

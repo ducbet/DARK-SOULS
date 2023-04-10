@@ -23,7 +23,7 @@ namespace TMD
             DodgingBack,
             Jumping,
             Fall,
-            Die,
+            Die, // action
             Attacking, // TODO: will be moved to PlayerActionStateMachine in the future
         };
 
@@ -40,7 +40,7 @@ namespace TMD
 
         public Vector3 moveDirection { get; protected set; } = Vector3.zero;
         public Vector3 lockingOnDirection { get; protected set; } = Vector3.zero;  // only player has camera. The rest NPC must use this to facing target
-        public float moveMagnitude { get; protected set; } = 0f;
+        public float moveMagnitude { get; set; } = 0f;
 
         [Header("Translation Attributes")]
         public float runThreshold = 0.55f;
@@ -69,7 +69,8 @@ namespace TMD
         public Vector3 leapingVelocity;
         public float leapingVelocitySmoothTime = 2f;
 
-        public bool isDoingAction = false;
+        public bool isMovementBlocked = true;
+        public bool isRotationBlocked = true;
         public bool isPlayingAnimation = false;  // animations except Idle, Walking, Running, Sprinting
         public bool canStartFalling = false;
         public event EventHandler CharacterLanded;
@@ -153,14 +154,12 @@ namespace TMD
             }
         }
 
-        public void ActionPerformed(object sender, ActionStateMachine.ACTION_STATE_ENUMS newActionState)
+        public void ActionPerformed(object sender, ActionEventParams actionEventParams)
         {
-            if (newActionState == ActionStateMachine.ACTION_STATE_ENUMS.Idle)
-            {
-                isDoingAction = false;
-                return;
-            }
-            isDoingAction = true;
+            isMovementBlocked = actionEventParams.isMovementBlocked;
+            isRotationBlocked = actionEventParams.isRotationBlocked;
+            Debug.Log("isMovingBlocked " + isMovementBlocked);
+            Debug.Log("isRotationBlocked " + isRotationBlocked);
         }
 
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)

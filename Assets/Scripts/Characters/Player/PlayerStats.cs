@@ -43,13 +43,13 @@ namespace TMD
             {
                 currentHealth = 0;
                 healthBar.SetValue(currentHealth);
-                playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Die);
+                //playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Die);
                 return;
             }
             healthBar.SetValue(currentHealth);
             if (State.IsAssignableFromState<PlaneMoveState>(playerMovementStateMachine.currentState))
             {
-                playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.DodgingBack);
+                //playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.DodgingBack);
             }
         }
 

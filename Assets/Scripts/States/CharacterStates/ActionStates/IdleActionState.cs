@@ -12,6 +12,7 @@ namespace TMD
         public override void Enter()
         {
             base.Enter();
+            actionStateMachine.animatorManager.PlayTargetAnimation("Empty");
         }
 
         public override void Exit()
@@ -51,6 +52,16 @@ namespace TMD
                 actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.PickingUp);
                 return;
             }
+        }
+
+        public override bool isMovementBlocked()
+        {
+            return false;
+        }
+
+        public override bool isRotationBlocked()
+        {
+            return false;
         }
     }
 }

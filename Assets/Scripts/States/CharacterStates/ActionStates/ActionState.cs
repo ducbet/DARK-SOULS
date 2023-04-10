@@ -42,5 +42,14 @@ namespace TMD
             }
             actionStateMachine.rgBody.velocity = velocity;
         }
+
+        public virtual bool isMovementBlocked()
+        {
+            return true;
+        }
+        public virtual bool isRotationBlocked()
+        {
+            return true;
+        }
     }
 }

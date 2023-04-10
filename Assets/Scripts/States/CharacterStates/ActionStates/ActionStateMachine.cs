@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace TMD
 {
+    public class ActionEventParams : EventArgs
+    {
+        public ActionStateMachine.ACTION_STATE_ENUMS newActionState;
+        public bool isMovementBlocked;
+        public bool isRotationBlocked;
+    }
+
     public class ActionStateMachine : StateMachine
     {
         public enum ACTION_STATE_ENUMS
@@ -17,6 +24,8 @@ namespace TMD
             //Jumping,
             DodgingBack,
         };
+
+
         [HideInInspector] public Rigidbody rgBody { get; private set; }
         [HideInInspector] public AnimatorManager animatorManager { get; private set; }
         [HideInInspector] public MovementStateMachine movementStateMachine { get; private set; }
@@ -24,7 +33,7 @@ namespace TMD
         [Header("Roll Attributes")]
         public float rollingVelocityScale = 1f;
         public bool isPlayingAnimation = false;
-        public event EventHandler<ActionStateMachine.ACTION_STATE_ENUMS> ActionPerformed;
+        public event EventHandler<ActionEventParams> ActionPerformed;
         public Coroutine checkForInteractableObject;
         public bool isMoving { get; set; } = false;
         public bool isRolling { get; protected set; } = false;
@@ -75,7 +84,13 @@ namespace TMD
         public override void SwitchState(Enum stateEnum)
         {
             base.SwitchState(stateEnum);
-            ActionPerformed?.Invoke(this, (ActionStateMachine.ACTION_STATE_ENUMS) stateEnum);
+            ActionPerformed?.Invoke(this,
+                new ActionEventParams
+                {
+                    newActionState = (ACTION_STATE_ENUMS)stateEnum,
+                    isMovementBlocked = ((ActionState) currentState).isMovementBlocked(),
+                    isRotationBlocked = ((ActionState) currentState).isRotationBlocked(),
+                });
         }
 
         protected virtual void InitStates()

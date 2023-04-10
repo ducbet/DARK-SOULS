@@ -9,6 +9,7 @@ namespace TMD
         public override void Enter()
         {
             base.Enter();
+            movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.Sprinting);
         }
 
         public override void Exit()
@@ -43,7 +44,7 @@ namespace TMD
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.RunningForward);
                 return;
             }
-            movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.Sprinting);
+            //movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.Sprinting);
         }
     }
 }

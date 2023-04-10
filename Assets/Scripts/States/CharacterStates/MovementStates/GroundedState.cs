@@ -2,14 +2,12 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class GroundedState : State
+    public class GroundedState : MovementState
     {
-        protected MovementStateMachine movementStateMachine;
-
-        protected GroundedState(MovementStateMachine moveStateMachine)
+        public GroundedState(MovementStateMachine movementStateMachine) : base(movementStateMachine)
         {
-            movementStateMachine = moveStateMachine;
         }
+
         public override void Enter()
         {
             base.Enter();
@@ -30,15 +28,20 @@ namespace TMD
 
         public override void FixedUpdate()
         {
+            base.FixedUpdate();
             if (IsStateChanged())
             {
                 return;
             }
-            HandleRotation();  // it's better if player can rotate while rolling,...
+            if (movementStateMachine.isRotationBlocked == false)
+            {
+                HandleRotation();
+            }
         }
         
         public override void LateUpdate()
         {
+            base.LateUpdate();
         }
 
         public override void Exit()
