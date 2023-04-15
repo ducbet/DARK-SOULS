@@ -23,6 +23,7 @@ namespace TMD
             Dying,
             //Jumping,
             DodgingBack,
+            Die,
         };
 
 
@@ -100,6 +101,7 @@ namespace TMD
             states[(int)ACTION_STATE_ENUMS.Rolling] = new RollingState(this);
             states[(int)ACTION_STATE_ENUMS.PickingUp] = new PickingUpState(this);
             states[(int)ACTION_STATE_ENUMS.DodgingBack] = new DodgingBackState(this);
+            states[(int)ACTION_STATE_ENUMS.Die] = new DieState(this);
         }
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)
         {

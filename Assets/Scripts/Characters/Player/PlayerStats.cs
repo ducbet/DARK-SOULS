@@ -9,11 +9,11 @@ namespace TMD
         public SliderBar healthBar;
         public SliderBar staminaBar;
 
-        private PlayerMovementStateMachine playerMovementStateMachine;
+        private PlayerActionStateMachine playerActionStateMachine;
 
         private void Awake()
         {
-            playerMovementStateMachine = GetComponent<PlayerMovementStateMachine>();
+            playerActionStateMachine = GetComponent<PlayerActionStateMachine>();
         }
         private void Start()
         {
@@ -43,14 +43,14 @@ namespace TMD
             {
                 currentHealth = 0;
                 healthBar.SetValue(currentHealth);
-                //playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Die);
+                playerActionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Die);
                 return;
             }
             healthBar.SetValue(currentHealth);
-            if (State.IsAssignableFromState<PlaneMoveState>(playerMovementStateMachine.currentState))
-            {
-                //playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.DodgingBack);
-            }
+            //if (State.IsAssignableFromState<PlaneMoveState>(playerMovementStateMachine.currentState))
+            //{
+            //    //playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.DodgingBack);
+            //}
         }
 
         public void DrainStamina(int staminaAmount)

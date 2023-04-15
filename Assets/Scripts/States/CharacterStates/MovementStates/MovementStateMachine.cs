@@ -20,10 +20,8 @@ namespace TMD
             WalkingStrafeRight,
             RunningStrafeRight,
             Laned,
-            DodgingBack,
             Jumping,
             Fall,
-            Die, // action
             Attacking, // TODO: will be moved to PlayerActionStateMachine in the future
         };
 
@@ -135,7 +133,6 @@ namespace TMD
             states[(int)MOVEMENT_STATE_ENUMS.Laned] = new LandedState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Fall] = new FallState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Jumping] = new JumpState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.Die] = new DieState(this);
 
             // TODO: will be moved to PlayerActionStateMachine in the future
             states[(int)MOVEMENT_STATE_ENUMS.Attacking] = new AttackingState(this);

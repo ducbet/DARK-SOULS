@@ -4,22 +4,20 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class DieState : State
+    public class DieState : ActionState
     {
-        private MovementStateMachine movementStateMachine;
         private string dieAnimationName = "Die";
         private int dieAnimation;
 
-        public DieState(MovementStateMachine movementStateMachine)
+        public DieState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
         {
-            this.movementStateMachine = movementStateMachine;
-            dieAnimation = this.movementStateMachine.animatorManager.HashString(dieAnimationName);
+            dieAnimation = actionStateMachine.animatorManager.HashString(dieAnimationName);
         }
         public override void Enter()
         {
             base.Enter();
             StopMovingXZ();
-            movementStateMachine.PlayTargetAnimation(dieAnimation);
+            actionStateMachine.PlayTargetAnimation(dieAnimation);
         }
 
         public override void Exit()
@@ -42,7 +40,7 @@ namespace TMD
         }
         public void StopMovingXZ()
         {
-            movementStateMachine.rgBody.velocity = new Vector3(0, movementStateMachine.rgBody.velocity.y, 0);
+            actionStateMachine.rgBody.velocity = new Vector3(0, actionStateMachine.rgBody.velocity.y, 0);
         }
     }
 }
