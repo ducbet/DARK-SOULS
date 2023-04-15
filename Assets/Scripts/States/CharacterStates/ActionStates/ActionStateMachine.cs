@@ -24,6 +24,7 @@ namespace TMD
             //Jumping,
             DodgingBack,
             Die,
+            Laned,
         };
 
 
@@ -49,6 +50,8 @@ namespace TMD
         public LayerMask interactableLayers;
         public GameObject interactableItem;
 
+        public float falledTime = 0f;
+
         protected virtual void Awake()
         {
             rgBody = GetComponent<Rigidbody>();
@@ -69,17 +72,21 @@ namespace TMD
             }
 
             InitStates();
+
+            movementStateMachine.CharacterLanded += HandleCharacterLanded;
         }
         protected override void Start()
         {
             base.Start();
             SwitchState(ACTION_STATE_ENUMS.Idle);
             checkForInteractableObject = StartCoroutine(CheckForInteractableObject());
+
         }
 
         protected virtual void OnDestroy()
         {
             StopCoroutine(checkForInteractableObject);  // OnDestroy is enough? also when player dead?
+            movementStateMachine.CharacterLanded -= HandleCharacterLanded;
         }
 
         public override void SwitchState(Enum stateEnum)
@@ -102,6 +109,7 @@ namespace TMD
             states[(int)ACTION_STATE_ENUMS.PickingUp] = new PickingUpState(this);
             states[(int)ACTION_STATE_ENUMS.DodgingBack] = new DodgingBackState(this);
             states[(int)ACTION_STATE_ENUMS.Die] = new DieState(this);
+            states[(int)ACTION_STATE_ENUMS.Laned] = new LandedState(this);
         }
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)
         {
@@ -119,6 +127,12 @@ namespace TMD
             // called from animation
             isPlayingAnimation = false;
         }
+        public void HandleCharacterLanded(object sender, float falledTime)
+        {
+            this.falledTime = falledTime;
+            SwitchState(ACTION_STATE_ENUMS.Laned);
+        }
+
         IEnumerator CheckForInteractableObject()
         {
             RaycastHit hit;

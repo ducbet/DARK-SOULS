@@ -11,7 +11,9 @@ namespace TMD
         public override void Enter()
         {
             base.Enter();
-            movementStateMachine.rgBody.velocity = Vector3.zero;
+            Debug.Log("IdleState");
+            //movementStateMachine.rgBody.velocity = Vector3.zero;
+            //SlowDownXZ();
         }
 
         public override void Exit()
@@ -48,6 +50,14 @@ namespace TMD
             }
             movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, 0f);
             movementStateMachine.animatorManager.SetFloat(moveHorizontalStateParam, 0f);
+        }
+
+        private void SlowDownXZ()
+        {
+            float velocityY = movementStateMachine.rgBody.velocity.y;
+            Vector3 velocityXZ = Vector3.SmoothDamp(movementStateMachine.rgBody.velocity, Vector3.zero, ref movementStateMachine.leapingVelocity, movementStateMachine.leapingVelocitySmoothTime);
+            velocityXZ.y = velocityY;
+            movementStateMachine.rgBody.velocity = velocityXZ;
         }
     }
 }

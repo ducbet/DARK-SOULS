@@ -4,38 +4,40 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class LandedState : GroundedState
+    public class LandedState : ActionState
     {
         private string fallingToRollAnimationName = "Falling To Roll";
         private int fallingToRollAnimation;
         private string landingAnimationName = "Landing";
         private int landingAnimation;
 
-        public LandedState(MovementStateMachine movementStateMachine) : base(movementStateMachine) {
-            fallingToRollAnimation = base.movementStateMachine.animatorManager.HashString(fallingToRollAnimationName);
-            landingAnimation = base.movementStateMachine.animatorManager.HashString(landingAnimationName);
+        public LandedState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
+        {
+            fallingToRollAnimation = actionStateMachine.animatorManager.HashString(fallingToRollAnimationName);
+            landingAnimation = actionStateMachine.animatorManager.HashString(landingAnimationName);
         }
 
         public override void Enter()
         {
             base.Enter();
-            movementStateMachine.animatorManager.EnableRootMotion();
+            actionStateMachine.animatorManager.EnableRootMotion();
+            Debug.Log("LandedState actionStateMachine.falledTime " + actionStateMachine.falledTime);
 
-            if (((FallState)movementStateMachine.preState).GetFallingTime() > 1)
+            if (actionStateMachine.falledTime > 1)
             {
-                movementStateMachine.PlayTargetAnimation(fallingToRollAnimation);
+                actionStateMachine.PlayTargetAnimation(fallingToRollAnimation);
             }
             else
             {
-                movementStateMachine.PlayTargetAnimation(landingAnimation);
+                actionStateMachine.PlayTargetAnimation(landingAnimation);
             }
-            ((FallState)movementStateMachine.preState).ResetFallingTime();
+            actionStateMachine.falledTime = 0f;
         }
 
         public override void Exit()
         {
             base.Exit();
-            movementStateMachine.animatorManager.DisableRootMotion();
+            actionStateMachine.animatorManager.DisableRootMotion();
         }
 
         public override void FixedUpdate()
@@ -55,13 +57,13 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.animatorManager.isUsingRootMotion)
+            if (actionStateMachine.animatorManager.isUsingRootMotion)
             {
-                HandleRootMotionMovements(movementStateMachine.rollingVelocityScale);
+                HandleRootMotionMovements(actionStateMachine.rollingVelocityScale);
             }
-            if (!movementStateMachine.isPlayingAnimation)
+            if (!actionStateMachine.isPlayingAnimation)
             {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle);
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Idle);
                 return;
             }
         }

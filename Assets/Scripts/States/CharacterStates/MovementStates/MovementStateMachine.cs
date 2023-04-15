@@ -19,7 +19,6 @@ namespace TMD
             RunningStrafeLeft,
             WalkingStrafeRight,
             RunningStrafeRight,
-            Laned,
             Jumping,
             Fall,
             Attacking, // TODO: will be moved to PlayerActionStateMachine in the future
@@ -71,7 +70,7 @@ namespace TMD
         public bool isRotationBlocked = true;
         public bool isPlayingAnimation = false;  // animations except Idle, Walking, Running, Sprinting
         public bool canStartFalling = false;
-        public event EventHandler CharacterLanded;
+        public event EventHandler<float> CharacterLanded;
         public event EventHandler<MovementStateMachine.MOVEMENT_STATE_ENUMS> OnMoving;
 
         protected virtual void Awake()
@@ -112,11 +111,6 @@ namespace TMD
         {
             base.SwitchState(stateEnum);
             OnMoving?.Invoke(this, (MOVEMENT_STATE_ENUMS)stateEnum);
-            if ((MOVEMENT_STATE_ENUMS)stateEnum == MOVEMENT_STATE_ENUMS.Laned)
-            {
-                CharacterLanded?.Invoke(this, EventArgs.Empty);
-                return;
-            }
         }
 
         private void InitStates()
@@ -130,7 +124,6 @@ namespace TMD
             states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeLeft] = new RunningStrafeLeftState(this);
             states[(int)MOVEMENT_STATE_ENUMS.WalkingStrafeRight] = new WalkingStrafeRightState(this);
             states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeRight] = new RunningStrafeRightState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.Laned] = new LandedState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Fall] = new FallState(this);
             states[(int)MOVEMENT_STATE_ENUMS.Jumping] = new JumpState(this);
 
@@ -143,6 +136,12 @@ namespace TMD
             RaycastHit hit;
             if (Physics.SphereCast(transform.position + groundCheckOriginOffset, 0.2f, Vector3.down, out hit, startLandingHeight, groundCheckLayers))
             {
+                if (isGrounded == false)
+                {
+                    float falledTime = ((FallState)currentState).GetFallingTime();
+                    SwitchState(MOVEMENT_STATE_ENUMS.Idle);  // return to movement idle before landing action
+                    CharacterLanded?.Invoke(this, falledTime);
+                }
                 isGrounded = true;
             }
             else
@@ -155,8 +154,8 @@ namespace TMD
         {
             isMovementBlocked = actionEventParams.isMovementBlocked;
             isRotationBlocked = actionEventParams.isRotationBlocked;
-            Debug.Log("isMovingBlocked " + isMovementBlocked);
-            Debug.Log("isRotationBlocked " + isRotationBlocked);
+            //Debug.Log("isMovingBlocked " + isMovementBlocked);
+            //Debug.Log("isRotationBlocked " + isRotationBlocked);
         }
 
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)

@@ -46,11 +46,6 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.isGrounded)
-            {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Laned);
-                return;
-            }
             UpdateFallingTime();
         }
 

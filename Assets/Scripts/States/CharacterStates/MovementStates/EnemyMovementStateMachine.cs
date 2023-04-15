@@ -31,7 +31,7 @@ namespace TMD
             //detectCharacterStateMachine.TargetFound += StartFollowingTarget;
             //detectCharacterStateMachine.TargetNotFound += StopFollowingTarget;
 
-            movementStateMachine.CharacterLanded += HandleCharacterLanded;
+            movementStateMachine.CharacterLanded += HandleEnemyLanded;
 
             // test
             GameObject player = GameObject.Find("Player");
@@ -43,7 +43,7 @@ namespace TMD
             base.OnDestroy();
             detectCharacterStateMachine.TargetFound -= StartFollowingTarget;
             detectCharacterStateMachine.TargetNotFound -= StopFollowingTarget;
-            movementStateMachine.CharacterLanded -= HandleCharacterLanded;
+            movementStateMachine.CharacterLanded -= HandleEnemyLanded;
         }
 
         protected override void Start()
@@ -73,7 +73,7 @@ namespace TMD
             isJumping = false;
         }
 
-        public void HandleCharacterLanded(object sender, EventArgs e)
+        public void HandleEnemyLanded(object sender, float falledTime)
         {
             navMeshAgent.CompleteOffMeshLink();
             navMeshAgent.nextPosition = transform.position;
