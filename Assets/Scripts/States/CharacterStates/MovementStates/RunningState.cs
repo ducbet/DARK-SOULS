@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class RunningState : PlaneMoveState
+    public class RunningState : MovementState
     {
         public RunningState(MovementStateMachine moveStateMachine, int stateIndex) : base(moveStateMachine, stateIndex) { }
         public override void Enter()

@@ -13,7 +13,6 @@ namespace TMD
         {
             base.Enter();
             actionStateMachine.animatorManager.PlayTargetAnimation("Empty");
-            Debug.Log("ActionEmptyState velocity " + actionStateMachine.rgBody.velocity);
         }
 
         public override void Exit()

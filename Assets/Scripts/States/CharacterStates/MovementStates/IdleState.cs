@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class IdleState : PlaneMoveState
+    public class IdleState : MovementState
     {
         public IdleState(MovementStateMachine movementStateMachine, int stateIndex) : base(movementStateMachine, stateIndex) { }
 

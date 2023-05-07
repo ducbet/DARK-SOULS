@@ -41,7 +41,6 @@ namespace TMD
             }
             if (IsStopMovement() == false)
             {
-                Debug.Log("MovementEmptyState nextState " + nextState);
                 movementStateMachine.SwitchState((MovementStateMachine.MOVEMENT_STATE_ENUMS)nextState);
             }
         }

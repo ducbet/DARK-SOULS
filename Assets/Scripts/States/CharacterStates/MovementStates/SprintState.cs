@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class SprintState : PlaneMoveState
+    public class SprintState : MovementState
     {
         public SprintState(MovementStateMachine moveStateMachine, int stateIndex) : base(moveStateMachine, stateIndex) { }
 

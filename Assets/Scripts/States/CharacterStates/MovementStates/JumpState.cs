@@ -32,7 +32,8 @@ namespace TMD
                 isIdleJump = true;
                 actionStateMachine.PlayTargetAnimation(jumpFromIdleAnimation);
             }
-            else if (IsAssignableFromState<PlaneMoveState>(actionStateMachine.GetCurrentMovementState()))
+            //else if (IsAssignableFromState<PlaneMoveState>(actionStateMachine.GetCurrentMovementState()))
+            else
             {
                 isIdleJump = false;
                 actionStateMachine.PlayTargetAnimation(runningJumpAnimation);

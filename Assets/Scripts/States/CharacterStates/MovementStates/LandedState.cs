@@ -24,7 +24,6 @@ namespace TMD
 
 
             actionStateMachine.animatorManager.EnableRootMotion();
-            Debug.Log("LandedState actionStateMachine.falledTime " + actionStateMachine.falledTime);
 
             if (actionStateMachine.falledTime > 1)
             {
