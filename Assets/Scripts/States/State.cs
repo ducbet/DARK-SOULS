@@ -5,6 +5,11 @@ namespace TMD
     public abstract class State
     {
         protected bool isStateChanged;
+        public int stateIndex = -1;
+        public State(int stateIndex)
+        {
+            this.stateIndex = stateIndex;
+        }
         public virtual void Enter()
         {
             isStateChanged = false;

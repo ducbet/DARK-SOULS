@@ -6,20 +6,15 @@ namespace TMD
 {
     public class PlaneMoveState : GroundedState
     {
-        protected string moveForwardStateParamName = "MoveForwardState";
-        protected string moveHorizontalStateParamName = "MoveHorizontalState";
-        protected int moveForwardStateParam;
-        protected int moveHorizontalStateParam;
+        
 
-        public PlaneMoveState(MovementStateMachine movementStateMachine) : base(movementStateMachine)
+        public PlaneMoveState(MovementStateMachine movementStateMachine, int stateIndex) : base(movementStateMachine, stateIndex)
         {
-            moveForwardStateParam = base.movementStateMachine.animatorManager.HashString(moveForwardStateParamName);
-            moveHorizontalStateParam = base.movementStateMachine.animatorManager.HashString(moveHorizontalStateParamName);
-        }
+                    }
         public override void Enter()
         {
             base.Enter();
-            movementStateMachine.animatorManager.PlayTargetAnimation("Empty");
+            //movementStateMachine.animatorManager.PlayTargetAnimation("Empty");
         }
 
         public override void Exit()
@@ -44,22 +39,17 @@ namespace TMD
             {
                 return;
             }
-            if (IsStopMovement() && IsAssignableFromState<IdleState>(movementStateMachine.currentState) == false)
-            {
-                StopMoving();
-                return;
-            }
-            if (movementStateMachine.isLeftClick)
-            {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Attacking);
-                return;
-            }
-            if (movementStateMachine.isJumping)
-            {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Jumping);
-                return;
-            }
-            movementStateMachine.CalculateMoveMagnitude();
+            //if (IsStopMovement() && IsAssignableFromState<IdleState>(movementStateMachine.currentState) == false)
+            //{
+            //    StopMoving();
+            //    return;
+            //}
+            //if (movementStateMachine.isLeftClick)
+            //{
+            //    movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Attacking);
+            //    return;
+            //}
+            //movementStateMachine.CalculateMoveMagnitude();
         }
     }
 }

@@ -59,9 +59,9 @@ namespace TMD
         protected virtual void InitStates()
         {
             states = new State[Enum.GetNames(typeof(DETECT_CHARACTER_STATE_ENUMS)).Length];
-            states[(int)DETECT_CHARACTER_STATE_ENUMS.DetectingState] = new DetectingCharacterState(this);
-            states[(int)DETECT_CHARACTER_STATE_ENUMS.FoundState] = new FoundCharacterState(this);
-            states[(int)DETECT_CHARACTER_STATE_ENUMS.StopDetecting] = new StopDetectingCharacterState(this);
+            states[(int)DETECT_CHARACTER_STATE_ENUMS.DetectingState] = new DetectingCharacterState(this, (int)DETECT_CHARACTER_STATE_ENUMS.DetectingState);
+            states[(int)DETECT_CHARACTER_STATE_ENUMS.FoundState] = new FoundCharacterState(this, (int)DETECT_CHARACTER_STATE_ENUMS.FoundState);
+            states[(int)DETECT_CHARACTER_STATE_ENUMS.StopDetecting] = new StopDetectingCharacterState(this, (int)DETECT_CHARACTER_STATE_ENUMS.StopDetecting);
         }
         public override void SwitchState(Enum stateEnum)
         {

@@ -4,7 +4,7 @@ namespace TMD
 {
     public class RunningState : PlaneMoveState
     {
-        public RunningState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
+        public RunningState(MovementStateMachine moveStateMachine, int stateIndex) : base(moveStateMachine, stateIndex) { }
         public override void Enter()
         {
             base.Enter();

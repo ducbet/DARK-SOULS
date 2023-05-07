@@ -19,21 +19,14 @@ namespace TMD
             RunningStrafeLeft,
             WalkingStrafeRight,
             RunningStrafeRight,
-            Jumping,
-            Fall,
             Attacking, // TODO: will be moved to PlayerActionStateMachine in the future
+            Empty
         };
 
         [HideInInspector] public AnimatorManager animatorManager { get; private set; }
         [HideInInspector] public Rigidbody rgBody { get; private set; }
         [HideInInspector] public LockOnStateMachine lockOnStateMachine { get; private set; }
         [HideInInspector] public ActionStateMachine actionStateMachine { get; private set; }
-
-        [Header("Check grounded Attributes")]
-        private Vector3 groundCheckOriginOffset = new Vector3(0f, 1f, 0f);
-        public float startLandingHeight = 1.5f;
-        public LayerMask groundCheckLayers;
-        public bool isGrounded = true;
 
         public Vector3 moveDirection { get; protected set; } = Vector3.zero;
         public Vector3 lockingOnDirection { get; protected set; } = Vector3.zero;  // only player has camera. The rest NPC must use this to facing target
@@ -45,12 +38,15 @@ namespace TMD
         public float runningSpeed = 4f;
         public float sprintingSpeed = 7f;
 
+        public Vector3 leapingVelocity;
+        public float leapingVelocitySmoothTime = 2f;
+
         // Rotation Attributes
         public float rotationSpeed { get; private set; } = 6f;
 
         public bool isSprinting { get; protected set; } = false;
         public bool isWalking { get; protected set; } = false;
-        public bool isJumping { get; protected set; } = false;
+        public bool isJumping { get; protected set; } = false;  // move to action state machine
 
         // TODO: will be moved to PlayerActionStateMachine in the future
         public bool isLeftClick { get; protected set; } = false;
@@ -61,16 +57,9 @@ namespace TMD
         [Header("Roll Attributes")]
         public float rollingVelocityScale = 1f;
 
-        [Header("Falling Attributes")]
-        public float fallingVelocity = 33f;
-        public Vector3 leapingVelocity;
-        public float leapingVelocitySmoothTime = 2f;
-
         public bool isMovementBlocked = true;
         public bool isRotationBlocked = true;
         public bool isPlayingAnimation = false;  // animations except Idle, Walking, Running, Sprinting
-        public bool canStartFalling = false;
-        public event EventHandler<float> CharacterLanded;
         public event EventHandler<MovementStateMachine.MOVEMENT_STATE_ENUMS> OnMoving;
 
         protected virtual void Awake()
@@ -84,10 +73,6 @@ namespace TMD
                 actionStateMachine.ActionPerformed += ActionPerformed;
             }
             inventoryManager = GetComponent<InventoryManager>(); // TODO: will be moved to PlayerActionStateMachine in the future
-            if (groundCheckLayers == 0)
-            {
-                groundCheckLayers = (int)CameraManager.LayerMasks.Ground;
-            }
 
             InitStates();
         }
@@ -105,7 +90,6 @@ namespace TMD
         protected override void Update()
         {
             base.Update();
-            CheckGrounded();
         }
         public override void SwitchState(Enum stateEnum)
         {
@@ -116,38 +100,18 @@ namespace TMD
         private void InitStates()
         {
             states = new State[Enum.GetNames(typeof(MOVEMENT_STATE_ENUMS)).Length];
-            states[(int)MOVEMENT_STATE_ENUMS.Idle] = new IdleState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.WalkingForward] = new WalkingForwardState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.RunningForward] = new RunForwardState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.Sprinting] = new SprintState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.WalkingStrafeLeft] = new WalkingStrafeLeftState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeLeft] = new RunningStrafeLeftState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.WalkingStrafeRight] = new WalkingStrafeRightState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeRight] = new RunningStrafeRightState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.Fall] = new FallState(this);
-            states[(int)MOVEMENT_STATE_ENUMS.Jumping] = new JumpState(this);
+            states[(int)MOVEMENT_STATE_ENUMS.Idle] = new IdleState(this, (int)MOVEMENT_STATE_ENUMS.Idle);
+            states[(int)MOVEMENT_STATE_ENUMS.WalkingForward] = new WalkingForwardState(this, (int)MOVEMENT_STATE_ENUMS.WalkingForward);
+            states[(int)MOVEMENT_STATE_ENUMS.RunningForward] = new RunForwardState(this, (int)MOVEMENT_STATE_ENUMS.RunningForward);
+            states[(int)MOVEMENT_STATE_ENUMS.Sprinting] = new SprintState(this, (int)MOVEMENT_STATE_ENUMS.Sprinting);
+            states[(int)MOVEMENT_STATE_ENUMS.WalkingStrafeLeft] = new WalkingStrafeLeftState(this, (int)MOVEMENT_STATE_ENUMS.WalkingStrafeLeft);
+            states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeLeft] = new RunningStrafeLeftState(this, (int)MOVEMENT_STATE_ENUMS.RunningStrafeLeft);
+            states[(int)MOVEMENT_STATE_ENUMS.WalkingStrafeRight] = new WalkingStrafeRightState(this, (int)MOVEMENT_STATE_ENUMS.WalkingStrafeRight);
+            states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeRight] = new RunningStrafeRightState(this, (int)MOVEMENT_STATE_ENUMS.RunningStrafeRight);
+            states[(int)MOVEMENT_STATE_ENUMS.Empty] = new MovementEmptyState(this, (int)MOVEMENT_STATE_ENUMS.Empty);
 
             // TODO: will be moved to PlayerActionStateMachine in the future
-            states[(int)MOVEMENT_STATE_ENUMS.Attacking] = new AttackingState(this);
-        }
-
-        private void CheckGrounded()
-        {
-            RaycastHit hit;
-            if (Physics.SphereCast(transform.position + groundCheckOriginOffset, 0.2f, Vector3.down, out hit, startLandingHeight, groundCheckLayers))
-            {
-                if (isGrounded == false)
-                {
-                    float falledTime = ((FallState)currentState).GetFallingTime();
-                    SwitchState(MOVEMENT_STATE_ENUMS.Idle);  // return to movement idle before landing action
-                    CharacterLanded?.Invoke(this, falledTime);
-                }
-                isGrounded = true;
-            }
-            else
-            {
-                isGrounded = false;
-            }
+            states[(int)MOVEMENT_STATE_ENUMS.Attacking] = new AttackingState(this, (int)MOVEMENT_STATE_ENUMS.Attacking);
         }
 
         public void ActionPerformed(object sender, ActionEventParams actionEventParams)
@@ -174,12 +138,6 @@ namespace TMD
         {
             // called from animation
             isPlayingAnimation = false;
-        }
-
-        public void CheckCanStartFalling()
-        {
-            // Use for JumpState
-            canStartFalling = true;
         }
 
         public virtual void CalculateMoveDirection()

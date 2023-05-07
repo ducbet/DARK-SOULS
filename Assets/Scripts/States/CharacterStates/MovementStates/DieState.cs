@@ -9,7 +9,7 @@ namespace TMD
         private string dieAnimationName = "Die";
         private int dieAnimation;
 
-        public DieState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
+        public DieState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
             dieAnimation = actionStateMachine.animatorManager.HashString(dieAnimationName);
         }

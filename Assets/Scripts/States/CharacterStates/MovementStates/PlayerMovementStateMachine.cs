@@ -24,8 +24,6 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Sprint.canceled += SetIsSprintingCanceled;
             inputManager.playerControls.PlayerMovement.Walk.performed += SetIsWalkingPerformed;
             inputManager.playerControls.PlayerMovement.Walk.canceled += SetIsWalkingCanceled;
-            inputManager.playerControls.PlayerAction.Jump.performed += SetIsJumpingPerformed;
-            inputManager.playerControls.PlayerAction.Jump.canceled += SetIsJumpingCanceled;
 
             // TODO: will be moved to PlayerActionStateMachine in the future
             inputManager.playerControls.PlayerAction.LeftClick.performed += SetIsLeftClickPerformed;
@@ -38,8 +36,6 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Sprint.canceled -= SetIsSprintingCanceled;
             inputManager.playerControls.PlayerMovement.Walk.performed -= SetIsWalkingPerformed;
             inputManager.playerControls.PlayerMovement.Walk.canceled -= SetIsWalkingCanceled;
-            inputManager.playerControls.PlayerAction.Jump.performed -= SetIsJumpingPerformed;
-            inputManager.playerControls.PlayerAction.Jump.canceled -= SetIsJumpingCanceled;
 
             // TODO: will be moved to PlayerActionStateMachine in the future
             inputManager.playerControls.PlayerAction.LeftClick.performed -= SetIsLeftClickPerformed;
@@ -70,14 +66,6 @@ namespace TMD
         private void SetIsLeftClickCanceled(InputAction.CallbackContext context)
         {
             isLeftClick = false;
-        }
-        private void SetIsJumpingPerformed(InputAction.CallbackContext context)
-        {
-            isJumping = true;
-        }
-        private void SetIsJumpingCanceled(InputAction.CallbackContext context)
-        {
-            isJumping = false;
         }
 
         public override void CalculateMoveDirection()

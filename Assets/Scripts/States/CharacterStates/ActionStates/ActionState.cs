@@ -6,7 +6,7 @@ namespace TMD
     public class ActionState : State
     {
         protected ActionStateMachine actionStateMachine;
-        public ActionState(ActionStateMachine actionStateMachine)
+        public ActionState(ActionStateMachine actionStateMachine, int stateIndex) : base(stateIndex)
         {
             this.actionStateMachine = actionStateMachine;
         }

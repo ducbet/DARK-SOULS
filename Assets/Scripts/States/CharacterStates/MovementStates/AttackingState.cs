@@ -8,7 +8,7 @@ namespace TMD
     {
         private string lastAttackName = "";
 
-        public AttackingState(MovementStateMachine movementStateMachine) : base(movementStateMachine)
+        public AttackingState(MovementStateMachine movementStateMachine, int stateIndex) : base(movementStateMachine, stateIndex)
         {
         }
         public override void Enter()

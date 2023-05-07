@@ -2,9 +2,9 @@
 
 namespace TMD
 {
-    public class IdleActionState : ActionState
+    public class ActionEmptyState : ActionState
     {
-        public IdleActionState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
+        public ActionEmptyState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
 
         }
@@ -13,6 +13,7 @@ namespace TMD
         {
             base.Enter();
             actionStateMachine.animatorManager.PlayTargetAnimation("Empty");
+            Debug.Log("ActionEmptyState velocity " + actionStateMachine.rgBody.velocity);
         }
 
         public override void Exit()
@@ -50,6 +51,11 @@ namespace TMD
             if (actionStateMachine.isInteractingObject && actionStateMachine.interactableItem != null)
             {
                 actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.PickingUp);
+                return;
+            }
+            if (actionStateMachine.isJumping)
+            {
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Jumping);
                 return;
             }
         }

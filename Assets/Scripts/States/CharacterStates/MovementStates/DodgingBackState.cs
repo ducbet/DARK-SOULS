@@ -7,7 +7,7 @@ namespace TMD
         private string dodgeBackAnimationName = "Dodge Back";
         private int dodgeBackAnimation;
 
-        public DodgingBackState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
+        public DodgingBackState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
             dodgeBackAnimation = actionStateMachine.animatorManager.HashString(dodgeBackAnimationName);
         }
@@ -47,7 +47,7 @@ namespace TMD
             }
             if (!actionStateMachine.isPlayingAnimation)
             {
-                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Idle);
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Empty);
                 return;
             }
         }

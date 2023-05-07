@@ -7,7 +7,7 @@ namespace TMD
         private string pickUpAnimationName = "Pick Up";
         private int pickUpAnimation;
 
-        public PickingUpState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
+        public PickingUpState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
             pickUpAnimation = base.actionStateMachine.animatorManager.HashString(pickUpAnimationName);
         }
@@ -49,7 +49,7 @@ namespace TMD
             }
             if (!actionStateMachine.isPlayingAnimation)
             {
-                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Idle);
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Empty);
                 return;
             }
         }

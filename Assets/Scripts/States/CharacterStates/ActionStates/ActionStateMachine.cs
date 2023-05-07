@@ -15,16 +15,15 @@ namespace TMD
     {
         public enum ACTION_STATE_ENUMS
         {
-            Idle,
+            Empty,
             Rolling,
-            Landing,
             PickingUp,
-            Attacking,
-            Dying,
-            //Jumping,
+            //Attacking,
             DodgingBack,
             Die,
             Laned,
+            Jumping,
+            Fall,
         };
 
 
@@ -46,11 +45,24 @@ namespace TMD
         public float checkObjectRayThickness = 1f;
         public float checkObjectRayLength = 2f;
 
+        [Header("Check grounded Attributes")]
+        private Vector3 groundCheckOriginOffset = new Vector3(0f, 1f, 0f);
+        private float startLandingHeight = 1.2f;
+        public LayerMask groundCheckLayers;
+        public bool isGrounded = true;
+
+        [Header("Falling Attributes")]
+        public float fallingVelocity = 33f;
+        public Vector3 leapingVelocity;
+        public float leapingVelocitySmoothTime = 2f;
+
         public InteractablePopup interactablePopup;
         public LayerMask interactableLayers;
         public GameObject interactableItem;
 
         public float falledTime = 0f;
+        public bool canStartFalling = false;
+        public bool isJumping { get; protected set; } = false;
 
         protected virtual void Awake()
         {
@@ -70,15 +82,17 @@ namespace TMD
                     CameraManager.LayerMasks.UI | CameraManager.LayerMasks.Controller | CameraManager.LayerMasks.Ground |
                     CameraManager.LayerMasks.Water | CameraManager.LayerMasks.Environment | CameraManager.LayerMasks.Character);
             }
+            if (groundCheckLayers == 0)
+            {
+                groundCheckLayers = (int)CameraManager.LayerMasks.Ground;
+            }
 
             InitStates();
-
-            movementStateMachine.CharacterLanded += HandleCharacterLanded;
         }
         protected override void Start()
         {
             base.Start();
-            SwitchState(ACTION_STATE_ENUMS.Idle);
+            SwitchState(ACTION_STATE_ENUMS.Empty);
             checkForInteractableObject = StartCoroutine(CheckForInteractableObject());
 
         }
@@ -86,7 +100,11 @@ namespace TMD
         protected virtual void OnDestroy()
         {
             StopCoroutine(checkForInteractableObject);  // OnDestroy is enough? also when player dead?
-            movementStateMachine.CharacterLanded -= HandleCharacterLanded;
+        }
+        protected override void Update()
+        {
+            base.Update();
+            CheckGrounded();
         }
 
         public override void SwitchState(Enum stateEnum)
@@ -104,12 +122,14 @@ namespace TMD
         protected virtual void InitStates()
         {
             states = new State[Enum.GetNames(typeof(ACTION_STATE_ENUMS)).Length];
-            states[(int)ACTION_STATE_ENUMS.Idle] = new IdleActionState(this);
-            states[(int)ACTION_STATE_ENUMS.Rolling] = new RollingState(this);
-            states[(int)ACTION_STATE_ENUMS.PickingUp] = new PickingUpState(this);
-            states[(int)ACTION_STATE_ENUMS.DodgingBack] = new DodgingBackState(this);
-            states[(int)ACTION_STATE_ENUMS.Die] = new DieState(this);
-            states[(int)ACTION_STATE_ENUMS.Laned] = new LandedState(this);
+            states[(int)ACTION_STATE_ENUMS.Empty] = new ActionEmptyState(this, (int)ACTION_STATE_ENUMS.Empty);
+            states[(int)ACTION_STATE_ENUMS.Rolling] = new RollingState(this, (int)ACTION_STATE_ENUMS.Rolling);
+            states[(int)ACTION_STATE_ENUMS.PickingUp] = new PickingUpState(this, (int)ACTION_STATE_ENUMS.PickingUp);
+            states[(int)ACTION_STATE_ENUMS.DodgingBack] = new DodgingBackState(this, (int)ACTION_STATE_ENUMS.DodgingBack);
+            states[(int)ACTION_STATE_ENUMS.Die] = new DieState(this, (int)ACTION_STATE_ENUMS.Die);
+            states[(int)ACTION_STATE_ENUMS.Laned] = new LandedState(this, (int)ACTION_STATE_ENUMS.Laned);
+            states[(int)ACTION_STATE_ENUMS.Jumping] = new JumpState(this, (int)ACTION_STATE_ENUMS.Jumping);
+            states[(int)ACTION_STATE_ENUMS.Fall] = new FallState(this, (int)ACTION_STATE_ENUMS.Fall);
         }
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)
         {
@@ -127,12 +147,7 @@ namespace TMD
             // called from animation
             isPlayingAnimation = false;
         }
-        public void HandleCharacterLanded(object sender, float falledTime)
-        {
-            this.falledTime = falledTime;
-            SwitchState(ACTION_STATE_ENUMS.Laned);
-        }
-
+        
         IEnumerator CheckForInteractableObject()
         {
             RaycastHit hit;
@@ -157,6 +172,25 @@ namespace TMD
                 yield return new WaitForSeconds(checkObjectInterval);
             }
         }
+
+        public int GetCurrentMovementStateIndex()
+        {
+            if (movementStateMachine == null)
+            {
+                return -1;
+            }
+            return movementStateMachine.currentState.stateIndex;
+        }
+
+        public State GetCurrentMovementState()
+        {
+            if (movementStateMachine == null)
+            {
+                return null;
+            }
+            return movementStateMachine.currentState;
+        }
+
         public void OnMovingHandler(object sender, MovementStateMachine.MOVEMENT_STATE_ENUMS newMovementState)
         {
             if (newMovementState == MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle)
@@ -166,5 +200,24 @@ namespace TMD
             }
             isMoving = true;
         }
+        public void CheckCanStartFalling()
+        {
+            // Use for JumpState
+            canStartFalling = true;
+        }
+        private void CheckGrounded()
+        {
+            RaycastHit hit;
+            Debug.DrawLine(transform.position + groundCheckOriginOffset, transform.position + groundCheckOriginOffset + (Vector3.down * startLandingHeight), Color.magenta);
+            if (Physics.SphereCast(transform.position + groundCheckOriginOffset, 0.2f, Vector3.down, out hit, startLandingHeight, groundCheckLayers))
+            {
+                isGrounded = true;
+            }
+            else
+            {
+                isGrounded = false;
+            }
+        }
+
     }
 }

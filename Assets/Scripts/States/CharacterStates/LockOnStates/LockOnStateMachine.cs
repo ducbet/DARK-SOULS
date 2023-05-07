@@ -54,8 +54,8 @@ namespace TMD
         protected virtual void InitStates()
         {
             states = new State[Enum.GetNames(typeof(LOCK_ON_STATE_ENUMS)).Length];
-            states[(int)LOCK_ON_STATE_ENUMS.LockingOn] = new LockingOnState(this);
-            states[(int)LOCK_ON_STATE_ENUMS.LockingOff] = new LockingOffState(this);
+            states[(int)LOCK_ON_STATE_ENUMS.LockingOn] = new LockingOnState(this, (int)LOCK_ON_STATE_ENUMS.LockingOn);
+            states[(int)LOCK_ON_STATE_ENUMS.LockingOff] = new LockingOffState(this, (int)LOCK_ON_STATE_ENUMS.LockingOff);
         }
         public Vector3 GetLockOnDirection()
         {

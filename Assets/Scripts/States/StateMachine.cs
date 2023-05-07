@@ -26,6 +26,7 @@ namespace TMD
             preState = currentState;
             currentState?.Exit();
             currentState = newState;
+            Debug.Log("SwitchState " + newState);
             currentState?.Enter();
             currentStateUI.text = currentState.GetType().ToString(); // Debug
         }

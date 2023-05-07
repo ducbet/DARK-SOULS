@@ -11,7 +11,7 @@ namespace TMD
         private string landingAnimationName = "Landing";
         private int landingAnimation;
 
-        public LandedState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
+        public LandedState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
             fallingToRollAnimation = actionStateMachine.animatorManager.HashString(fallingToRollAnimationName);
             landingAnimation = actionStateMachine.animatorManager.HashString(landingAnimationName);
@@ -20,6 +20,9 @@ namespace TMD
         public override void Enter()
         {
             base.Enter();
+            actionStateMachine.falledTime = ((FallState)actionStateMachine.preState).GetFallingTime();
+
+
             actionStateMachine.animatorManager.EnableRootMotion();
             Debug.Log("LandedState actionStateMachine.falledTime " + actionStateMachine.falledTime);
 
@@ -63,7 +66,7 @@ namespace TMD
             }
             if (!actionStateMachine.isPlayingAnimation)
             {
-                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Idle);
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Empty);
                 return;
             }
         }

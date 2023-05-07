@@ -9,7 +9,7 @@ namespace TMD
         private string rollAnimationName = "Roll";
         private int rollAnimation;
 
-        public RollingState(ActionStateMachine actionStateMachine) : base(actionStateMachine)
+        public RollingState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
             rollAnimation = base.actionStateMachine.animatorManager.HashString(rollAnimationName);
         }
@@ -50,7 +50,7 @@ namespace TMD
             }
             if (!actionStateMachine.isPlayingAnimation)
             {
-                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Idle);
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Empty);
                 return;
             }
         }

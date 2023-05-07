@@ -21,6 +21,8 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Roll.canceled += SetIsRollingCanceled;
             inputManager.playerControls.PlayerAction.Interact.performed += SetIsInteractingObjectPerformed;
             inputManager.playerControls.PlayerAction.Interact.canceled += SetIsInteractingObjectCanceled;
+            inputManager.playerControls.PlayerAction.Jump.performed += SetIsJumpingPerformed;
+            inputManager.playerControls.PlayerAction.Jump.canceled += SetIsJumpingCanceled;
         }
         protected override void OnDestroy()
         {
@@ -29,6 +31,8 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Roll.canceled -= SetIsRollingCanceled;
             inputManager.playerControls.PlayerAction.Interact.performed -= SetIsInteractingObjectPerformed;
             inputManager.playerControls.PlayerAction.Interact.canceled -= SetIsInteractingObjectCanceled;
+            inputManager.playerControls.PlayerAction.Jump.performed -= SetIsJumpingPerformed;
+            inputManager.playerControls.PlayerAction.Jump.canceled -= SetIsJumpingCanceled;
         }
 
         private void SetIsRollingPerformed(InputAction.CallbackContext context)
@@ -46,6 +50,14 @@ namespace TMD
         private void SetIsInteractingObjectCanceled(InputAction.CallbackContext context)
         {
             isInteractingObject = false;
+        }
+        private void SetIsJumpingPerformed(InputAction.CallbackContext context)
+        {
+            isJumping = true;
+        }
+        private void SetIsJumpingCanceled(InputAction.CallbackContext context)
+        {
+            isJumping = false;
         }
     }
 }

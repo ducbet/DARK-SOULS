@@ -4,12 +4,10 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class LockingOffState : State
+    public class LockingOffState : LockOnState
     {
-        private LockOnStateMachine lockOnStateMachine;
-        public LockingOffState(LockOnStateMachine lockOnStateMachine)
+        public LockingOffState(LockOnStateMachine lockOnStateMachine, int stateIndex) : base(lockOnStateMachine, stateIndex)
         {
-            this.lockOnStateMachine = lockOnStateMachine;
         }
 
         public override void Enter()

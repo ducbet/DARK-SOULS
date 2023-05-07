@@ -6,13 +6,12 @@ namespace TMD
 {
     public class IdleState : PlaneMoveState
     {
-        public IdleState(MovementStateMachine movementStateMachine) : base(movementStateMachine) { }
+        public IdleState(MovementStateMachine movementStateMachine, int stateIndex) : base(movementStateMachine, stateIndex) { }
 
         public override void Enter()
         {
             base.Enter();
-            Debug.Log("IdleState");
-            //movementStateMachine.rgBody.velocity = Vector3.zero;
+            movementStateMachine.rgBody.velocity = Vector3.zero;
             //SlowDownXZ();
         }
 
