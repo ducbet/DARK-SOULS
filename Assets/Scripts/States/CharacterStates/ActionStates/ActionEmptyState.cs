@@ -58,6 +58,11 @@ namespace TMD
                 actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Jumping);
                 return;
             }
+            if (actionStateMachine.isLeftClick)
+            {
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Attacking);
+                return;
+            }
         }
 
         public override bool isMovementBlocked()

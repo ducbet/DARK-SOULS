@@ -27,15 +27,6 @@ namespace TMD
             actionStateMachine.canStartFalling = false;
             actionStateMachine.animatorManager.SetFloatNoSmooth(moveForwardStateParam, 0f);
 
-            //Debug.Log("((int)MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle) " + ((int)MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle));
-            //Debug.Log("actionStateMachine.GetCurrentMovementStateIndex() " + actionStateMachine.GetCurrentMovementStateIndex());
-            //Debug.Log("");
-            //Debug.Log("Enum.Equals " + Enum.Equals(MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle, ((int)MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle)));
-            //Debug.Log("Enum.Equals " + Enum.Equals(MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle, 0));
-            //Debug.Log("Enum.Equals " + Enum.Equals(0, ((int)MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle)));
-            //Debug.Log("Enum.Equals " + (MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle == 0));
-            //Debug.Log(actionStateMachine.GetCurrentMovementState());
-            
             if (Enum.Equals(actionStateMachine.GetCurrentMovementStateIndex(), (int)MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle))
             {
                 isIdleJump = true;
@@ -46,9 +37,6 @@ namespace TMD
                 isIdleJump = false;
                 actionStateMachine.PlayTargetAnimation(runningJumpAnimation);
             }
-            //Debug.Break();
-            //actionStateMachine.PlayTargetAnimation(runningJumpAnimation);
-            //actionStateMachine.PlayTargetAnimation(jumpFromIdleAnimation);
         }
 
         public override void Exit()
@@ -59,10 +47,12 @@ namespace TMD
 
         public override void FixedUpdate()
         {
+            base.FixedUpdate();
         }
 
         public override void LateUpdate()
         {
+            base.LateUpdate();
         }
 
         public override void Update()
@@ -75,41 +65,26 @@ namespace TMD
             {
                 HandleRootMotionMovements();
             }
-            Debug.Log("JumpState actionStateMachine.canStartFalling " + actionStateMachine.canStartFalling);
             if (actionStateMachine.canStartFalling)
             {
                 if (!actionStateMachine.isGrounded || isIdleJump)
                 {
-                    Debug.Log("JumpState !actionStateMachine.isGrounded " + !actionStateMachine.isGrounded);
                     actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Fall);
                     return;
                 }
             }
             if (!actionStateMachine.isPlayingAnimation)
             {
-                //Debug.Break();
                 actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Empty);
                 return;
             }
-            //Debug.Log("actionStateMachine.canStartFalling " + actionStateMachine.canStartFalling);
-            //Debug.Log("!actionStateMachine.isGrounded " + !actionStateMachine.isGrounded);
-            //if (actionStateMachine.canStartFalling && !actionStateMachine.isGrounded)
-            //{
-            //    actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Fall);
-            //    return;
-            //}
-            //if (!actionStateMachine.isPlayingAnimation)
-            //{
-            //    actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Idle);
-            //    return;
-            //}
         }
 
         protected void HandleRootMotionMovements()
         {
             actionStateMachine.rgBody.drag = 0;
             Vector3 velocity = actionStateMachine.animatorManager.deltaPosition;
-            //velocity.y *= jumpUpVelocityScale;  // velocity.y is always 0 because root transform Y
+            velocity *= actionStateMachine.jumpUpVelocityScale;
             actionStateMachine.rgBody.velocity = velocity;
         }
     }

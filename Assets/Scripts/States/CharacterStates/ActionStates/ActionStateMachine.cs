@@ -24,6 +24,7 @@ namespace TMD
             Laned,
             Jumping,
             Fall,
+            Attacking,
         };
 
 
@@ -39,6 +40,9 @@ namespace TMD
         public bool isMoving { get; set; } = false;
         public bool isRolling { get; protected set; } = false;
         public bool isInteractingObject { get; protected set; } = false;
+        public bool isLeftClick { get; protected set; } = false;
+        public float rootMotionSpeed = 1f;
+        public bool canStartComboAttack = false;
 
         [Header("Check For Interactable Object Attr")]
         public float checkObjectInterval = 0.2f;
@@ -63,6 +67,7 @@ namespace TMD
         public float falledTime = 0f;
         public bool canStartFalling = false;
         public bool isJumping { get; protected set; } = false;
+        public float jumpUpVelocityScale = 1.5f;
 
         protected virtual void Awake()
         {
@@ -130,6 +135,7 @@ namespace TMD
             states[(int)ACTION_STATE_ENUMS.Laned] = new LandedState(this, (int)ACTION_STATE_ENUMS.Laned);
             states[(int)ACTION_STATE_ENUMS.Jumping] = new JumpState(this, (int)ACTION_STATE_ENUMS.Jumping);
             states[(int)ACTION_STATE_ENUMS.Fall] = new FallState(this, (int)ACTION_STATE_ENUMS.Fall);
+            states[(int)ACTION_STATE_ENUMS.Attacking] = new AttackingState(this, (int)ACTION_STATE_ENUMS.Attacking);
         }
         public void PlayTargetAnimation(string animationName, float fadeLength = 0.2f)
         {
@@ -218,6 +224,12 @@ namespace TMD
                 isGrounded = false;
             }
         }
-
+        public void HandleComboAttack()
+        {
+            if (isLeftClick)
+            {
+                canStartComboAttack = true;
+            }
+        }
     }
 }

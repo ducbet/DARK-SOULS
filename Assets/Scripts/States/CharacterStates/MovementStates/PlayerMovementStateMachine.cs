@@ -25,9 +25,6 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Walk.performed += SetIsWalkingPerformed;
             inputManager.playerControls.PlayerMovement.Walk.canceled += SetIsWalkingCanceled;
 
-            // TODO: will be moved to PlayerActionStateMachine in the future
-            inputManager.playerControls.PlayerAction.LeftClick.performed += SetIsLeftClickPerformed;
-            inputManager.playerControls.PlayerAction.LeftClick.canceled += SetIsLeftClickCanceled;
         }
         protected override void OnDestroy()
         {
@@ -36,10 +33,6 @@ namespace TMD
             inputManager.playerControls.PlayerMovement.Sprint.canceled -= SetIsSprintingCanceled;
             inputManager.playerControls.PlayerMovement.Walk.performed -= SetIsWalkingPerformed;
             inputManager.playerControls.PlayerMovement.Walk.canceled -= SetIsWalkingCanceled;
-
-            // TODO: will be moved to PlayerActionStateMachine in the future
-            inputManager.playerControls.PlayerAction.LeftClick.performed -= SetIsLeftClickPerformed;
-            inputManager.playerControls.PlayerAction.LeftClick.canceled -= SetIsLeftClickCanceled;
         }
         private void SetIsSprintingPerformed(InputAction.CallbackContext context)
         {
@@ -56,16 +49,6 @@ namespace TMD
         private void SetIsWalkingCanceled(InputAction.CallbackContext context)
         {
             isWalking = false;
-        }
-
-        // TODO: will be moved to PlayerActionStateMachine in the future
-        private void SetIsLeftClickPerformed(InputAction.CallbackContext context)
-        {
-            isLeftClick = true;
-        }
-        private void SetIsLeftClickCanceled(InputAction.CallbackContext context)
-        {
-            isLeftClick = false;
         }
 
         public override void CalculateMoveDirection()

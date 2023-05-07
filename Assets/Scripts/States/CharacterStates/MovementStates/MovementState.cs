@@ -43,11 +43,6 @@ namespace TMD
                 return;
             }
             movementStateMachine.CalculateMoveDirection();
-            if (movementStateMachine.isLeftClick)
-            {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Attacking);
-                return;
-            }
             movementStateMachine.CalculateMoveMagnitude();
         }
 

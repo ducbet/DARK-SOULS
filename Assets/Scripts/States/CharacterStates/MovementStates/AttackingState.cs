@@ -4,27 +4,27 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class AttackingState : GroundedState
+    public class AttackingState : ActionState
     {
         private string lastAttackName = "";
 
-        public AttackingState(MovementStateMachine movementStateMachine, int stateIndex) : base(movementStateMachine, stateIndex)
+        public AttackingState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
         }
         public override void Enter()
         {
             base.Enter();
-            movementStateMachine.animatorManager.EnableRootMotion();
-            movementStateMachine.canStartComboAttack = false;
+            actionStateMachine.animatorManager.EnableRootMotion();
+            actionStateMachine.canStartComboAttack = false;
 
-            if (movementStateMachine.preState is AttackingState)
+            if (actionStateMachine.preState is AttackingState)
             {
-                lastAttackName = ((AttackingState)movementStateMachine.preState).GetLastAttackName();
+                lastAttackName = ((AttackingState)actionStateMachine.preState).GetLastAttackName();
             }
             lastAttackName = GetAttackAnimation(lastAttackName);
             if (lastAttackName != "")
             {
-                movementStateMachine.PlayTargetAnimation(lastAttackName);
+                actionStateMachine.PlayTargetAnimation(lastAttackName);
                 return;
             }
         }
@@ -32,7 +32,7 @@ namespace TMD
         public override void Exit()
         {
             base.Exit();
-            movementStateMachine.animatorManager.DisableRootMotion();
+            actionStateMachine.animatorManager.DisableRootMotion();
         }
 
         public override void FixedUpdate()
@@ -52,29 +52,29 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.animatorManager.isUsingRootMotion)
+            if (actionStateMachine.animatorManager.isUsingRootMotion)
             {
-                HandleRootMotionMovements(movementStateMachine.rootMotionSpeed);
+                HandleRootMotionMovements(actionStateMachine.rootMotionSpeed);
             }
-            if (movementStateMachine.isPlayingAnimation)
+            if (actionStateMachine.isPlayingAnimation)
             {
-                if (movementStateMachine.isLeftClick && movementStateMachine.canStartComboAttack)
+                if (actionStateMachine.isLeftClick && actionStateMachine.canStartComboAttack)
                 {
-                    movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Attacking);
+                    actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Attacking);
                     return;
                 }
             }
             else
             {
                 ClearComboAttack();
-                if (movementStateMachine.isLeftClick)
+                if (actionStateMachine.isLeftClick)
                 {
-                    movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Attacking);
+                    actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Attacking);
                     return;
                 }
                 else
                 {
-                    movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle);
+                    actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Empty);
                     return;
                 }
             }
@@ -88,11 +88,10 @@ namespace TMD
             return lastAttackName;
         }
 
-        #region TODO: will be moved to PlayerActionStateMachine in the future
         public string GetAttackAnimation(string lastAttackName)
         {
-            ItemObject leftHandItemObject = movementStateMachine.inventoryManager.GetCurrentItemObject(isRightHand: false);
-            ItemObject rightHandItemObject = movementStateMachine.inventoryManager.GetCurrentItemObject();
+            ItemObject leftHandItemObject = actionStateMachine.inventoryManager.GetCurrentItemObject(isRightHand: false);
+            ItemObject rightHandItemObject = actionStateMachine.inventoryManager.GetCurrentItemObject();
             if (leftHandItemObject && rightHandItemObject)
             {
                 if (rightHandItemObject is WeaponObject)
@@ -113,6 +112,5 @@ namespace TMD
             }
             return "";
         }
-        #endregion
     }
 }

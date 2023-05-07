@@ -19,7 +19,6 @@ namespace TMD
             RunningStrafeLeft,
             WalkingStrafeRight,
             RunningStrafeRight,
-            Attacking, // TODO: will be moved to PlayerActionStateMachine in the future
             Empty
         };
 
@@ -48,11 +47,7 @@ namespace TMD
         public bool isWalking { get; protected set; } = false;
         public bool isJumping { get; protected set; } = false;  // move to action state machine
 
-        // TODO: will be moved to PlayerActionStateMachine in the future
-        public bool isLeftClick { get; protected set; } = false;
         [HideInInspector] public InventoryManager inventoryManager;
-        public float rootMotionSpeed = 1f;
-        public bool canStartComboAttack = false;
 
         [Header("Roll Attributes")]
         public float rollingVelocityScale = 1f;
@@ -109,9 +104,6 @@ namespace TMD
             states[(int)MOVEMENT_STATE_ENUMS.WalkingStrafeRight] = new WalkingStrafeRightState(this, (int)MOVEMENT_STATE_ENUMS.WalkingStrafeRight);
             states[(int)MOVEMENT_STATE_ENUMS.RunningStrafeRight] = new RunningStrafeRightState(this, (int)MOVEMENT_STATE_ENUMS.RunningStrafeRight);
             states[(int)MOVEMENT_STATE_ENUMS.Empty] = new MovementEmptyState(this, (int)MOVEMENT_STATE_ENUMS.Empty);
-
-            // TODO: will be moved to PlayerActionStateMachine in the future
-            states[(int)MOVEMENT_STATE_ENUMS.Attacking] = new AttackingState(this, (int)MOVEMENT_STATE_ENUMS.Attacking);
         }
 
         public void ActionPerformed(object sender, ActionEventParams actionEventParams)
@@ -171,14 +163,5 @@ namespace TMD
             return lockOnStateMachine.GetLockOnDirection();
         }
 
-        #region TODO: will be moved to PlayerActionStateMachine in the future
-        public void HandleComboAttack()
-        {
-            if (isLeftClick)
-            {
-                canStartComboAttack = true;
-            }
-        }
-        #endregion
     }
 }
