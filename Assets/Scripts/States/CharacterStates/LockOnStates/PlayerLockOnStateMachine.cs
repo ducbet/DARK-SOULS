@@ -22,8 +22,8 @@ namespace TMD
         {
             //base.InitStates(); // Use PlayerLockOnStateMachine instead of LockOnStateMachine because Player's LockingOffState need cameraManager
             states = new State[Enum.GetNames(typeof(LOCK_ON_STATE_ENUMS)).Length];
-            states[(int)LOCK_ON_STATE_ENUMS.LockingOn] = new LockingOnState(this, cameraTranform: Camera.main.transform);
-            states[(int)LOCK_ON_STATE_ENUMS.LockingOff] = new LockingOffState(this);
+            states[(int)LOCK_ON_STATE_ENUMS.LockingOn] = new LockingOnState(this, (int)LOCK_ON_STATE_ENUMS.LockingOn, cameraTranform: Camera.main.transform);
+            states[(int)LOCK_ON_STATE_ENUMS.LockingOff] = new LockingOffState(this, (int)LOCK_ON_STATE_ENUMS.LockingOff);
         }
 
         protected override void Start()

@@ -4,26 +4,26 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class RollingState : GroundedState
+    public class RollingState : ActionState
     {
         private string rollAnimationName = "Roll";
         private int rollAnimation;
 
-        public RollingState(MovementStateMachine movementStateMachine) : base(movementStateMachine)
+        public RollingState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
-            rollAnimation = base.movementStateMachine.animatorManager.HashString(rollAnimationName);
+            rollAnimation = base.actionStateMachine.animatorManager.HashString(rollAnimationName);
         }
         public override void Enter()
         {
             base.Enter();
-            movementStateMachine.animatorManager.EnableRootMotion();
-            movementStateMachine.PlayTargetAnimation(rollAnimation);
+            actionStateMachine.animatorManager.EnableRootMotion();
+            actionStateMachine.PlayTargetAnimation(rollAnimation);
         }
 
         public override void Exit()
         {
             base.Exit();
-            movementStateMachine.animatorManager.DisableRootMotion();
+            actionStateMachine.animatorManager.DisableRootMotion();
         }
 
         public override void FixedUpdate()
@@ -43,14 +43,14 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.animatorManager.isUsingRootMotion)
+            if (actionStateMachine.animatorManager.isUsingRootMotion)
             {
                 // falling to roll animation uses root motion
-                HandleRootMotionMovements(movementStateMachine.rollingVelocityScale);
+                HandleRootMotionMovements(actionStateMachine.rollingVelocityScale);
             }
-            if (!movementStateMachine.isPlayingAnimation)
+            if (!actionStateMachine.isPlayingAnimation)
             {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle);
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Empty);
                 return;
             }
         }

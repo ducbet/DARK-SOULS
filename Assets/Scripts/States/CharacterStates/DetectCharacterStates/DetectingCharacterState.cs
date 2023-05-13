@@ -4,17 +4,15 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class DetectingCharacterState : State
+    public class DetectingCharacterState : DetectCharacterState
     {
-        private DetectCharacterStateMachine detectCharacterStateMachine;
         private int detectRange = 20;
         private int viewAngle = 50;
         public LayerMask characterLayer;
         public LayerMask groundCheckLayers;
 
-        public DetectingCharacterState(DetectCharacterStateMachine detectCharacterStateMachine)
+        public DetectingCharacterState(DetectCharacterStateMachine detectCharacterStateMachine, int stateIndex) : base(detectCharacterStateMachine, stateIndex)
         {
-            this.detectCharacterStateMachine = detectCharacterStateMachine;
             if (characterLayer == 0)
             {
                 characterLayer = (int)CameraManager.LayerMasks.Character;

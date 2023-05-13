@@ -2,13 +2,14 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class SprintState : PlaneMoveState
+    public class SprintState : MovementState
     {
-        public SprintState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
+        public SprintState(MovementStateMachine moveStateMachine, int stateIndex) : base(moveStateMachine, stateIndex) { }
 
         public override void Enter()
         {
             base.Enter();
+            movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.Sprinting);
         }
 
         public override void Exit()
@@ -41,12 +42,6 @@ namespace TMD
             if (!movementStateMachine.isSprinting)
             {
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.RunningForward);
-                return;
-            }
-            if (movementStateMachine.isRolling)
-            {
-                // If Idle -> DodgingBack, else Rolling
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Rolling);
                 return;
             }
             movementStateMachine.animatorManager.SetFloat(moveForwardStateParam, (float)MovementStateMachine.MOVEMENT_STATE_ENUMS.Sprinting);

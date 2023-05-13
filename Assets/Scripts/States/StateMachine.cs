@@ -19,11 +19,14 @@ namespace TMD
         }
         private void SwitchState(State newState)
         {
+            if (currentState == newState)
+            {
+                return;
+            }
             preState = currentState;
             currentState?.Exit();
             currentState = newState;
             currentState?.Enter();
-            //Debug.Log(gameObject.name + " current state: " + currentState.GetType().ToString());
             currentStateUI.text = currentState.GetType().ToString(); // Debug
         }
 

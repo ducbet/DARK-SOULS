@@ -6,7 +6,7 @@ namespace TMD
 {
     public class RunForwardState : RunningState
     {
-        public RunForwardState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
+        public RunForwardState(MovementStateMachine moveStateMachine, int stateIndex) : base(moveStateMachine, stateIndex) { }
 
         public override void Enter()
         {

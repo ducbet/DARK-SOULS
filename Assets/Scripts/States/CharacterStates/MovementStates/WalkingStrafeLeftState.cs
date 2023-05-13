@@ -4,7 +4,7 @@ namespace TMD
 {
     public class WalkingStrafeLeftState : WalkingState
     {
-        public WalkingStrafeLeftState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
+        public WalkingStrafeLeftState(MovementStateMachine moveStateMachine, int stateIndex) : base(moveStateMachine, stateIndex) { }
 
         public override void Enter()
         {

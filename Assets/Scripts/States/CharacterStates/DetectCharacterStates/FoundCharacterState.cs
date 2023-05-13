@@ -5,12 +5,10 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class FoundCharacterState : State
+    public class FoundCharacterState : DetectCharacterState
     {
-        private DetectCharacterStateMachine detectCharacterStateMachine;
-        public FoundCharacterState(DetectCharacterStateMachine detectCharacterStateMachine)
+        public FoundCharacterState(DetectCharacterStateMachine detectCharacterStateMachine, int stateIndex) : base(detectCharacterStateMachine, stateIndex)
         {
-            this.detectCharacterStateMachine = detectCharacterStateMachine;
         }
         public override void Enter()
         {

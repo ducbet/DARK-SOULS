@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class RunningState : PlaneMoveState
+    public class RunningState : MovementState
     {
-        public RunningState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
+        public RunningState(MovementStateMachine moveStateMachine, int stateIndex) : base(moveStateMachine, stateIndex) { }
         public override void Enter()
         {
             base.Enter();
@@ -40,12 +40,6 @@ namespace TMD
             if (movementStateMachine.isSprinting && !movementStateMachine.IsLockingOn())
             {
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Sprinting);
-                return;
-            }
-            if (movementStateMachine.isRolling)
-            {
-                // If Idle -> DodgingBack, else Rolling
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Rolling);
                 return;
             }
         }

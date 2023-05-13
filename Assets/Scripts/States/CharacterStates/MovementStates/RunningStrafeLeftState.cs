@@ -6,7 +6,7 @@ namespace TMD
 {
     public class RunningStrafeLeftState : RunningState
     {
-        public RunningStrafeLeftState(MovementStateMachine moveStateMachine) : base(moveStateMachine) { }
+        public RunningStrafeLeftState(MovementStateMachine moveStateMachine, int stateIndex) : base(moveStateMachine, stateIndex) { }
         public override void Enter()
         {
             base.Enter();

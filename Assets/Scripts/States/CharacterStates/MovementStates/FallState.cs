@@ -2,9 +2,8 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class FallState : State
+    public class FallState : ActionState
     {
-        private MovementStateMachine movementStateMachine;
         private float fallingTime;
         
         private string fallingAnimationName = "Falling";
@@ -12,26 +11,25 @@ namespace TMD
         private string moveForwardStateParamName = "MoveForwardState";
         private int moveForwardStateParam;
 
-        public FallState(MovementStateMachine movementStateMachine)
+        public FallState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
-            this.movementStateMachine = movementStateMachine;
-            fallingAnimation = this.movementStateMachine.animatorManager.HashString(fallingAnimationName);
-            moveForwardStateParam = this.movementStateMachine.animatorManager.HashString(moveForwardStateParamName);
+            fallingAnimation = this.actionStateMachine.animatorManager.HashString(fallingAnimationName);
+            moveForwardStateParam = this.actionStateMachine.animatorManager.HashString(moveForwardStateParamName);
         }
 
         public override void Enter()
         {
             base.Enter();
             ResetFallingTime();
-            movementStateMachine.animatorManager.SetFloatNoSmooth(moveForwardStateParam, 0f);
-            if (IsAssignableFromState<RollingState>(movementStateMachine.preState))
+            actionStateMachine.animatorManager.SetFloatNoSmooth(moveForwardStateParam, 0f);
+            if (IsAssignableFromState<RollingState>(actionStateMachine.preState))
             {
                 // pre state is RollingState -> fadeLength longer
-                movementStateMachine.PlayTargetAnimation(fallingAnimation, fadeLength: 0.4f);
+                actionStateMachine.PlayTargetAnimation(fallingAnimation, fadeLength: 0.4f);
             }
             else
             {
-                movementStateMachine.PlayTargetAnimation(fallingAnimationName);
+                actionStateMachine.PlayTargetAnimation(fallingAnimationName);
             }
         }
         public override void Exit()
@@ -46,12 +44,11 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.isGrounded)
-            {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Laned);
-                return;
-            }
             UpdateFallingTime();
+            if (actionStateMachine.isGrounded)
+            {
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Laned);
+            }
         }
 
         public override void FixedUpdate()
@@ -85,15 +82,15 @@ namespace TMD
         private void HandleFallingForces()
         {
             SlowDownXZ();
-            movementStateMachine.rgBody.AddForce(Vector3.down * movementStateMachine.fallingVelocity * fallingTime);
+            actionStateMachine.rgBody.AddForce(Vector3.down * actionStateMachine.fallingVelocity * fallingTime);
         }
 
         private void SlowDownXZ()
         {
-            float velocityY = movementStateMachine.rgBody.velocity.y;
-            Vector3 velocityXZ = Vector3.SmoothDamp(movementStateMachine.rgBody.velocity, Vector3.zero, ref movementStateMachine.leapingVelocity, movementStateMachine.leapingVelocitySmoothTime);
+            float velocityY = actionStateMachine.rgBody.velocity.y;
+            Vector3 velocityXZ = Vector3.SmoothDamp(actionStateMachine.rgBody.velocity, Vector3.zero, ref actionStateMachine.leapingVelocity, actionStateMachine.leapingVelocitySmoothTime);
             velocityXZ.y = velocityY;
-            movementStateMachine.rgBody.velocity = velocityXZ;
+            actionStateMachine.rgBody.velocity = velocityXZ;
         }
     }
 }

@@ -4,12 +4,10 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class StopDetectingCharacterState : State
+    public class StopDetectingCharacterState : DetectCharacterState
     {
-        private DetectCharacterStateMachine detectCharacterStateMachine;
-        public StopDetectingCharacterState(DetectCharacterStateMachine detectCharacterStateMachine)
+        public StopDetectingCharacterState(DetectCharacterStateMachine detectCharacterStateMachine, int stateIndex) : base(detectCharacterStateMachine, stateIndex)
         {
-            this.detectCharacterStateMachine = detectCharacterStateMachine;
         }
 
         public override void Enter()

@@ -1,11 +1,10 @@
+using System;
 using UnityEngine;
 
 namespace TMD
 {
-    public class JumpState : State
+    public class JumpState : ActionState
     {
-        private MovementStateMachine movementStateMachine;
-
         private string jumpFromIdleAnimationName = "Jumping Up From Idle";
         private int jumpFromIdleAnimation;
         private string runningJumpAnimationName = "Running Jump";
@@ -14,45 +13,47 @@ namespace TMD
         private int moveForwardStateParam;
         private bool isIdleJump;
 
-        public JumpState(MovementStateMachine movementStateMachine)
+        public JumpState(ActionStateMachine actionStateMachine, int stateIndex) : base(actionStateMachine, stateIndex)
         {
-            this.movementStateMachine = movementStateMachine;
-            jumpFromIdleAnimation = this.movementStateMachine.animatorManager.HashString(jumpFromIdleAnimationName);
-            runningJumpAnimation = this.movementStateMachine.animatorManager.HashString(runningJumpAnimationName); 
-            moveForwardStateParam = this.movementStateMachine.animatorManager.HashString(moveForwardStateParamName);
+            jumpFromIdleAnimation = actionStateMachine.animatorManager.HashString(jumpFromIdleAnimationName);
+            runningJumpAnimation = actionStateMachine.animatorManager.HashString(runningJumpAnimationName); 
+            moveForwardStateParam = actionStateMachine.animatorManager.HashString(moveForwardStateParamName);
         }
 
         public override void Enter()
         {
             base.Enter();
-            movementStateMachine.animatorManager.EnableRootMotion();
-            movementStateMachine.canStartFalling = false;
-            movementStateMachine.animatorManager.SetFloatNoSmooth(moveForwardStateParam, 0f);
+            actionStateMachine.animatorManager.EnableRootMotion();
+            actionStateMachine.canStartFalling = false;
+            actionStateMachine.animatorManager.SetFloatNoSmooth(moveForwardStateParam, 0f);
 
-            if (movementStateMachine.preState is IdleState)
+            if (Enum.Equals(actionStateMachine.GetCurrentMovementStateIndex(), (int)MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle))
             {
                 isIdleJump = true;
-                movementStateMachine.PlayTargetAnimation(jumpFromIdleAnimation);
+                actionStateMachine.PlayTargetAnimation(jumpFromIdleAnimation);
             }
-            else if (IsAssignableFromState<PlaneMoveState>(movementStateMachine.preState))
+            //else if (IsAssignableFromState<PlaneMoveState>(actionStateMachine.GetCurrentMovementState()))
+            else
             {
                 isIdleJump = false;
-                movementStateMachine.PlayTargetAnimation(runningJumpAnimation);
+                actionStateMachine.PlayTargetAnimation(runningJumpAnimation);
             }
         }
 
         public override void Exit()
         {
             base.Exit();
-            movementStateMachine.animatorManager.DisableRootMotion();
+            actionStateMachine.animatorManager.DisableRootMotion();
         }
 
         public override void FixedUpdate()
         {
+            base.FixedUpdate();
         }
 
         public override void LateUpdate()
         {
+            base.LateUpdate();
         }
 
         public override void Update()
@@ -61,31 +62,31 @@ namespace TMD
             {
                 return;
             }
-            if (movementStateMachine.animatorManager.isUsingRootMotion)
+            if (actionStateMachine.animatorManager.isUsingRootMotion)
             {
                 HandleRootMotionMovements();
             }
-            if (movementStateMachine.canStartFalling)
+            if (actionStateMachine.canStartFalling)
             {
-                if (!movementStateMachine.isGrounded || isIdleJump)
+                if (!actionStateMachine.isGrounded || isIdleJump)
                 {
-                    movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Fall);
+                    actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Fall);
                     return;
                 }
             }
-            if (!movementStateMachine.isPlayingAnimation)
+            if (!actionStateMachine.isPlayingAnimation)
             {
-                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Idle);
+                actionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.Empty);
                 return;
             }
         }
 
         protected void HandleRootMotionMovements()
         {
-            movementStateMachine.rgBody.drag = 0;
-            Vector3 velocity = movementStateMachine.animatorManager.deltaPosition;
-            //velocity.y *= jumpUpVelocityScale;  // velocity.y is always 0 because root transform Y
-            movementStateMachine.rgBody.velocity = velocity;
+            actionStateMachine.rgBody.drag = 0;
+            Vector3 velocity = actionStateMachine.animatorManager.deltaPosition;
+            velocity *= actionStateMachine.jumpUpVelocityScale;
+            actionStateMachine.rgBody.velocity = velocity;
         }
     }
 }

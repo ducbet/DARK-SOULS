@@ -4,10 +4,8 @@ using UnityEngine;
 
 namespace TMD
 {
-    public class LockingOnState : State
+    public class LockingOnState : LockOnState
     {
-        private LockOnStateMachine lockOnStateMachine;
-
         private Transform objTranform = null;  // camera tranform if current object is player. else are object selfLockOnPoint
         private GameObject nearestObject = null;  // use to ignore locked on object when switch left and right
         private float spherecastThickness = 2f;
@@ -15,10 +13,8 @@ namespace TMD
         public LayerMask lockableOnLayers;
         public LayerMask groundCheckLayers;
 
-
-        public LockingOnState(LockOnStateMachine lockOnStateMachine, Transform cameraTranform = null)
+        public LockingOnState(LockOnStateMachine lockOnStateMachine, int stateIndex, Transform cameraTranform = null) : base(lockOnStateMachine, stateIndex)
         {
-            this.lockOnStateMachine = lockOnStateMachine;
             if (lockableOnLayers == 0)
             {
                 lockableOnLayers = (int)(CameraManager.LayerMasks.Character);
