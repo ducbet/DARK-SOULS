@@ -18,7 +18,6 @@ namespace TMD
             Empty,
             Rolling,
             PickingUp,
-            //Attacking,
             DodgingBack,
             Die,
             Laned,
@@ -32,14 +31,16 @@ namespace TMD
         [HideInInspector] public AnimatorManager animatorManager { get; private set; }
         [HideInInspector] public MovementStateMachine movementStateMachine { get; private set; }
         [HideInInspector] public InventoryManager inventoryManager;
+        public event EventHandler<ActionEventParams> ActionPerformed;
+
         [Header("Roll Attributes")]
         public float rollingVelocityScale = 1f;
         public bool isPlayingAnimation = false;
-        public event EventHandler<ActionEventParams> ActionPerformed;
-        public Coroutine checkForInteractableObject;
+
         public bool isMoving { get; set; } = false;
         public bool isRolling { get; protected set; } = false;
         public bool isInteractingObject { get; protected set; } = false;
+        public Coroutine checkForInteractableObject;
         public bool isLeftClick { get; protected set; } = false;
         public float rootMotionSpeed = 1f;
         public bool canStartComboAttack = false;
@@ -230,6 +231,10 @@ namespace TMD
             {
                 canStartComboAttack = true;
             }
+        }
+        public bool IsEmptyAction()
+        {
+            return this.currentState.stateIndex == (int)ACTION_STATE_ENUMS.Empty;
         }
     }
 }

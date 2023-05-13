@@ -5,7 +5,7 @@ namespace TMD
     public abstract class State
     {
         protected bool isStateChanged;
-        public int stateIndex = -1;
+        public int stateIndex { get; }
         public State(int stateIndex)
         {
             this.stateIndex = stateIndex;

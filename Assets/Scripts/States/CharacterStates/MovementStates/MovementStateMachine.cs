@@ -163,5 +163,9 @@ namespace TMD
             return lockOnStateMachine.GetLockOnDirection();
         }
 
+        public bool IsEmptyOrIdle()
+        {
+            return this.currentState.stateIndex == (int) MOVEMENT_STATE_ENUMS.Idle || this.currentState.stateIndex == (int)MOVEMENT_STATE_ENUMS.Empty;
+        }
     }
 }

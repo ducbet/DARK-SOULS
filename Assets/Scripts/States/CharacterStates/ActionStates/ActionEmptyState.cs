@@ -22,10 +22,12 @@ namespace TMD
 
         public override void FixedUpdate()
         {
+            base.FixedUpdate();
         }
 
         public override void LateUpdate()
         {
+            base.LateUpdate();
         }
 
         public override void Update()

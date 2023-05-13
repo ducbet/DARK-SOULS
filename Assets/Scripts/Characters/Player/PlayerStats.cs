@@ -47,10 +47,10 @@ namespace TMD
                 return;
             }
             healthBar.SetValue(currentHealth);
-            //if (State.IsAssignableFromState<PlaneMoveState>(playerMovementStateMachine.currentState))
-            //{
-            //    //playerMovementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.DodgingBack);
-            //}
+            if (playerActionStateMachine.IsEmptyAction())
+            {
+                playerActionStateMachine.SwitchState(ActionStateMachine.ACTION_STATE_ENUMS.DodgingBack);
+            }
         }
 
         public void DrainStamina(int staminaAmount)
