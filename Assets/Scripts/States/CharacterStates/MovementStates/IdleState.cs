@@ -37,11 +37,6 @@ namespace TMD
             {
                 return;
             }
-            if (IsStopMovement())
-            {
-                StopMoving();
-                return;
-            }
             if (movementStateMachine.moveMagnitude > 0)
             {
                 movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.WalkingForward);

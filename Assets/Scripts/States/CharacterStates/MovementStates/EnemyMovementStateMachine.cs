@@ -8,13 +8,12 @@ namespace TMD
 {
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(DetectCharacterStateMachine))]
-    [RequireComponent(typeof(MovementStateMachine))]
     public class EnemyMovementStateMachine : MovementStateMachine
     {
         private DetectCharacterStateMachine detectCharacterStateMachine;
-        private MovementStateMachine movementStateMachine;
+        private EnemyActionStateMachine enemyActionStateMachine;
         public Transform foundTarget;
-        private NavMeshAgent navMeshAgent;
+        public NavMeshAgent navMeshAgent;
         private IEnumerator followingTargetCoroutine = null;
 
         protected override void Awake()
@@ -26,8 +25,8 @@ namespace TMD
             //navMeshAgent.updateUpAxis = false;
 
             detectCharacterStateMachine = GetComponent<DetectCharacterStateMachine>();
-            movementStateMachine = GetComponent<MovementStateMachine>();
-            movementStateMachine.rgBody.isKinematic = false;
+            enemyActionStateMachine = GetComponent<EnemyActionStateMachine>();
+            rgBody.isKinematic = false;
             //detectCharacterStateMachine.TargetFound += StartFollowingTarget;
             //detectCharacterStateMachine.TargetNotFound += StopFollowingTarget;
 
@@ -60,21 +59,11 @@ namespace TMD
             navMeshAgent.nextPosition = transform.position;  // reset navmesh position self position (because the speed is different)
             if (navMeshAgent.isOnOffMeshLink)
             {
-                StartCoroutine(StartJumpingCoroutine());
+                if (!isJumping)
+                {
+                    enemyActionStateMachine.SetIsJumpingPerformed();
+                }
             }
-        }
-
-        public IEnumerator StartJumpingCoroutine()
-        {
-            isJumping = true;
-            yield return null;
-            isJumping = false;
-        }
-
-        public void HandleEnemyLanded()
-        {
-            navMeshAgent.CompleteOffMeshLink();
-            navMeshAgent.nextPosition = transform.position;
         }
 
         public override void CalculateMoveMagnitude()
