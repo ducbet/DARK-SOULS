@@ -32,11 +32,6 @@ namespace TMD
             {
                 return;
             }
-            if (IsStopMovement() && IsAssignableFromState<IdleState>(movementStateMachine.currentState) == false)
-            {
-                StopMoving();
-                return;
-            }
             if (IsStopMovement())
             {
                 StopMoving();
@@ -68,7 +63,10 @@ namespace TMD
 
         protected void StopMoving()
         {
-            movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Empty);
+            if (movementStateMachine.currentState.stateIndex != (int)MovementStateMachine.MOVEMENT_STATE_ENUMS.Empty)
+            {
+                movementStateMachine.SwitchState(MovementStateMachine.MOVEMENT_STATE_ENUMS.Empty);
+            }
         }
         private void HandleRotation()
         {

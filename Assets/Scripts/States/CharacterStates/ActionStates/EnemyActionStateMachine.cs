@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace TMD
 {
@@ -28,7 +29,20 @@ namespace TMD
 
         public void HandleEnemyLanded()
         {
-            ((EnemyMovementStateMachine)movementStateMachine).HandleEnemyLanded();
+            ((EnemyMovementStateMachine)movementStateMachine).navMeshAgent.CompleteOffMeshLink();
+            ((EnemyMovementStateMachine)movementStateMachine).navMeshAgent.nextPosition = transform.position;
+        }
+
+        public void SetIsJumpingPerformed()
+        {
+            StartCoroutine(StartJumpingCoroutine());
+        }
+
+        public IEnumerator StartJumpingCoroutine()
+        {
+            isJumping = true;
+            yield return null;
+            isJumping = false;
         }
     }
 }
